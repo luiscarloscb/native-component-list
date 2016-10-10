@@ -2,10 +2,12 @@ import {
   createRouter,
 } from '@exponent/ex-navigation';
 
-import HomeScreen from '../screens/HomeScreen';
+import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
 import ExponentScreen from '../screens/ExponentScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 export default createRouter(() => ({
-  home: () => HomeScreen,
+  barCodeScanner: () => BarCodeScannerScreen,
   exponent: () => ExponentScreen,
+  home: () => HomeScreen,
 }));

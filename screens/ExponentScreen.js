@@ -35,11 +35,6 @@ import {
 } from '@exponent/ex-navigation';
 
 import {
-  VictoryChart,
-  VictoryLine,
-} from 'victory-chart-native';
-
-import {
   MaterialIcons,
 } from '@exponent/vector-icons';
 
@@ -73,6 +68,7 @@ export default class HomeScreen extends React.Component {
 
         },
       }),
+      'BarCodeScanner': [this._renderBarCodeScanner],
       'Constants': [this._renderConstants],
       'Contacts': [this._renderContacts],
       'Facebook': [this._renderFacebook],
@@ -80,7 +76,6 @@ export default class HomeScreen extends React.Component {
       'PushNotification': [this._renderPushNotification],
       'LinearGradient': [this._renderLinearGradient],
       'Location': [this._renderLocation],
-      'Svg': [this._renderSvg],
       'TouchID': [this._renderTouchID],
       'Video': [this._renderVideo],
     });
@@ -88,31 +83,22 @@ export default class HomeScreen extends React.Component {
     this.setState({dataSource});
   }
 
-  _renderSvg = () => {
+  _renderBarCodeScanner = () => {
+    _maybeNavigateToBarCodeScanner = async () => {
+      let { status } = await Permissions.askAsync(Permissions.CAMERA);
+      if (status === 'granted') {
+        this.props.navigator.push('barCodeScanner')
+      } else {
+        alert('Denied access to camera!');
+      }
+    }
     return (
-      <VictoryChart>
-        <VictoryLine
-          style={{data:
-            {stroke: "red", strokeWidth: 4}
-          }}
-          y={(data) =>
-            Math.sin(2 * Math.PI * data.x)
-          }
-        />
-        <VictoryLine
-          style={{data:
-            {stroke: "blue", strokeWidth: 4}
-          }}
-          y={(data) =>
-            Math.cos(2 * Math.PI * data.x)
-          }
-        />
-      </VictoryChart>
+      <View style={{padding: 10}}>
+        <Button onPress={_maybeNavigateToBarCodeScanner}>
+          Open bar code scanner
+        </Button>
+      </View>
     );
-  }
-
-  _renderSvgAnimated = () => {
-    return <AnimatedSvgExample />;
   }
 
   _renderBlurView = () => {
