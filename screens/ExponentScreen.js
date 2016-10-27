@@ -73,6 +73,7 @@ export default class HomeScreen extends React.Component {
       'Contacts': [this._renderContacts],
       'Facebook': [this._renderFacebook],
       'Font': [this._renderFont],
+      'Map': [this._renderMap],
       'PushNotification': [this._renderPushNotification],
       'LinearGradient': [this._renderLinearGradient],
       'Location': [this._renderLocation],
@@ -81,6 +82,20 @@ export default class HomeScreen extends React.Component {
     });
 
     this.setState({dataSource});
+  }
+
+  _renderMap = () => {
+    return (
+      <Components.MapView
+        style={{width: Layout.window.width, height: 300}}
+        initialRegion={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      />
+    );
   }
 
   _renderBarCodeScanner = () => {
@@ -106,10 +121,10 @@ export default class HomeScreen extends React.Component {
   }
 
   _renderConstants = () => {
-    const ExponentConstant = ({name}) => {
+    const ExponentConstant = ({name, object}) => {
       return (
         <View style={{flexDirection: 'row', flex: 1}}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={{flex: 1}}><Text style={{fontWeight: 'bold'}}>{name}</Text>: {Constants[name]}</Text>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={{flex: 1}}><Text style={{fontWeight: 'bold'}}>{name}</Text>: {object ? JSON.stringify(Constants[name]) : Constants[name]}</Text>
         </View>
       );
     }
@@ -122,6 +137,10 @@ export default class HomeScreen extends React.Component {
         <ExponentConstant name="deviceYearClass" />
         <ExponentConstant name="sessionId" />
         <ExponentConstant name="linkingUri" />
+        <ExponentConstant name="statusBarHeight" />
+        <ExponentConstant name="isDevice" />
+        <ExponentConstant name="appOwnership" />
+        <ExponentConstant name="platform" object />
       </View>
     );
   }
@@ -392,7 +411,7 @@ class PushNotificationExample extends React.Component {
 const AnimatedBlurView = Animated.createAnimatedComponent(Components.BlurView);
 class BlurViewExample extends React.Component {
   state = {
-    opacity: new Animated.Value(0),
+    opacity: new Animated.Value(1),
   }
 
   componentDidMount() {
@@ -401,9 +420,9 @@ class BlurViewExample extends React.Component {
 
   _animate = () => {
     let { opacity } = this.state;
-    Animated.timing(opacity, {duration: 2500, toValue: 1}).start((value) => {
-      Animated.timing(opacity, {duration: 2500, toValue: 0}).start(this._animate);
-    });
+    // Animated.timing(opacity, {duration: 2500, toValue: 1}).start((value) => {
+    //   Animated.timing(opacity, {duration: 2500, toValue: 0}).start(this._animate);
+    // });
   }
 
   render() {
@@ -416,7 +435,7 @@ class BlurViewExample extends React.Component {
 
           <AnimatedBlurView
             tintEffect="default"
-            style={[StyleSheet.absoluteFill, {opacity: this.state.opacity}]} />
+            style={[StyleSheet.absoluteFill]} />
         </View>
       </View>
     );

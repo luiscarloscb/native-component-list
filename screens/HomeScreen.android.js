@@ -282,15 +282,6 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  _renderMapView = () => {
-    return (
-      <MapView
-        style={{flex: 1, height: 200}}
-        showsUserLocation
-      />
-    );
-  }
-
   _renderPicker = () => {
     return <PickerExample />;
   }

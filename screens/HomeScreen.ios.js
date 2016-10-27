@@ -8,7 +8,6 @@ import {
   AlertIOS,
   DatePickerIOS,
   Image,
-  MapView,
   Picker,
   Platform,
   ProgressViewIOS,
@@ -96,7 +95,6 @@ export default class HomeScreen extends React.Component {
       'DatePickerIOS': [this._renderDatePicker],
       'Horizontal ScrollView': [this._renderHorizontalScrollView],
       'ImagePicker': [this._renderImagePicker],
-      'MapView': [this._renderMapView],
       'Picker': [this._renderPicker],
       'ProgressView': [this._renderProgressView],
       'SegmentedControl': [this._renderSegmentedControl],
@@ -271,15 +269,6 @@ export default class HomeScreen extends React.Component {
           Open photos
         </Button>
       </View>
-    );
-  }
-
-  _renderMapView = () => {
-    return (
-      <MapView
-        style={{flex: 1, height: 200}}
-        showsUserLocation
-      />
     );
   }
 
