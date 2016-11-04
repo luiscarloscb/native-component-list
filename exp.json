@@ -18,7 +18,15 @@
     "assetExts": ["ttf"]
   },
   "android": {
-    "package": "host.exp.native-component-list",
-    "versionCode": "1.0"
+    "package": "host.exp.nativecomponentlist",
+    "versionCode": "11",
+    "config": {
+      "googleSignIn": {
+        "apiKey": "603386649315-0935p2uatb8rip7e2rb02gaq94g9jleh.apps.googleusercontent.com"
+      }
+    }
+  },
+  "ios": {
+    "bundleIdentifier": "host.exp.nativecomponentlist"
   }
 }

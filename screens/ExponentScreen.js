@@ -534,16 +534,19 @@ class GoogleLoginExample extends React.Component {
       const { type } = result;
 
       if (type === 'success') {
-        Alert.alert('Logged in!', JSON.stringify(result), [{
-          text: 'OK!',
-          onPress: () => { console.log({token: result.accessToken, type}); },
-        }]);
+        // Avoid race condition with the WebView hiding when using web-based sign in
+        setTimeout(() => {
+          Alert.alert('Logged in!', JSON.stringify(result), [{
+            text: 'OK!',
+            onPress: () => { console.log({result}); },
+          }]);
+        }, 1000);
       }
     } catch(e) {
       Alert.alert(
         'Error!',
         e.message,
-        [{ text: 'OK', onPress: () => {} }],
+        [{ text: 'OK :(', onPress: () => {} }],
       );
     }
   }
