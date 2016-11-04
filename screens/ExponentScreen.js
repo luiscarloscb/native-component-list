@@ -2,9 +2,10 @@ import React, {
   PropTypes,
 } from 'react';
 import {
-  Alert,
   ActivityIndicator,
+  Alert,
   Animated,
+  AppState,
   DeviceEventEmitter,
   Image,
   ListView,
@@ -71,13 +72,16 @@ export default class HomeScreen extends React.Component {
       'BarCodeScanner': [this._renderBarCodeScanner],
       'Constants': [this._renderConstants],
       'Contacts': [this._renderContacts],
+      'WebGL': [this._renderWebGL],
       'Facebook': [this._renderFacebook],
+      'Google': [this._renderGoogle],
       'Font': [this._renderFont],
       'Map': [this._renderMap],
       'PushNotification': [this._renderPushNotification],
       'LinearGradient': [this._renderLinearGradient],
       'Location': [this._renderLocation],
       'TouchID': [this._renderTouchID],
+      'Util': [this._renderUtil],
       'Video': [this._renderVideo],
     });
 
@@ -116,15 +120,35 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  _renderWebGL = () => {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={() => this.props.navigator.push('glView')}>
+          Open WebGL Example
+        </Button>
+      </View>
+    );
+  }
+
   _renderBlurView = () => {
     return <BlurViewExample />;
   }
 
   _renderConstants = () => {
     const ExponentConstant = ({name, object}) => {
+      let value = Constants[name];
+
+      if (object) {
+        value = JSON.stringify(value);
+      } else if (typeof value === 'boolean') {
+        value = value ? 'true' : 'false';
+      }
+
       return (
         <View style={{flexDirection: 'row', flex: 1}}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={{flex: 1}}><Text style={{fontWeight: 'bold'}}>{name}</Text>: {object ? JSON.stringify(Constants[name]) : Constants[name]}</Text>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={{flex: 1}}>
+            <Text style={{fontWeight: 'bold'}}>{name}</Text>: {value}
+          </Text>
         </View>
       );
     }
@@ -140,7 +164,7 @@ export default class HomeScreen extends React.Component {
         <ExponentConstant name="statusBarHeight" />
         <ExponentConstant name="isDevice" />
         <ExponentConstant name="appOwnership" />
-        <ExponentConstant name="platform" object />
+        { Platform.OS === 'ios' && <ExponentConstant name="platform" object /> }
       </View>
     );
   }
@@ -151,6 +175,10 @@ export default class HomeScreen extends React.Component {
 
   _renderFacebook = () => {
     return <FacebookLoginExample />;
+  }
+
+  _renderGoogle = () => {
+    return <GoogleLoginExample />;
   }
 
   _renderFont = () => {
@@ -204,6 +232,10 @@ export default class HomeScreen extends React.Component {
         />
       </View>
     );
+  }
+
+  _renderUtil = () => {
+    return <UtilExample />;
   }
 
   render() {
@@ -464,8 +496,7 @@ class FacebookLoginExample extends React.Component {
 
       const { type, token } = result;
 
-      if (type === 'cancel') {
-      } else {
+      if (type === 'success') {
         Alert.alert('Logged in!', JSON.stringify(result), [{
           text: 'OK!',
           onPress: () => { console.log({type, token}); },
@@ -479,13 +510,78 @@ class FacebookLoginExample extends React.Component {
       );
     }
   }
-
 }
+
+class GoogleLoginExample extends React.Component {
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={() => this._testGoogleLogin()}>
+          Authenticate with Google
+        </Button>
+      </View>
+    );
+  }
+
+  _testGoogleLogin = async () => {
+    try {
+      const result = await Exponent.Google.logInAsync({
+        webClientId: '367315174693-28ptflirg9qesu7igc4uhlfjo4g18pof.apps.googleusercontent.com',
+        iosClientId: '367315174693-isv5r1cbirdpj7l2n8g56cipnjnig7hq.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+
+      const { type } = result;
+
+      if (type === 'success') {
+        Alert.alert('Logged in!', JSON.stringify(result), [{
+          text: 'OK!',
+          onPress: () => { console.log({token: result.accessToken, type}); },
+        }]);
+      }
+    } catch(e) {
+      Alert.alert(
+        'Error!',
+        e.message,
+        [{ text: 'OK', onPress: () => {} }],
+      );
+    }
+  }
+}
+
 function incrementColor(color, step) {
   const intColor = parseInt(color.substr(1), 16);
   const newIntColor = (intColor + step).toString(16);
   return `#${'0'.repeat(6 - newIntColor.length)}${newIntColor}`;
 };
+
+class UtilExample extends React.Component {
+  state = {
+    locale: null,
+  };
+
+  componentWillMount() {
+    this._updateLocale();
+    AppState.addEventListener('change', this._updateLocale);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._updateLocale);
+  }
+
+  _updateLocale = async () => {
+    let locale = await Exponent.Util.getCurrentLocaleAsync();
+    this.setState({locale});
+  }
+
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <Text>Locale: {this.state.locale}</Text>
+      </View>
+    );
+  }
+}
 
 class LinearGradientExample extends React.Component {
 
