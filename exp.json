@@ -22,11 +22,17 @@
     "versionCode": "11",
     "config": {
       "googleSignIn": {
-        "apiKey": "603386649315-0935p2uatb8rip7e2rb02gaq94g9jleh.apps.googleusercontent.com"
+        "apiKey": "AIzaSyBrUCmrE1soRpQ1S47KYhJkZiqhirusH1o",
+        "certificateHash": "1746BECB2497593B3296903145793BC0BE8C426B"
       }
     }
   },
   "ios": {
-    "bundleIdentifier": "host.exp.nativecomponentlist"
+    "bundleIdentifier": "host.exp.nativecomponentlist",
+    "config": {
+      "googleSignIn": {
+        "reservedClientId": "603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com"
+      }
+    }
   }
 }
