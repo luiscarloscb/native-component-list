@@ -527,7 +527,7 @@ class GoogleLoginExample extends React.Component {
     try {
       const result = await Exponent.Google.logInAsync({
         webClientId: '603386649315-901uv7linr35912rr3o702tv9p79pi4q.apps.googleusercontent.com',
-        iosClientId: '367315174693-isv5r1cbirdpj7l2n8g56cipnjnig7hq.apps.googleusercontent.com',
+        iosClientId: '603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
 

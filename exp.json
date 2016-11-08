@@ -3,7 +3,7 @@
   "description": "This experience shows a bunch of the native components that are included in React Native and Exponent. Hit the Exponent button in the top right to navigate to the Exponent specific components!",
   "slug": "native-component-list",
   "sdkVersion": "11.0.0",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "iconUrl": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
@@ -31,7 +31,7 @@
     "bundleIdentifier": "host.exp.nativecomponentlist",
     "config": {
       "googleSignIn": {
-        "reservedClientId": "603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com"
+        "reservedClientId": "com.googleusercontent.apps.603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4"
       }
     }
   }
