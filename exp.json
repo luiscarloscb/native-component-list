@@ -15,7 +15,7 @@
     "iconUrl": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png"
   },
   "packagerOpts": {
-    "assetExts": ["ttf"]
+    "assetExts": ["ttf", "mp4"]
   },
   "android": {
     "package": "host.exp.nativecomponentlist",

@@ -1,5 +1,3 @@
-/** In order for logging to stream to XDE or the exp CLI you must import the
-  * exponent module at some point in your app */
 import Exponent from 'exponent';
 
 import React from 'react';
@@ -33,9 +31,13 @@ class AppContainer extends React.Component {
   async _loadAssetsAsync() {
     await cacheAssetsAsync({
       images: [
+        require('./assets/images/exponent-icon.png'),
       ],
       fonts: [
         {'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')},
+      ],
+      videos: [
+        require('./assets/videos/ace.mp4'),
       ],
     });
 
@@ -44,15 +46,12 @@ class AppContainer extends React.Component {
 
   render() {
     if (this.state.appIsReady) {
-      let { notification } = this.props.exp;
-      let initialRoute = Router.getRoute('home');
-
       return (
         <View style={styles.container}>
           <NavigationProvider router={Router}>
             <StackNavigation
               id="root"
-              initialRoute={initialRoute}
+              initialRoute="home"
             />
           </NavigationProvider>
 
@@ -77,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('main', () => AppContainer);
+Exponent.registerRootComponent(AppContainer);

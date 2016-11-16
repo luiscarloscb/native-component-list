@@ -80,6 +80,7 @@ export default class HomeScreen extends React.Component {
       'PushNotification': [this._renderPushNotification],
       'LinearGradient': [this._renderLinearGradient],
       'Location': [this._renderLocation],
+      'Sensors': [this._renderSensors],
       'TouchID': [this._renderTouchID],
       'Util': [this._renderUtil],
       'Video': [this._renderVideo],
@@ -208,6 +209,10 @@ export default class HomeScreen extends React.Component {
 
   _renderPushNotification = () => {
     return <PushNotificationExample />;
+  }
+
+  _renderSensors = () => {
+    return <SensorsExample />;
   }
 
   _renderTouchID = () => {
@@ -353,6 +358,19 @@ class LocationExample extends React.Component {
       <View style={{padding: 10}}>
         <Button onPress={this._findLocation}>
           Find my location
+        </Button>
+      </View>
+    );
+  }
+}
+
+@withNavigation
+class SensorsExample extends React.Component {
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={() => this.props.navigator.push('sensor')}>
+          Try out sensors (Gyroscope, Accelerometer)
         </Button>
       </View>
     );
