@@ -28,66 +28,6 @@ export default class SensorScreen extends React.Component {
   }
 }
 
-class AccelerometerSensor extends React.Component {
-  state = {
-    accelerometerData: {},
-  }
-
-  componentDidMount() {
-    this._toggle();
-  }
-
-  _toggle = () => {
-    if (this._subscription) {
-      this._unsubscribe();
-    } else {
-      this._subscribe();
-    }
-  }
-
-  _slow = () => {
-    Accelerometer.setUpdateInterval(1000);
-  }
-
-  _fast = () => {
-    Accelerometer.setUpdateInterval(16);
-  }
-
-  _subscribe = () => {
-    this._subscription = Accelerometer.addListener((result) => {
-      this.setState({accelerometerData: result});
-    });
-  }
-
-  _unsubscribe = () => {
-    this._subscription && this._subscription.remove();
-    this._subscription = null;
-  }
-
-  render() {
-    let { x, y, z } = this.state.accelerometerData;
-
-    return (
-      <View style={styles.sensor}>
-        <Text>Accelerometer:</Text>
-        <Text>x: {round(x)} y: {round(y)} z: {round(z)}</Text>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this._toggle} style={styles.button}>
-            <Text>Toggle</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._slow} style={[styles.button, styles.middleButton]}>
-            <Text>Slow</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._fast} style={styles.button}>
-            <Text>Fast</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-}
-
 class GyroscopeSensor extends React.Component {
   state = {
     gyroscopeData: {},
@@ -95,6 +35,10 @@ class GyroscopeSensor extends React.Component {
 
   componentDidMount() {
     this._toggle();
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   _toggle = () => {
@@ -130,6 +74,70 @@ class GyroscopeSensor extends React.Component {
     return (
       <View style={styles.sensor}>
         <Text>Gyroscope:</Text>
+        <Text>x: {round(x)} y: {round(y)} z: {round(z)}</Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={this._toggle} style={styles.button}>
+            <Text>Toggle</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._slow} style={[styles.button, styles.middleButton]}>
+            <Text>Slow</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._fast} style={styles.button}>
+            <Text>Fast</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+}
+
+class AccelerometerSensor extends React.Component {
+  state = {
+    accelerometerData: {},
+  }
+
+  componentDidMount() {
+    this._toggle();
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  _toggle = () => {
+    if (this._subscription) {
+      this._unsubscribe();
+    } else {
+      this._subscribe();
+    }
+  }
+
+  _slow = () => {
+    Accelerometer.setUpdateInterval(1000);
+  }
+
+  _fast = () => {
+    Accelerometer.setUpdateInterval(16);
+  }
+
+  _subscribe = () => {
+    this._subscription = Accelerometer.addListener((result) => {
+      this.setState({accelerometerData: result});
+    });
+  }
+
+  _unsubscribe = () => {
+    this._subscription && this._subscription.remove();
+    this._subscription = null;
+  }
+
+  render() {
+    let { x, y, z } = this.state.accelerometerData;
+
+    return (
+      <View style={styles.sensor}>
+        <Text>Accelerometer:</Text>
         <Text>x: {round(x)} y: {round(y)} z: {round(z)}</Text>
 
         <View style={styles.buttonContainer}>
