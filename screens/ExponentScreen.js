@@ -461,7 +461,7 @@ class PushNotificationExample extends React.Component {
 const AnimatedBlurView = Animated.createAnimatedComponent(Components.BlurView);
 class BlurViewExample extends React.Component {
   state = {
-    opacity: new Animated.Value(1),
+    intensity: new Animated.Value(0),
   }
 
   componentDidMount() {
@@ -469,24 +469,23 @@ class BlurViewExample extends React.Component {
   }
 
   _animate = () => {
-    let { opacity } = this.state;
-    // Animated.timing(opacity, {duration: 2500, toValue: 1}).start((value) => {
-    //   Animated.timing(opacity, {duration: 2500, toValue: 0}).start(this._animate);
-    // });
+    let { intensity } = this.state;
+    Animated.timing(intensity, {duration: 2500, toValue: 100}).start((value) => {
+      Animated.timing(intensity, {duration: 2500, toValue: 0}).start(this._animate);
+    });
   }
 
   render() {
     const uri = 'https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png';
 
     return (
-      <View style={{flex: 1, margin: 30}}>
-        <View style={{flex: 1, padding: 55, paddingTop: 60}}>
-          <Image style={{width: 180, height: 180}} source={{uri}} />
+      <View style={{flex: 1, padding: 50, alignItems: 'center', justifyContent: 'center'}}>
+        <Image style={{width: 180, height: 180}} source={{uri}} />
 
-          <AnimatedBlurView
-            tintEffect="default"
-            style={[StyleSheet.absoluteFill]} />
-        </View>
+        <AnimatedBlurView
+          tint="default"
+          intensity={this.state.intensity}
+          style={StyleSheet.absoluteFill} />
       </View>
     );
   }
