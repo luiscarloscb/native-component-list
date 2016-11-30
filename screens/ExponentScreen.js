@@ -81,6 +81,7 @@ export default class HomeScreen extends React.Component {
       'LinearGradient': [this._renderLinearGradient],
       'Location': [this._renderLocation],
       'Sensors': [this._renderSensors],
+      'Svg': [this._renderSvg],
       'TouchID': [this._renderTouchID],
       'Util': [this._renderUtil],
       'Video': [this._renderVideo],
@@ -100,6 +101,16 @@ export default class HomeScreen extends React.Component {
           longitudeDelta: 0.0421,
         }}
       />
+    );
+  }
+
+  _renderSvg = () => {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={() => { this.props.navigator.push('svg') }}>
+          Open Svg example
+        </Button>
+      </View>
     );
   }
 
