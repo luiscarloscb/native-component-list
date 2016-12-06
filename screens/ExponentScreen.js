@@ -484,8 +484,11 @@ class BlurViewExample extends React.Component {
 
   _animate = () => {
     let { intensity } = this.state;
-    Animated.timing(intensity, {duration: 2500, toValue: 100}).start((value) => {
-      Animated.timing(intensity, {duration: 2500, toValue: 0}).start(this._animate);
+    let animateInConfig = {duration: 2500, toValue: 100, isInteraction: false};
+    let animateOutconfig = {duration: 2500, toValue: 0, isInteraction: false};
+
+    Animated.timing(intensity, animateInConfig).start((value) => {
+      Animated.timing(intensity, animateOutconfig).start(this._animate);
     });
   }
 
