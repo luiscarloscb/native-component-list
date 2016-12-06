@@ -28,6 +28,7 @@ import Exponent, {
   Contacts,
   Font,
   Location,
+  Notifications,
   Permissions,
 } from 'exponent';
 
@@ -59,6 +60,43 @@ export default class HomeScreen extends React.Component {
     }),
   }
 
+  componentWillMount() {
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
+  componentWillUnmount() {
+    this._notificationSubscription && this._notificationSubscription.remove();
+  }
+
+  _handleNotification = (notification) => {
+    let { data, origin } = notification;
+    if (typeof data === 'string') {
+      data = JSON.parse(data);
+    }
+
+    /**
+     * Currently on Android this will only fire when selected for local
+     * notifications, and there is no way to distinguish between local
+     * and remote notifications
+     */
+
+    let message;
+    if (Platform.OS === 'android') {
+      message = `Notification ${origin} with data: ${JSON.stringify(data)}`;
+    } else {
+      if (remote) {
+        message = `Push notification ${origin} with data: ${JSON.stringify(data)}`;
+      } else {
+        message = `Local notification ${origin} with data: ${JSON.stringify(data)}`;
+      }
+    }
+
+    this.props.navigator.showLocalAlert(
+      message,
+      Alerts.notice
+    );
+  }
+
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
       ...Platform.select({
@@ -78,6 +116,7 @@ export default class HomeScreen extends React.Component {
       'Font': [this._renderFont],
       'Map': [this._renderMap],
       'PushNotification': [this._renderPushNotification],
+      'LocalNotification': [this._renderLocalNotification],
       'LinearGradient': [this._renderLinearGradient],
       'Location': [this._renderLocation],
       'Sensors': [this._renderSensors],
@@ -220,6 +259,10 @@ export default class HomeScreen extends React.Component {
 
   _renderPushNotification = () => {
     return <PushNotificationExample />;
+  }
+
+  _renderLocalNotification = () => {
+    return <LocalNotificationExample />;
   }
 
   _renderSensors = () => {
@@ -434,7 +477,6 @@ class TouchIDExample extends React.Component {
   }
 }
 
-@withNavigation
 class PushNotificationExample extends React.Component {
   render() {
     return (
@@ -446,29 +488,61 @@ class PushNotificationExample extends React.Component {
     );
   }
 
-  componentWillUnmount() {
-    this._notificationSubscription && this._notificationSubscription.remove();
-  }
-
   _sendNotification = async () => {
     registerForPushNotificationsAsync();
+  }
+}
 
-    // Handle notifications that come in while the app is open
-    if (!this._notificationSubscription) {
-      this._notificationSubscription = DeviceEventEmitter.
-        addListener('Exponent.notification', this._handleNotification);
-    }
+class LocalNotificationExample extends React.Component {
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={this._presentLocalNotification}>
+          Present a notification immediately
+        </Button>
+
+        <View style={{height: 10}} />
+
+        <Button onPress={this._scheduleLocalNotification}>
+          Schedule notification for 10 seconds from now
+        </Button>
+      </View>
+    );
   }
 
-  _handleNotification = ({origin, data}) => {
-    if (typeof data === 'string') {
-      data = JSON.parse(data);
-    }
+  _presentLocalNotification = () => {
+    Notifications.presentLocalNotificationAsync({
+      title: 'Here is a local notifiation!',
+      body: 'This is the body',
+      data: {
+        hello: 'there'
+      },
+      ios: {
+        sound: true,
+      },
+      android: {
+        vibrate: true,
+      },
+    });
+  }
 
-    this.props.navigator.showLocalAlert(
-      `Push notification ${origin} with data: ${JSON.stringify(data)}`,
-      Alerts.notice
-    );
+  _scheduleLocalNotification = () => {
+    Notifications.scheduleLocalNotificationAsync({
+      title: 'Here is a scheduled notifiation!',
+      body: 'This is the body',
+      data: {
+        hello: 'there',
+        future: 'self',
+      },
+      ios: {
+        sound: true,
+      },
+      android: {
+        vibrate: true,
+      },
+    }, {
+      time: (new Date()).getTime() + 10000,
+    });
   }
 }
 
@@ -558,6 +632,10 @@ class GoogleLoginExample extends React.Component {
   }
 
   _testGoogleLogin = async () => {
+    if (Platform.OS === 'android') {
+      alert('This is currently not available on Android, a patch for SDK12 will be released shortly with a fix');
+    }
+
     try {
       const result = await Exponent.Google.logInAsync({
         androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
