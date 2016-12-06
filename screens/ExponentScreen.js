@@ -293,14 +293,17 @@ class ContactsExample extends React.Component {
 
   _findContacts = async () => {
     let result = await Contacts.getContactsAsync([
-      Contacts.EMAIL,
+      Contacts.EMAILS,
+      Contacts.PHONE_NUMBERS,
+      Contacts.ADDRESSES,
     ]);
 
     let contacts = result.map(contact => {
       return {
-        name: (contact && contact.name && contact.name.split(' ')[0]) || '',
-        email: 'hidden for demo',
-        phone: '-',
+        firstName: contact.firstName,
+        emails: contact.emails,
+        phoneNumbers: contact.phoneNumbers,
+        addresses: contact.addresses,
       };
     });
 
@@ -554,9 +557,9 @@ class GoogleLoginExample extends React.Component {
   _testGoogleLogin = async () => {
     try {
       const result = await Exponent.Google.logInAsync({
-        webClientId: '603386649315-901uv7linr35912rr3o702tv9p79pi4q.apps.googleusercontent.com',
-        iosClientId: '603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com',
+        iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
+        behavior: 'web',
       });
 
       const { type } = result;

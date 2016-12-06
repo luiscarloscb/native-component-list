@@ -2,7 +2,7 @@
   "name": "native-component-list",
   "description": "This experience shows a bunch of the native components that are included in React Native and Exponent. Hit the Exponent button in the top right to navigate to the Exponent specific components!",
   "slug": "native-component-list",
-  "sdkVersion": "11.0.0",
+  "sdkVersion": "12.0.0",
   "version": "2.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
