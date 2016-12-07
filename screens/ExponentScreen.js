@@ -69,7 +69,7 @@ export default class HomeScreen extends React.Component {
   }
 
   _handleNotification = (notification) => {
-    let { data, origin } = notification;
+    let { data, origin, remote } = notification;
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }
@@ -598,9 +598,15 @@ class FacebookLoginExample extends React.Component {
 
   _testFacebookLogin = async (id, perms, behavior = 'web') => {
     try {
+      if (Platform.OS === 'android' || Constants.appOwnership === 'standalone') {
+        // iOS supports system too, native jumps over to the app though and people
+        // seem to like that effect. I maybe prefer system.
+        behavior = Platform.OS === 'ios' ? 'native' : 'system';
+      }
+
       const result = await Exponent.Facebook.logInWithReadPermissionsAsync(id, {
         permissions: perms,
-        behavior: Platform.OS === 'android' ? 'system' : behavior,
+        behavior,
       });
 
       const { type, token } = result;
