@@ -344,6 +344,7 @@ class ContactsExample extends React.Component {
     let contacts = result.map(contact => {
       return {
         firstName: contact.firstName,
+        name: contact.name,
         emails: contact.emails,
         phoneNumbers: contact.phoneNumbers,
         addresses: contact.addresses,
@@ -599,7 +600,7 @@ class FacebookLoginExample extends React.Component {
     try {
       const result = await Exponent.Facebook.logInWithReadPermissionsAsync(id, {
         permissions: perms,
-        behavior,
+        behavior: Platform.OS === 'android' ? 'system' : behavior,
       });
 
       const { type, token } = result;
@@ -632,13 +633,16 @@ class GoogleLoginExample extends React.Component {
   }
 
   _testGoogleLogin = async () => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' && Constants.appOwnership !== 'standalone') {
       alert('This is currently not available on Android, a patch for SDK12 will be released shortly with a fix');
+      return;
     }
 
     try {
       const result = await Exponent.Google.logInAsync({
+        androidStandaloneAppClientId: '603386649315-87mbvgc739sec2gjtptl701ha62pi98p.apps.googleusercontent.com',
         androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
+        iosStandaloneAppClientId: '603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com',
         iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
