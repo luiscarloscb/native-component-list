@@ -641,11 +641,6 @@ class GoogleLoginExample extends React.Component {
   }
 
   _testGoogleLogin = async () => {
-    if (Platform.OS === 'android' && Constants.appOwnership !== 'standalone') {
-      alert('This is currently not available on Android, a patch for SDK12 will be released shortly with a fix');
-      return;
-    }
-
     try {
       const result = await Exponent.Google.logInAsync({
         androidStandaloneAppClientId: '603386649315-87mbvgc739sec2gjtptl701ha62pi98p.apps.googleusercontent.com',
