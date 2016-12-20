@@ -20,7 +20,7 @@
   "facebookScheme": "fb1201211719949057",
   "android": {
     "package": "host.exp.nativecomponentlist",
-    "versionCode": "11",
+    "versionCode": 11,
     "config": {
       "googleSignIn": {
         "apiKey": "AIzaSyBrUCmrE1soRpQ1S47KYhJkZiqhirusH1o",

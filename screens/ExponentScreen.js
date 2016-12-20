@@ -156,12 +156,14 @@ export default class HomeScreen extends React.Component {
   _renderBarCodeScanner = () => {
     _maybeNavigateToBarCodeScanner = async () => {
       let { status } = await Permissions.askAsync(Permissions.CAMERA);
+
       if (status === 'granted') {
         this.props.navigator.push('barCodeScanner')
       } else {
         alert('Denied access to camera!');
       }
     }
+
     return (
       <View style={{padding: 10}}>
         <Button onPress={_maybeNavigateToBarCodeScanner}>
