@@ -34,6 +34,7 @@
   "ios": {
     "bundleIdentifier": "host.exp.nativecomponentlist",
     "config": {
+      "usesNonExemptEncryption": false,
       "googleSignIn": {
         "reservedClientId": "com.googleusercontent.apps.603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4"
       }
