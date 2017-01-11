@@ -12,8 +12,8 @@
     "exponent": "13.0.0-rc.1",
     "gl-mat4": "^1.1.4",
     "hsv2rgb": "^1.1.0",
-    "react": "~15.3.2",
-    "react-native": "https://github.com/exponent/react-native/archive/sdk-13.0.0.tar.gz",
+    "react": "~15.4.2",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-13.0.1.tar.gz",
     "regl": "^1.3.0",
     "victory-native": "^0.4.0"
   }
