@@ -121,7 +121,7 @@ export default class HomeScreen extends React.Component {
         drawerPosition={DrawerLayoutAndroid.positions.Left}
         renderNavigationView={renderNavigationView}>
         <ListView
-          keyboardShouldPersistTaps
+          keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           refreshControl={
             <RefreshControl

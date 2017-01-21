@@ -114,7 +114,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
         <ListView
-          keyboardShouldPersistTaps
+          keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           refreshControl={
             <RefreshControl

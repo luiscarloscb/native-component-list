@@ -6,7 +6,6 @@ import {
   Alert,
   Animated,
   AppState,
-  DeviceEventEmitter,
   Image,
   ListView,
   NativeModules,
@@ -16,11 +15,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-import {
-  random,
-  range,
-} from 'lodash';
 
 import Exponent, {
   Components,
@@ -115,6 +109,7 @@ export default class HomeScreen extends React.Component {
       'Google': [this._renderGoogle],
       'Font': [this._renderFont],
       'Map': [this._renderMap],
+      'NotificationBadge': [this._renderNotificationBadge],
       'PushNotification': [this._renderPushNotification],
       'LocalNotification': [this._renderLocalNotification],
       'LinearGradient': [this._renderLinearGradient],
@@ -259,6 +254,10 @@ export default class HomeScreen extends React.Component {
     return <LinearGradientExample />;
   }
 
+  _renderNotificationBadge = () => {
+    return <NotificationBadgeExample />;
+  }
+
   _renderPushNotification = () => {
     return <PushNotificationExample />;
   }
@@ -303,7 +302,7 @@ export default class HomeScreen extends React.Component {
     return (
       <ListView
         removeClippedSubviews={false}
-        keyboardShouldPersistTaps
+        keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         style={this.props.route.getContentContainerStyle()}
         contentContainerStyle={{backgroundColor: '#fff'}}
@@ -480,6 +479,36 @@ class TouchIDExample extends React.Component {
   }
 }
 
+class NotificationBadgeExample extends React.Component {
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={this._incrementIconBadgeNumberAsync}>
+          Increment the app icon's badge number
+        </Button>
+
+        <View style={{height: 10}} />
+
+        <Button onPress={this._clearIconBadgeAsync}>
+          Clear the app icon's badge number
+        </Button>
+      </View>
+    );
+  }
+
+  _incrementIconBadgeNumberAsync = async () => {
+    let currentNumber = await Notifications.getBadgeNumberAsync();
+    await Notifications.setBadgeNumberAsync(currentNumber + 1);
+    let actualNumber = await Notifications.getBadgeNumberAsync();
+    global.alert(`Set the badge number to ${actualNumber}`);
+  };
+
+  _clearIconBadgeAsync = async () => {
+    await Notifications.setBadgeNumberAsync(0);
+    global.alert(`Cleared the badge`);
+  };
+}
+
 class PushNotificationExample extends React.Component {
   render() {
     return (
@@ -579,7 +608,8 @@ class BlurViewExample extends React.Component {
         <AnimatedBlurView
           tint="default"
           intensity={this.state.intensity}
-          style={StyleSheet.absoluteFill} />
+          style={StyleSheet.absoluteFill}
+        />
       </View>
     );
   }
@@ -661,7 +691,7 @@ class GoogleLoginExample extends React.Component {
           }]);
         }, 1000);
       }
-    } catch(e) {
+    } catch (e) {
       Alert.alert(
         'Error!',
         e.message,
@@ -769,4 +799,3 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
-

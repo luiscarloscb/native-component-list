@@ -9,7 +9,7 @@
     "@exponent/ex-navigation": "~2.3.0",
     "@exponent/samples": "^1.0.2",
     "@exponent/vector-icons": "^2.0.0",
-    "exponent": "13.0.0-rc.1",
+    "exponent": "13.1.1-rc.1",
     "gl-mat4": "^1.1.4",
     "hsv2rgb": "^1.1.0",
     "react": "~15.4.2",
