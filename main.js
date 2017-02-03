@@ -47,7 +47,7 @@ class AppContainer extends React.Component {
   render() {
     if (this.state.appIsReady) {
       return (
-        <View style={styles.container}>
+        <View style={styles.container} testID="native_component_list">
           <NavigationProvider router={Router}>
             <StackNavigation
               id="root"
