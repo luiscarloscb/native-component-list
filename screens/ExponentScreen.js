@@ -108,6 +108,7 @@ export default class HomeScreen extends React.Component {
       'Facebook': [this._renderFacebook],
       'Google': [this._renderGoogle],
       'Font': [this._renderFont],
+      'KeepAwake': [this._renderKeepAwake],
       'Map': [this._renderMap],
       'NotificationBadge': [this._renderNotificationBadge],
       'PushNotification': [this._renderPushNotification],
@@ -149,7 +150,7 @@ export default class HomeScreen extends React.Component {
   }
 
   _renderBarCodeScanner = () => {
-    _maybeNavigateToBarCodeScanner = async () => {
+    let _maybeNavigateToBarCodeScanner = async () => {
       let { status } = await Permissions.askAsync(Permissions.CAMERA);
 
       if (status === 'granted') {
@@ -248,6 +249,10 @@ export default class HomeScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  _renderKeepAwake = () => {
+    return <KeepAwakeExample />;
   }
 
   _renderLinearGradient = () => {
@@ -525,6 +530,25 @@ class PushNotificationExample extends React.Component {
   }
 }
 
+class KeepAwakeExample extends React.Component {
+  _activate = () => {
+    Components.KeepAwake.activate();
+  }
+
+  _deactivate = () => {
+    Components.KeepAwake.deactivate();
+  }
+
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <Button style={{marginBottom: 10}} onPress={this._activate}>Activate</Button>
+        <Button onPress={this._deactivate}>Deactivate</Button>
+      </View>
+    );
+  }
+}
+
 class LocalNotificationExample extends React.Component {
   render() {
     return (
@@ -772,7 +796,7 @@ class LinearGradientExample extends React.Component {
 
 function Button(props) {
   return (
-    <TouchableOpacity onPress={props.onPress} style={styles.button}>
+    <TouchableOpacity onPress={props.onPress} style={[styles.button, props.style]}>
       <Text style={styles.buttonText}>{props.children}</Text>
     </TouchableOpacity>
   );
