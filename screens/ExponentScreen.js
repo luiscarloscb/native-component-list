@@ -109,6 +109,7 @@ export default class HomeScreen extends React.Component {
       'Google': [this._renderGoogle],
       'Font': [this._renderFont],
       'KeepAwake': [this._renderKeepAwake],
+      'Lottie': [this._renderLottie],
       'Map': [this._renderMap],
       'NotificationBadge': [this._renderNotificationBadge],
       'PushNotification': [this._renderPushNotification],
@@ -144,6 +145,16 @@ export default class HomeScreen extends React.Component {
       <View style={{padding: 10}}>
         <Button onPress={() => { this.props.navigator.push('svg') }}>
           Open Svg example
+        </Button>
+      </View>
+    );
+  }
+
+  _renderLottie = () => {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={() => { this.props.navigator.push('lottie') }}>
+          Open Lottie example
         </Button>
       </View>
     );

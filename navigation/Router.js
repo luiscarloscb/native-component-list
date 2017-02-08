@@ -8,6 +8,7 @@ import SensorScreen from '../screens/SensorScreen';
 import GLViewScreen from '../screens/GLViewScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SVGScreen from '../screens/SVGScreen';
+import LottieScreen from '../screens/LottieScreen';
 
 export default createRouter(() => ({
   barCodeScanner: () => BarCodeScannerScreen,
@@ -16,4 +17,5 @@ export default createRouter(() => ({
   home: () => HomeScreen,
   sensor: () => SensorScreen,
   svg: () => SVGScreen,
+  lottie: () => LottieScreen,
 }));
