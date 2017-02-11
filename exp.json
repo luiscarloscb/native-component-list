@@ -6,6 +6,7 @@
   "version": "14.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
+  "privacy": "public",
   "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
   "notification": {
     "icon": "https://s3.amazonaws.com/exp-us-standard/placeholder-push-icon-blue-circle.png",
