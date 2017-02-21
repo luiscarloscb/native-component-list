@@ -392,11 +392,13 @@ class ContactsExample extends React.Component {
 
 class LocationExample extends React.Component {
   state = {
-    location: null,
+    singleLocation: null,
     searching: false,
+    watchLocation: null,
+    subscription: null,
   };
 
-  _findLocation = async () => {
+  _findSingleLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       return;
@@ -404,14 +406,37 @@ class LocationExample extends React.Component {
 
     try {
       this.setState({searching: true});
-      let result = await Location.getCurrentPositionAsync({enableHighAccuracy: false});
-      this.setState({location: result});
+      let result = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+      this.setState({singleLocation: result});
     } finally {
       this.setState({searching: false});
     }
   }
 
-  render() {
+  _startWatchingLocation = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      return;
+    }
+
+    let subscription = await Location.watchPositionAsync({
+      enableHighAccuracy: true,
+      timeInterval: 1000,
+      distanceInterval: 1,
+    }, (location) => {
+      console.log(`Got location: ${JSON.stringify(location.coords)}`);
+      this.setState({watchLocation: location});
+    });
+
+    this.setState({subscription});
+  }
+
+  _stopWatchingLocation = async () => {
+    this.state.subscription.remove();
+    this.setState({subscription: null, watchLocation: null});
+  }
+
+  renderSingleLocation() {
     if (this.state.searching) {
       return (
         <View style={{padding: 10}}>
@@ -420,20 +445,61 @@ class LocationExample extends React.Component {
       );
     }
 
-    if (this.state.location) {
+    if (this.state.singleLocation) {
       return (
         <View style={{padding: 10}}>
-          <Text>Latitude: {this.state.location.coords.latitude + Math.random() * 5}</Text>
-          <Text>Longitude: {this.state.location.coords.latitude - Math.random() * 5}</Text>
+          <Text>Location.getCurrentPositionAsync:</Text>
+          <Text>Latitude: {this.state.singleLocation.coords.latitude}</Text>
+          <Text>Longitude: {this.state.singleLocation.coords.longitude}</Text>
         </View>
       );
     }
 
     return (
       <View style={{padding: 10}}>
-        <Button onPress={this._findLocation}>
-          Find my location
+        <Button onPress={this._findSingleLocation}>
+          Find my location once
         </Button>
+      </View>
+    );
+  }
+
+  renderWatchLocation() {
+    if (this.state.watchLocation) {
+      return (
+        <View style={{padding: 10}}>
+          <Text>Location.watchPositionAsync:</Text>
+          <Text>Latitude: {this.state.watchLocation.coords.latitude}</Text>
+          <Text>Longitude: {this.state.watchLocation.coords.longitude}</Text>
+          <View style={{padding: 10}}>
+            <Button onPress={this._stopWatchingLocation}>
+              Stop Watching
+            </Button>
+          </View>
+        </View>
+      );
+    } else if (this.state.subscription) {
+      return (
+        <View style={{padding: 10}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={this._startWatchingLocation}>
+          Watch my location
+        </Button>
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <View>
+        {this.renderSingleLocation()}
+        {this.renderWatchLocation()}
       </View>
     );
   }
