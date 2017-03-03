@@ -105,6 +105,7 @@ export default class HomeScreen extends React.Component {
       'Constants': [this._renderConstants],
       'Contacts': [this._renderContacts],
       'WebGL': [this._renderWebGL],
+      'FacebookAds': [this._renderFacebookAds],
       'Facebook': [this._renderFacebook],
       'Google': [this._renderGoogle],
       'Font': [this._renderFont],
@@ -143,7 +144,7 @@ export default class HomeScreen extends React.Component {
   _renderSvg = () => {
     return (
       <View style={{padding: 10}}>
-        <Button onPress={() => { this.props.navigator.push('svg') }}>
+        <Button onPress={() => { this.props.navigator.push('svg'); }}>
           Open Svg example
         </Button>
       </View>
@@ -165,11 +166,11 @@ export default class HomeScreen extends React.Component {
       let { status } = await Permissions.askAsync(Permissions.CAMERA);
 
       if (status === 'granted') {
-        this.props.navigator.push('barCodeScanner')
+        this.props.navigator.push('barCodeScanner');
       } else {
         alert('Denied access to camera!');
       }
-    }
+    };
 
     return (
       <View style={{padding: 10}}>
@@ -185,6 +186,16 @@ export default class HomeScreen extends React.Component {
       <View style={{padding: 10}}>
         <Button onPress={() => this.props.navigator.push('glView')}>
           Open WebGL Example
+        </Button>
+      </View>
+    );
+  }
+
+  _renderFacebookAds = () => {
+    return (
+      <View style={{padding: 10}}>
+        <Button onPress={() => this.props.navigator.push('facebookAds')}>
+          Open Facebook Ads Example
         </Button>
       </View>
     );
@@ -211,7 +222,7 @@ export default class HomeScreen extends React.Component {
           </Text>
         </View>
       );
-    }
+    };
 
     return (
       <View style={{padding: 10}}>
@@ -539,7 +550,7 @@ class TouchIDExample extends React.Component {
         } finally {
           this.setState({waiting: false});
         }
-      }
+      };
     } else if (Platform.OS === 'ios') {
       authFunction = async () => {
         let result = await NativeModules.ExponentFingerprint.authenticateAsync('Show me your finger!');
@@ -548,7 +559,7 @@ class TouchIDExample extends React.Component {
         } else {
           alert('Cancel!');
         }
-      }
+      };
     }
 
     return (
@@ -648,7 +659,7 @@ class LocalNotificationExample extends React.Component {
       title: 'Here is a local notifiation!',
       body: 'This is the body',
       data: {
-        hello: 'there'
+        hello: 'there',
       },
       ios: {
         sound: true,
@@ -806,7 +817,7 @@ function incrementColor(color, step) {
   const intColor = parseInt(color.substr(1), 16);
   const newIntColor = (intColor + step).toString(16);
   return `#${'0'.repeat(6 - newIntColor.length)}${newIntColor}`;
-};
+}
 
 class UtilExample extends React.Component {
   state = {
@@ -860,10 +871,11 @@ class LinearGradientExample extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 10,}}>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 }}>
         <Components.LinearGradient
           colors={[this.state.colorTop, this.state.colorBottom]}
-          style={{width: 200, height: 200}} />
+          style={{width: 200, height: 200}}
+        />
         <Text style={{color: this.state.colorTop}}>{this.state.colorTop}</Text>
         <Text style={{color: this.state.colorBottom}}>{this.state.colorBottom}</Text>
       </View>
