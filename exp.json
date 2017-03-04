@@ -1,6 +1,6 @@
 {
   "name": "Native Component List",
-  "description": "This experience shows a bunch of the native components that are included in React Native and Exponent. Hit the Exponent button in the top right to navigate to the Exponent specific components!",
+  "description": "This experience shows a bunch of the native components that you can use. Hit the button in the top right for more!",
   "slug": "native-component-list",
   "sdkVersion": "14.0.0",
   "version": "14.0.0",

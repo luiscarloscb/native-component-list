@@ -8,13 +8,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {
-  NavigationProvider,
-  StackNavigation,
-} from '@exponent/ex-navigation';
-import {
-  FontAwesome,
-} from '@exponent/vector-icons';
+import { NavigationProvider, StackNavigation } from '@exponent/ex-navigation';
+import { FontAwesome } from '@exponent/vector-icons';
 
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
@@ -22,7 +17,7 @@ import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 class AppContainer extends React.Component {
   state = {
     appIsReady: false,
-  }
+  };
 
   componentWillMount() {
     this._loadAssetsAsync();
@@ -30,18 +25,14 @@ class AppContainer extends React.Component {
 
   async _loadAssetsAsync() {
     await cacheAssetsAsync({
-      images: [
-        require('./assets/images/exponent-icon.png'),
-      ],
+      images: [require('./assets/images/exponent-icon.png')],
       fonts: [
-        {'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')},
+        { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
       ],
-      videos: [
-        require('./assets/videos/ace.mp4'),
-      ],
+      videos: [require('./assets/videos/ace.mp4')],
     });
 
-    this.setState({appIsReady: true});
+    this.setState({ appIsReady: true });
   }
 
   render() {
@@ -49,14 +40,12 @@ class AppContainer extends React.Component {
       return (
         <View style={styles.container} testID="native_component_list">
           <NavigationProvider router={Router}>
-            <StackNavigation
-              id="root"
-              initialRoute="home"
-            />
+            <StackNavigation id="root" initialRoute="home" />
           </NavigationProvider>
 
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
+          {Platform.OS === 'android' &&
+            <View style={styles.statusBarUnderlay} />}
         </View>
       );
     } else {
