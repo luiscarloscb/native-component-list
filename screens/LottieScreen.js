@@ -11,7 +11,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { DangerZone } from 'exponent';
+import { DangerZone } from 'expo';
 const { Lottie: Animation } = DangerZone;
 
 class ExamplePicker extends React.Component {

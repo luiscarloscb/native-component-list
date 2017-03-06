@@ -29,11 +29,11 @@ import {
 import TouchableBounce from 'react-native/Libraries/Components/Touchable/TouchableBounce';
 import {
   withNavigation
-} from '@exponent/ex-navigation';
+} from '@expo/ex-navigation';
 
 import {
   ImagePicker,
-} from 'exponent';
+} from 'expo';
 
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
@@ -404,7 +404,7 @@ export default class HomeScreen extends React.Component {
             <input type="submit">
           </p>
           <p>
-            <a href="https://www.getexponent.com">getexponent.com</a>
+            <a href="https://expo.io">expo.io</a>
           </p>
         `}}
       />

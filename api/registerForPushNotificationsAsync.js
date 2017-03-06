@@ -4,7 +4,7 @@ import {
 import {
   Permissions,
   Notifications,
-} from 'exponent';
+} from 'expo';
 
 // Example server, implemented in Rails: https://git.io/vKHKv
 const PUSH_ENDPOINT = 'https://exponent-push-server.herokuapp.com/tokens';

@@ -1,4 +1,4 @@
-import Exponent from 'exponent';
+import Expo from 'expo';
 import React from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
 
@@ -10,7 +10,7 @@ const {
   InterstitialAdManager,
   BannerView,
   withNativeAd,
-} = Exponent.FacebookAds;
+} = Expo.FacebookAds;
 
 AdSettings.addTestDevice(AdSettings.currentDeviceHash);
 

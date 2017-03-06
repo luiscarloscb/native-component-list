@@ -7,7 +7,7 @@ import {
 
 import {
   Components,
-} from 'exponent';
+} from 'expo';
 
 const { BarCodeScanner } = Components;
 

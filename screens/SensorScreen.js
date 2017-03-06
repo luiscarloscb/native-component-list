@@ -9,7 +9,7 @@ import {
 import {
   Accelerometer,
   Gyroscope,
-} from 'exponent';
+} from 'expo';
 
 export default class SensorScreen extends React.Component {
   static route = {

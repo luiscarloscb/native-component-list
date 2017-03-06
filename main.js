@@ -1,4 +1,4 @@
-import Exponent from 'exponent';
+import Expo from 'expo';
 
 import React from 'react';
 import {
@@ -8,8 +8,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { NavigationProvider, StackNavigation } from '@exponent/ex-navigation';
-import { FontAwesome } from '@exponent/vector-icons';
+import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
+import { FontAwesome } from '@expo/vector-icons';
 
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
@@ -49,7 +49,7 @@ class AppContainer extends React.Component {
         </View>
       );
     } else {
-      return <Exponent.Components.AppLoading />;
+      return <Expo.Components.AppLoading />;
     }
   }
 }
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-Exponent.registerRootComponent(AppContainer);
+Expo.registerRootComponent(AppContainer);

@@ -12,7 +12,7 @@ import {
 import Svg, {
   Text,
 } from 'react-native-svg';
-import { Font } from 'exponent';
+import { Font } from 'expo';
 
 export default class SVGScreen extends React.Component {
   static route = {

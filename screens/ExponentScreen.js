@@ -16,7 +16,7 @@ import {
   View,
 } from 'react-native';
 
-import Exponent, {
+import Expo, {
   Components,
   Constants,
   Contacts,
@@ -24,15 +24,15 @@ import Exponent, {
   Location,
   Notifications,
   Permissions,
-} from 'exponent';
+} from 'expo';
 
 import {
   withNavigation,
-} from '@exponent/ex-navigation';
+} from '@expo/ex-navigation';
 
 import {
   MaterialIcons,
-} from '@exponent/vector-icons';
+} from '@expo/vector-icons';
 
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
@@ -42,7 +42,7 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 export default class HomeScreen extends React.Component {
   static route = {
     navigationBar: {
-      title: 'Built into Exponent',
+      title: 'Built into Expo',
       translucent: true,
     },
   }
@@ -748,7 +748,7 @@ class FacebookLoginExample extends React.Component {
         behavior = Platform.OS === 'ios' ? 'native' : 'system';
       }
 
-      const result = await Exponent.Facebook.logInWithReadPermissionsAsync(id, {
+      const result = await Expo.Facebook.logInWithReadPermissionsAsync(id, {
         permissions: perms,
         behavior,
       });
@@ -784,7 +784,7 @@ class GoogleLoginExample extends React.Component {
 
   _testGoogleLogin = async () => {
     try {
-      const result = await Exponent.Google.logInAsync({
+      const result = await Expo.Google.logInAsync({
         androidStandaloneAppClientId: '603386649315-87mbvgc739sec2gjtptl701ha62pi98p.apps.googleusercontent.com',
         androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
         iosStandaloneAppClientId: '603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com',
@@ -834,7 +834,7 @@ class UtilExample extends React.Component {
   }
 
   _updateLocale = async () => {
-    let locale = await Exponent.Util.getCurrentLocaleAsync();
+    let locale = await Expo.Util.getCurrentLocaleAsync();
     this.setState({locale});
   }
 
