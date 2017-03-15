@@ -363,6 +363,11 @@ class ContactsExample extends React.Component {
   }
 
   _findContacts = async () => {
+    let permission = await Permissions.askAsync(Permissions.CONTACTS);
+    if (permission.status !== 'granted') {
+      setTimeout(() => Alert.alert('Contacts permission was not granted.'), 100);
+      return;
+    }
     let result = await Contacts.getContactsAsync([
       Contacts.EMAILS,
       Contacts.PHONE_NUMBERS,
