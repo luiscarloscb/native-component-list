@@ -1,6 +1,4 @@
-import React, {
-  PropTypes,
-} from 'react';
+import React, { PropTypes } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -17,27 +15,27 @@ import {
 } from 'react-native';
 
 import Expo, {
-  Components,
   Constants,
   Contacts,
+  MapView,
+  BlurView,
+  LinearGradient,
   Font,
   Location,
   Notifications,
   Permissions,
+  Video,
 } from 'expo';
 
-import {
-  withNavigation,
-} from '@expo/ex-navigation';
+import { withNavigation } from '@expo/ex-navigation';
 
-import {
-  MaterialIcons,
-} from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+import registerForPushNotificationsAsync
+  from '../api/registerForPushNotificationsAsync';
 
 export default class HomeScreen extends React.Component {
   static route = {
@@ -45,24 +43,26 @@ export default class HomeScreen extends React.Component {
       title: 'Built into Expo',
       translucent: true,
     },
-  }
+  };
 
   state = {
     dataSource: new ListView.DataSource({
       rowHasChanged: () => false,
       sectionHeaderHasChanged: () => false,
     }),
-  }
+  };
 
   componentWillMount() {
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
   }
 
   componentWillUnmount() {
     this._notificationSubscription && this._notificationSubscription.remove();
   }
 
-  _handleNotification = (notification) => {
+  _handleNotification = notification => {
     let { data, origin, remote } = notification;
     if (typeof data === 'string') {
       data = JSON.parse(data);
@@ -85,52 +85,47 @@ export default class HomeScreen extends React.Component {
       }
     }
 
-    this.props.navigator.showLocalAlert(
-      message,
-      Alerts.notice
-    );
-  }
+    this.props.navigator.showLocalAlert(message, Alerts.notice);
+  };
 
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
       ...Platform.select({
         ios: {
-          'BlurView': [this._renderBlurView],
+          BlurView: [this._renderBlurView],
         },
-        android: {
-
-        },
+        android: {},
       }),
-      'BarCodeScanner': [this._renderBarCodeScanner],
-      'Constants': [this._renderConstants],
-      'Contacts': [this._renderContacts],
-      'WebGL': [this._renderWebGL],
-      'FacebookAds': [this._renderFacebookAds],
-      'Facebook': [this._renderFacebook],
-      'Google': [this._renderGoogle],
-      'Font': [this._renderFont],
-      'KeepAwake': [this._renderKeepAwake],
-      'Lottie': [this._renderLottie],
-      'Map': [this._renderMap],
-      'NotificationBadge': [this._renderNotificationBadge],
-      'PushNotification': [this._renderPushNotification],
-      'LocalNotification': [this._renderLocalNotification],
-      'LinearGradient': [this._renderLinearGradient],
-      'Location': [this._renderLocation],
-      'Sensors': [this._renderSensors],
-      'Svg': [this._renderSvg],
-      'TouchID': [this._renderTouchID],
-      'Util': [this._renderUtil],
-      'Video': [this._renderVideo],
+      BarCodeScanner: [this._renderBarCodeScanner],
+      Constants: [this._renderConstants],
+      Contacts: [this._renderContacts],
+      WebGL: [this._renderWebGL],
+      FacebookAds: [this._renderFacebookAds],
+      Facebook: [this._renderFacebook],
+      Google: [this._renderGoogle],
+      Font: [this._renderFont],
+      KeepAwake: [this._renderKeepAwake],
+      Lottie: [this._renderLottie],
+      Map: [this._renderMap],
+      NotificationBadge: [this._renderNotificationBadge],
+      PushNotification: [this._renderPushNotification],
+      LocalNotification: [this._renderLocalNotification],
+      LinearGradient: [this._renderLinearGradient],
+      Location: [this._renderLocation],
+      Sensors: [this._renderSensors],
+      Svg: [this._renderSvg],
+      TouchID: [this._renderTouchID],
+      Util: [this._renderUtil],
+      Video: [this._renderVideo],
     });
 
-    this.setState({dataSource});
+    this.setState({ dataSource });
   }
 
   _renderMap = () => {
     return (
-      <Components.MapView
-        style={{width: Layout.window.width, height: 300}}
+      <MapView
+        style={{ width: Layout.window.width, height: 300 }}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
@@ -139,27 +134,33 @@ export default class HomeScreen extends React.Component {
         }}
       />
     );
-  }
+  };
 
   _renderSvg = () => {
     return (
-      <View style={{padding: 10}}>
-        <Button onPress={() => { this.props.navigator.push('svg'); }}>
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={() => {
+            this.props.navigator.push('svg');
+          }}>
           Open Svg example
         </Button>
       </View>
     );
-  }
+  };
 
   _renderLottie = () => {
     return (
-      <View style={{padding: 10}}>
-        <Button onPress={() => { this.props.navigator.push('lottie') }}>
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={() => {
+            this.props.navigator.push('lottie');
+          }}>
           Open Lottie example
         </Button>
       </View>
     );
-  }
+  };
 
   _renderBarCodeScanner = () => {
     let _maybeNavigateToBarCodeScanner = async () => {
@@ -173,40 +174,40 @@ export default class HomeScreen extends React.Component {
     };
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={_maybeNavigateToBarCodeScanner}>
           Open bar code scanner
         </Button>
       </View>
     );
-  }
+  };
 
   _renderWebGL = () => {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={() => this.props.navigator.push('glView')}>
           Open WebGL Example
         </Button>
       </View>
     );
-  }
+  };
 
   _renderFacebookAds = () => {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={() => this.props.navigator.push('facebookAds')}>
           Open Facebook Ads Example
         </Button>
       </View>
     );
-  }
+  };
 
   _renderBlurView = () => {
     return <BlurViewExample />;
-  }
+  };
 
   _renderConstants = () => {
-    const ExponentConstant = ({name, object}) => {
+    const ExponentConstant = ({ name, object }) => {
       let value = Constants[name];
 
       if (object) {
@@ -216,16 +217,16 @@ export default class HomeScreen extends React.Component {
       }
 
       return (
-        <View style={{flexDirection: 'row', flex: 1}}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={{flex: 1}}>
-            <Text style={{fontWeight: 'bold'}}>{name}</Text>: {value}
+        <View style={{ flexDirection: 'row', flex: 1 }}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1 }}>
+            <Text style={{ fontWeight: 'bold' }}>{name}</Text>: {value}
           </Text>
         </View>
       );
     };
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <ExponentConstant name="exponentVersion" />
         <ExponentConstant name="deviceId" />
         <ExponentConstant name="deviceName" />
@@ -235,27 +236,34 @@ export default class HomeScreen extends React.Component {
         <ExponentConstant name="statusBarHeight" />
         <ExponentConstant name="isDevice" />
         <ExponentConstant name="appOwnership" />
-        { Platform.OS === 'ios' && <ExponentConstant name="platform" object /> }
+        {Platform.OS === 'ios' && <ExponentConstant name="platform" object />}
       </View>
     );
-  }
+  };
 
   _renderContacts = () => {
     return <ContactsExample />;
-  }
+  };
 
   _renderFacebook = () => {
     return <FacebookLoginExample />;
-  }
+  };
 
   _renderGoogle = () => {
     return <GoogleLoginExample />;
-  }
+  };
 
   _renderFont = () => {
     return (
-      <View style={{flex: 1}}>
-        <View style={{paddingVertical: 10, paddingHorizontal: 15, flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
+      <View style={{ flex: 1 }}>
+        <View
+          style={{
+            paddingVertical: 10,
+            paddingHorizontal: 15,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            flex: 1,
+          }}>
           <MaterialIcons name="airplay" size={25} />
           <MaterialIcons name="airport-shuttle" size={25} />
           <MaterialIcons name="alarm" size={25} />
@@ -264,51 +272,57 @@ export default class HomeScreen extends React.Component {
           <MaterialIcons name="all-inclusive" size={25} />
         </View>
 
-        <View style={{paddingVertical: 10, paddingHorizontal: 15}}>
-          <Text style={[Font.style('space-mono'), {fontSize: 16}]}>
+        <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
+          <Text style={[Font.style('space-mono'), { fontSize: 16 }]}>
             Font icons sets and other custom fonts can be loaded from the web
           </Text>
         </View>
       </View>
     );
-  }
+  };
 
   _renderKeepAwake = () => {
     return <KeepAwakeExample />;
-  }
+  };
 
   _renderLinearGradient = () => {
     return <LinearGradientExample />;
-  }
+  };
 
   _renderNotificationBadge = () => {
     return <NotificationBadgeExample />;
-  }
+  };
 
   _renderPushNotification = () => {
     return <PushNotificationExample />;
-  }
+  };
 
   _renderLocalNotification = () => {
     return <LocalNotificationExample />;
-  }
+  };
 
   _renderSensors = () => {
     return <SensorsExample />;
-  }
+  };
 
   _renderTouchID = () => {
     return <TouchIDExample />;
-  }
+  };
 
   _renderLocation = () => {
     return <LocationExample />;
-  }
+  };
 
   _renderVideo = () => {
     return (
-      <View style={{flex: 1, padding: 10, alignItems: 'center', justifyContent: 'center'}}>
-        <Components.Video
+      <View
+        style={{
+          flex: 1,
+          padding: 10,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Video
           source={require('../assets/videos/ace.mp4')}
           rate={1.0}
           volume={1.0}
@@ -319,11 +333,11 @@ export default class HomeScreen extends React.Component {
         />
       </View>
     );
-  }
+  };
 
   _renderUtil = () => {
     return <UtilExample />;
-  }
+  };
 
   render() {
     return (
@@ -332,7 +346,7 @@ export default class HomeScreen extends React.Component {
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         style={this.props.route.getContentContainerStyle()}
-        contentContainerStyle={{backgroundColor: '#fff'}}
+        contentContainerStyle={{ backgroundColor: '#fff' }}
         dataSource={this.state.dataSource}
         renderRow={this._renderRow}
         renderSectionHeader={this._renderSectionHeader}
@@ -340,13 +354,13 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  _renderRow = (renderRowFn) => {
+  _renderRow = renderRowFn => {
     return (
       <View>
         {renderRowFn && renderRowFn()}
       </View>
     );
-  }
+  };
 
   _renderSectionHeader = (_, sectionTitle) => {
     return (
@@ -354,18 +368,21 @@ export default class HomeScreen extends React.Component {
         <Text>{sectionTitle}</Text>
       </View>
     );
-  }
+  };
 }
 
 class ContactsExample extends React.Component {
   state = {
     contacts: null,
-  }
+  };
 
   _findContacts = async () => {
     let permission = await Permissions.askAsync(Permissions.CONTACTS);
     if (permission.status !== 'granted') {
-      setTimeout(() => Alert.alert('Contacts permission was not granted.'), 100);
+      setTimeout(
+        () => Alert.alert('Contacts permission was not granted.'),
+        100
+      );
       return;
     }
     let result = await Contacts.getContactsAsync([
@@ -384,20 +401,20 @@ class ContactsExample extends React.Component {
       };
     });
 
-    this.setState({contacts: contacts.slice(0, 4)});
-  }
+    this.setState({ contacts: contacts.slice(0, 4) });
+  };
 
   render() {
     if (this.state.contacts) {
       return (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <Text>{JSON.stringify(this.state.contacts)}</Text>
         </View>
       );
     }
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={this._findContacts}>
           Find my contacts
         </Button>
@@ -421,13 +438,15 @@ class LocationExample extends React.Component {
     }
 
     try {
-      this.setState({searching: true});
-      let result = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
-      this.setState({singleLocation: result});
+      this.setState({ searching: true });
+      let result = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+      });
+      this.setState({ singleLocation: result });
     } finally {
-      this.setState({searching: false});
+      this.setState({ searching: false });
     }
-  }
+  };
 
   _startWatchingLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -435,27 +454,30 @@ class LocationExample extends React.Component {
       return;
     }
 
-    let subscription = await Location.watchPositionAsync({
-      enableHighAccuracy: true,
-      timeInterval: 1000,
-      distanceInterval: 1,
-    }, (location) => {
-      console.log(`Got location: ${JSON.stringify(location.coords)}`);
-      this.setState({watchLocation: location});
-    });
+    let subscription = await Location.watchPositionAsync(
+      {
+        enableHighAccuracy: true,
+        timeInterval: 1000,
+        distanceInterval: 1,
+      },
+      location => {
+        console.log(`Got location: ${JSON.stringify(location.coords)}`);
+        this.setState({ watchLocation: location });
+      }
+    );
 
-    this.setState({subscription});
-  }
+    this.setState({ subscription });
+  };
 
   _stopWatchingLocation = async () => {
     this.state.subscription.remove();
-    this.setState({subscription: null, watchLocation: null});
-  }
+    this.setState({ subscription: null, watchLocation: null });
+  };
 
   renderSingleLocation() {
     if (this.state.searching) {
       return (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <ActivityIndicator />
         </View>
       );
@@ -463,7 +485,7 @@ class LocationExample extends React.Component {
 
     if (this.state.singleLocation) {
       return (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <Text>Location.getCurrentPositionAsync:</Text>
           <Text>Latitude: {this.state.singleLocation.coords.latitude}</Text>
           <Text>Longitude: {this.state.singleLocation.coords.longitude}</Text>
@@ -472,7 +494,7 @@ class LocationExample extends React.Component {
     }
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={this._findSingleLocation}>
           Find my location once
         </Button>
@@ -483,11 +505,11 @@ class LocationExample extends React.Component {
   renderWatchLocation() {
     if (this.state.watchLocation) {
       return (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <Text>Location.watchPositionAsync:</Text>
           <Text>Latitude: {this.state.watchLocation.coords.latitude}</Text>
           <Text>Longitude: {this.state.watchLocation.coords.longitude}</Text>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <Button onPress={this._stopWatchingLocation}>
               Stop Watching
             </Button>
@@ -496,14 +518,14 @@ class LocationExample extends React.Component {
       );
     } else if (this.state.subscription) {
       return (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <ActivityIndicator />
         </View>
       );
     }
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={this._startWatchingLocation}>
           Watch my location
         </Button>
@@ -521,11 +543,10 @@ class LocationExample extends React.Component {
   }
 }
 
-@withNavigation
-class SensorsExample extends React.Component {
+@withNavigation class SensorsExample extends React.Component {
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={() => this.props.navigator.push('sensor')}>
           Try out sensors (Gyroscope, Accelerometer)
         </Button>
@@ -537,14 +558,14 @@ class SensorsExample extends React.Component {
 class TouchIDExample extends React.Component {
   state = {
     waiting: false,
-  }
+  };
 
   render() {
     let authFunction;
 
     if (Platform.OS === 'android') {
       authFunction = async () => {
-        this.setState({waiting: true});
+        this.setState({ waiting: true });
         try {
           let result = await NativeModules.ExponentFingerprint.authenticateAsync();
           if (result.success) {
@@ -553,12 +574,14 @@ class TouchIDExample extends React.Component {
             alert('Failed to authenticate');
           }
         } finally {
-          this.setState({waiting: false});
+          this.setState({ waiting: false });
         }
       };
     } else if (Platform.OS === 'ios') {
       authFunction = async () => {
-        let result = await NativeModules.ExponentFingerprint.authenticateAsync('Show me your finger!');
+        let result = await NativeModules.ExponentFingerprint.authenticateAsync(
+          'Show me your finger!'
+        );
         if (result.success) {
           alert('Success!');
         } else {
@@ -568,9 +591,11 @@ class TouchIDExample extends React.Component {
     }
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={authFunction}>
-          { this.state.waiting ? 'Waiting for fingerprint... ' : 'Authenticate with fingerprint' }
+          {this.state.waiting
+            ? 'Waiting for fingerprint... '
+            : 'Authenticate with fingerprint'}
         </Button>
       </View>
     );
@@ -580,12 +605,12 @@ class TouchIDExample extends React.Component {
 class NotificationBadgeExample extends React.Component {
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={this._incrementIconBadgeNumberAsync}>
           Increment the app icon's badge number
         </Button>
 
-        <View style={{height: 10}} />
+        <View style={{ height: 10 }} />
 
         <Button onPress={this._clearIconBadgeAsync}>
           Clear the app icon's badge number
@@ -610,7 +635,7 @@ class NotificationBadgeExample extends React.Component {
 class PushNotificationExample extends React.Component {
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={this._sendNotification}>
           Send me a push notification!
         </Button>
@@ -620,22 +645,24 @@ class PushNotificationExample extends React.Component {
 
   _sendNotification = async () => {
     registerForPushNotificationsAsync();
-  }
+  };
 }
 
 class KeepAwakeExample extends React.Component {
   _activate = () => {
-    Components.KeepAwake.activate();
-  }
+    KeepAwake.activate();
+  };
 
   _deactivate = () => {
-    Components.KeepAwake.deactivate();
-  }
+    KeepAwake.deactivate();
+  };
 
   render() {
     return (
-      <View style={{padding: 10}}>
-        <Button style={{marginBottom: 10}} onPress={this._activate}>Activate</Button>
+      <View style={{ padding: 10 }}>
+        <Button style={{ marginBottom: 10 }} onPress={this._activate}>
+          Activate
+        </Button>
         <Button onPress={this._deactivate}>Deactivate</Button>
       </View>
     );
@@ -645,12 +672,12 @@ class KeepAwakeExample extends React.Component {
 class LocalNotificationExample extends React.Component {
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={this._presentLocalNotification}>
           Present a notification immediately
         </Button>
 
-        <View style={{height: 10}} />
+        <View style={{ height: 10 }} />
 
         <Button onPress={this._scheduleLocalNotification}>
           Schedule notification for 10 seconds from now
@@ -673,33 +700,36 @@ class LocalNotificationExample extends React.Component {
         vibrate: true,
       },
     });
-  }
+  };
 
   _scheduleLocalNotification = () => {
-    Notifications.scheduleLocalNotificationAsync({
-      title: 'Here is a scheduled notifiation!',
-      body: 'This is the body',
-      data: {
-        hello: 'there',
-        future: 'self',
+    Notifications.scheduleLocalNotificationAsync(
+      {
+        title: 'Here is a scheduled notifiation!',
+        body: 'This is the body',
+        data: {
+          hello: 'there',
+          future: 'self',
+        },
+        ios: {
+          sound: true,
+        },
+        android: {
+          vibrate: true,
+        },
       },
-      ios: {
-        sound: true,
-      },
-      android: {
-        vibrate: true,
-      },
-    }, {
-      time: (new Date()).getTime() + 10000,
-    });
-  }
+      {
+        time: new Date().getTime() + 10000,
+      }
+    );
+  };
 }
 
-const AnimatedBlurView = Animated.createAnimatedComponent(Components.BlurView);
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 class BlurViewExample extends React.Component {
   state = {
     intensity: new Animated.Value(0),
-  }
+  };
 
   componentDidMount() {
     this._animate();
@@ -707,20 +737,30 @@ class BlurViewExample extends React.Component {
 
   _animate = () => {
     let { intensity } = this.state;
-    let animateInConfig = {duration: 2500, toValue: 100, isInteraction: false};
-    let animateOutconfig = {duration: 2500, toValue: 0, isInteraction: false};
+    let animateInConfig = {
+      duration: 2500,
+      toValue: 100,
+      isInteraction: false,
+    };
+    let animateOutconfig = { duration: 2500, toValue: 0, isInteraction: false };
 
-    Animated.timing(intensity, animateInConfig).start((value) => {
+    Animated.timing(intensity, animateInConfig).start(value => {
       Animated.timing(intensity, animateOutconfig).start(this._animate);
     });
-  }
+  };
 
   render() {
     const uri = 'https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png';
 
     return (
-      <View style={{flex: 1, padding: 50, alignItems: 'center', justifyContent: 'center'}}>
-        <Image style={{width: 180, height: 180}} source={{uri}} />
+      <View
+        style={{
+          flex: 1,
+          padding: 50,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Image style={{ width: 180, height: 180 }} source={{ uri }} />
 
         <AnimatedBlurView
           tint="default"
@@ -737,8 +777,10 @@ class FacebookLoginExample extends React.Component {
     let permissions = ['public_profile', 'email', 'user_friends'];
 
     return (
-      <View style={{padding: 10}}>
-        <Button onPress={() => this._testFacebookLogin('1201211719949057', permissions)}>
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={() =>
+            this._testFacebookLogin('1201211719949057', permissions)}>
           Authenticate with Facebook
         </Button>
       </View>
@@ -747,7 +789,9 @@ class FacebookLoginExample extends React.Component {
 
   _testFacebookLogin = async (id, perms, behavior = 'web') => {
     try {
-      if (Platform.OS === 'android' || Constants.appOwnership === 'standalone') {
+      if (
+        Platform.OS === 'android' || Constants.appOwnership === 'standalone'
+      ) {
         // iOS supports system too, native jumps over to the app though and people
         // seem to like that effect. I maybe prefer system.
         behavior = Platform.OS === 'ios' ? 'native' : 'system';
@@ -761,25 +805,25 @@ class FacebookLoginExample extends React.Component {
       const { type, token } = result;
 
       if (type === 'success') {
-        Alert.alert('Logged in!', JSON.stringify(result), [{
-          text: 'OK!',
-          onPress: () => { console.log({type, token}); },
-        }]);
+        Alert.alert('Logged in!', JSON.stringify(result), [
+          {
+            text: 'OK!',
+            onPress: () => {
+              console.log({ type, token });
+            },
+          },
+        ]);
       }
     } catch (e) {
-      Alert.alert(
-        'Error!',
-        e.message,
-        [{ text: 'OK', onPress: () => {} }],
-      );
+      Alert.alert('Error!', e.message, [{ text: 'OK', onPress: () => {} }]);
     }
-  }
+  };
 }
 
 class GoogleLoginExample extends React.Component {
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Button onPress={() => this._testGoogleLogin()}>
           Authenticate with Google
         </Button>
@@ -801,21 +845,24 @@ class GoogleLoginExample extends React.Component {
 
       if (type === 'success') {
         // Avoid race condition with the WebView hiding when using web-based sign in
-        setTimeout(() => {
-          Alert.alert('Logged in!', JSON.stringify(result), [{
-            text: 'OK!',
-            onPress: () => { console.log({result}); },
-          }]);
-        }, 1000);
+        setTimeout(
+          () => {
+            Alert.alert('Logged in!', JSON.stringify(result), [
+              {
+                text: 'OK!',
+                onPress: () => {
+                  console.log({ result });
+                },
+              },
+            ]);
+          },
+          1000
+        );
       }
     } catch (e) {
-      Alert.alert(
-        'Error!',
-        e.message,
-        [{ text: 'OK :(', onPress: () => {} }],
-      );
+      Alert.alert('Error!', e.message, [{ text: 'OK :(', onPress: () => {} }]);
     }
-  }
+  };
 }
 
 function incrementColor(color, step) {
@@ -840,12 +887,12 @@ class UtilExample extends React.Component {
 
   _updateLocale = async () => {
     let locale = await Expo.Util.getCurrentLocaleAsync();
-    this.setState({locale});
-  }
+    this.setState({ locale });
+  };
 
   render() {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Text>Locale: {this.state.locale}</Text>
       </View>
     );
@@ -853,21 +900,23 @@ class UtilExample extends React.Component {
 }
 
 class LinearGradientExample extends React.Component {
-
   state = {
     count: 0,
     colorTop: '#000000',
     colorBottom: '#cccccc',
-  }
+  };
 
   componentDidMount() {
-    this._interval = setInterval(() => {
-      this.setState({
-        count: this.state.count + 1,
-        colorTop: incrementColor(this.state.colorTop, 1),
-        colorBottom: incrementColor(this.state.colorBottom, -1),
-      });
-    }, 20);
+    this._interval = setInterval(
+      () => {
+        this.setState({
+          count: this.state.count + 1,
+          colorTop: incrementColor(this.state.colorTop, 1),
+          colorBottom: incrementColor(this.state.colorBottom, -1),
+        });
+      },
+      20
+    );
   }
 
   componentWillUnmount() {
@@ -876,13 +925,23 @@ class LinearGradientExample extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 }}>
-        <Components.LinearGradient
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: 10,
+        }}>
+        <LinearGradient
           colors={[this.state.colorTop, this.state.colorBottom]}
-          style={{width: 200, height: 200}}
+          style={{ width: 200, height: 200 }}
         />
-        <Text style={{color: this.state.colorTop}}>{this.state.colorTop}</Text>
-        <Text style={{color: this.state.colorBottom}}>{this.state.colorBottom}</Text>
+        <Text style={{ color: this.state.colorTop }}>
+          {this.state.colorTop}
+        </Text>
+        <Text style={{ color: this.state.colorBottom }}>
+          {this.state.colorBottom}
+        </Text>
       </View>
     );
   }
@@ -890,7 +949,9 @@ class LinearGradientExample extends React.Component {
 
 function Button(props) {
   return (
-    <TouchableOpacity onPress={props.onPress} style={[styles.button, props.style]}>
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={[styles.button, props.style]}>
       <Text style={styles.buttonText}>{props.children}</Text>
     </TouchableOpacity>
   );

@@ -1,6 +1,4 @@
-import {
-  createRouter,
-} from '@expo/ex-navigation';
+import { createRouter } from '@expo/ex-navigation';
 
 import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
 import ExponentScreen from '../screens/ExponentScreen';
