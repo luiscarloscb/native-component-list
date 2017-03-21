@@ -16,15 +16,19 @@ class AppContainer extends React.Component {
   }
 
   async _loadAssetsAsync() {
-    await cacheAssetsAsync({
-      images: [require('./assets/images/exponent-icon.png')],
-      fonts: [
-        { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
-      ],
-      videos: [require('./assets/videos/ace.mp4')],
-    });
-
-    this.setState({ appIsReady: true });
+    try {
+      await cacheAssetsAsync({
+        images: [require('./assets/images/exponent-icon.png')],
+        fonts: [
+          { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
+        ],
+        videos: [require('./assets/videos/ace.mp4')],
+      });
+    } catch (e) {
+      console.log({ e });
+    } finally {
+      this.setState({ appIsReady: true });
+    }
   }
 
   render() {

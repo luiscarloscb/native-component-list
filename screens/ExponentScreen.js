@@ -431,6 +431,45 @@ class LocationExample extends React.Component {
     subscription: null,
   };
 
+  _findSingleLocationWithPolyfill = () => {
+    this.setState({ searching: true });
+    navigator.geolocation.getCurrentPosition(
+      location => {
+        this.setState({ singleLocation: location, searching: false });
+      },
+      err => {
+        console.log({ err });
+        this.setState({ searching: false });
+      },
+      { enableHighAccuracy: true }
+    );
+  };
+
+  _startWatchingLocationWithPolyfill = () => {
+    let watchId = navigator.geolocation.watchPosition(
+      location => {
+        console.log(`Got location: ${JSON.stringify(location.coords)}`);
+        this.setState({ watchLocation: location });
+      },
+      err => {
+        console.log({ err });
+      },
+      {
+        enableHighAccuracy: true,
+        timeInterval: 1000,
+        distanceInterval: 1,
+      }
+    );
+
+    let subscription = {
+      remove() {
+        navigator.geolocation.clearWatch(watchId);
+      },
+    };
+
+    this.setState({ subscription });
+  };
+
   _findSingleLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
@@ -495,7 +534,7 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this._findSingleLocation}>
+        <Button onPress={this._findSingleLocationWithPolyfill}>
           Find my location once
         </Button>
       </View>
@@ -526,7 +565,7 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this._startWatchingLocation}>
+        <Button onPress={this._startWatchingLocationWithPolyfill}>
           Watch my location
         </Button>
       </View>
