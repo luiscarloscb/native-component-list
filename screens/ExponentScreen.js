@@ -112,6 +112,7 @@ export default class HomeScreen extends React.Component {
       LocalNotification: [this._renderLocalNotification],
       LinearGradient: [this._renderLinearGradient],
       Location: [this._renderLocation],
+      'navigator.geolocation Polyfill (using Location)': [this._renderLocationPolyfill],
       Sensors: [this._renderSensors],
       Svg: [this._renderSvg],
       TouchID: [this._renderTouchID],
@@ -311,6 +312,10 @@ export default class HomeScreen extends React.Component {
 
   _renderLocation = () => {
     return <LocationExample />;
+  };
+
+  _renderLocationPolyfill = () => {
+    return <LocationExample polyfill={true} />;
   };
 
   _renderVideo = () => {
@@ -525,7 +530,7 @@ class LocationExample extends React.Component {
     if (this.state.singleLocation) {
       return (
         <View style={{ padding: 10 }}>
-          <Text>Location.getCurrentPositionAsync:</Text>
+          <Text>{this.props.polyfill ? "navigator.geolocation.getCurrentPosition" : "Location.getCurrentPositionAsync"}:</Text>
           <Text>Latitude: {this.state.singleLocation.coords.latitude}</Text>
           <Text>Longitude: {this.state.singleLocation.coords.longitude}</Text>
         </View>
@@ -534,7 +539,7 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this._findSingleLocationWithPolyfill}>
+        <Button onPress={this.props.polyfill ? this._findSingleLocationWithPolyfill : this._findSingleLocation}>
           Find my location once
         </Button>
       </View>
@@ -545,7 +550,7 @@ class LocationExample extends React.Component {
     if (this.state.watchLocation) {
       return (
         <View style={{ padding: 10 }}>
-          <Text>Location.watchPositionAsync:</Text>
+          <Text>{this.props.polyfill ? "navigator.geolocation.watchPosition" : "Location.watchPositionAsync"}:</Text>
           <Text>Latitude: {this.state.watchLocation.coords.latitude}</Text>
           <Text>Longitude: {this.state.watchLocation.coords.longitude}</Text>
           <View style={{ padding: 10 }}>
@@ -565,7 +570,7 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this._startWatchingLocationWithPolyfill}>
+        <Button onPress={this.props.polyfill ? this._startWatchingLocationWithPolyfill : this._startWatchingLocation}>
           Watch my location
         </Button>
       </View>
