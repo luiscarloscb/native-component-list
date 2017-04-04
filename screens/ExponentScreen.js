@@ -376,12 +376,23 @@ export default class HomeScreen extends React.Component {
   };
 }
 
+const CONTACT_PAGE_SIZE = 4;
+
 class ContactsExample extends React.Component {
   state = {
     contacts: null,
+    page: 0,
+    hasPreviousPage: false,
+    hasNextPage: false,
   };
 
-  _findContacts = async () => {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.page !== prevState.page) {
+      this._findContacts();
+    }
+  }
+
+  _findContacts = async (page) => {
     let permission = await Permissions.askAsync(Permissions.CONTACTS);
     if (permission.status !== 'granted') {
       setTimeout(
@@ -390,14 +401,19 @@ class ContactsExample extends React.Component {
       );
       return;
     }
-    let result = await Contacts.getContactsAsync([
-      Contacts.EMAILS,
-      Contacts.PHONE_NUMBERS,
-      Contacts.ADDRESSES,
-    ]);
+    let result = await Contacts.getContactsAsync({
+      fields: [
+        Contacts.EMAILS,
+        Contacts.PHONE_NUMBERS,
+        Contacts.ADDRESSES,
+      ],
+      pageSize: CONTACT_PAGE_SIZE,
+      pageOffset: this.state.page * CONTACT_PAGE_SIZE,
+    });
 
-    let contacts = result.map(contact => {
+    let contacts = result.data.map(contact => {
       return {
+        id: contact.id,
         firstName: contact.firstName,
         name: contact.name,
         emails: contact.emails,
@@ -406,7 +422,19 @@ class ContactsExample extends React.Component {
       };
     });
 
-    this.setState({ contacts: contacts.slice(0, 4) });
+    this.setState({
+      contacts,
+      hasPreviousPage: result.hasPreviousPage,
+      hasNextPage: result.hasNextPage,
+    });
+  }
+
+  _nextPage = () => {
+    this.setState(state => ({page: state.page + 1}));
+  };
+
+  _previousPage = () => {
+    this.setState(state => ({page: state.page - 1}));
   };
 
   render() {
@@ -414,6 +442,14 @@ class ContactsExample extends React.Component {
       return (
         <View style={{ padding: 10 }}>
           <Text>{JSON.stringify(this.state.contacts)}</Text>
+          {this.state.hasNextPage ?
+            <Button onPress={this._nextPage} style={{ marginVertical: 10 }}>Next page</Button> :
+            null
+          }
+          {this.state.hasPreviousPage ?
+            <Button onPress={this._previousPage}>Previous page</Button> :
+            null
+          }
         </View>
       );
     }
