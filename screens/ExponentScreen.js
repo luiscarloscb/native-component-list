@@ -228,7 +228,7 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <ExponentConstant name="exponentVersion" />
+        <ExponentConstant name="expoVersion" />
         <ExponentConstant name="deviceId" />
         <ExponentConstant name="deviceName" />
         <ExponentConstant name="deviceYearClass" />
