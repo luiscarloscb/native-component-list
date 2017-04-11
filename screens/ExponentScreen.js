@@ -17,6 +17,7 @@ import {
 import Expo, {
   Constants,
   Contacts,
+  DocumentPicker,
   MapView,
   BlurView,
   LinearGradient,
@@ -99,6 +100,7 @@ export default class HomeScreen extends React.Component {
       BarCodeScanner: [this._renderBarCodeScanner],
       Constants: [this._renderConstants],
       Contacts: [this._renderContacts],
+      DocumentPicker: [this._renderDocumentPicker],
       WebGL: [this._renderWebGL],
       FacebookAds: [this._renderFacebookAds],
       Facebook: [this._renderFacebook],
@@ -180,6 +182,12 @@ export default class HomeScreen extends React.Component {
           Open bar code scanner
         </Button>
       </View>
+    );
+  };
+
+  _renderDocumentPicker = () => {
+    return (
+      <DocumentPickerExample />
     );
   };
 
@@ -459,6 +467,57 @@ class ContactsExample extends React.Component {
         <Button onPress={this._findContacts}>
           Find my contacts
         </Button>
+      </View>
+    );
+  }
+}
+
+class DocumentPickerExample extends React.Component {
+  state = {
+    document: null,
+  };
+
+  _openPicker = async () => {
+    const result = await DocumentPicker.getDocumentAsync({});
+    if (result.type === 'success') {
+      this.setState({ document: result });
+    } else {
+      setTimeout(() => {
+        Alert.alert('Document picked', JSON.stringify(result, null, 2));
+      }, 100);
+    }
+  };
+
+  _renderDocument() {
+    if (this.state.document === null) {
+      return null;
+    }
+    return (
+      <View>
+        {this.state.document.uri.match(/\.(png|jpg)$/gi)
+          ? (
+            <Image
+              source={{ uri: this.state.document.uri }}
+              resizeMode="cover"
+              style={{ width: 100, height: 100 }}
+            />
+          )
+          : null
+        }
+        <Text>
+          {this.state.document.name} ({this.state.document.size / 1000} KB)
+        </Text>
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button onPress={this._openPicker}>
+          Open document picker
+        </Button>
+        {this._renderDocument()}
       </View>
     );
   }
