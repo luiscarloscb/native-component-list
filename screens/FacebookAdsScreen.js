@@ -17,8 +17,7 @@ const {
   InterstitialAdManager,
   BannerView,
   withNativeAd,
-} =
-  Expo.FacebookAds;
+} = Expo.FacebookAds;
 
 AdSettings.addTestDevice(AdSettings.currentDeviceHash);
 
