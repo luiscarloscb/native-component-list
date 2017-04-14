@@ -19,6 +19,7 @@ import Expo, {
   Contacts,
   DocumentPicker,
   MapView,
+  KeepAwake,
   BlurView,
   LinearGradient,
   Font,
