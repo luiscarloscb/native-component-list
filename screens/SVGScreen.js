@@ -1,17 +1,7 @@
 import React from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  View
-} from 'react-native';
-import {
-  VictoryChart,
-  VictoryStack,
-  VictoryArea,
-} from 'victory-native';
-import Svg, {
-  Text,
-} from 'react-native-svg';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { VictoryChart, VictoryStack, VictoryArea } from 'victory-native';
+import Svg, { Text } from 'react-native-svg';
 import { Font } from 'expo';
 
 export default class SVGScreen extends React.Component {
@@ -19,7 +9,7 @@ export default class SVGScreen extends React.Component {
     navigationBar: {
       title: '<Svg>',
     },
-  }
+  };
 
   render() {
     return (
@@ -28,22 +18,38 @@ export default class SVGScreen extends React.Component {
           <VictoryStack>
             <VictoryArea
               data={[
-                {x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 5}, {x: "d", y: 4}, {x: "e", y: 7}
+                { x: 'a', y: 2 },
+                { x: 'b', y: 3 },
+                { x: 'c', y: 5 },
+                { x: 'd', y: 4 },
+                { x: 'e', y: 7 },
               ]}
             />
             <VictoryArea
               data={[
-                {x: "a", y: 1}, {x: "b", y: 4}, {x: "c", y: 5}, {x: "d", y: 7}, {x: "e", y: 5}
+                { x: 'a', y: 1 },
+                { x: 'b', y: 4 },
+                { x: 'c', y: 5 },
+                { x: 'd', y: 7 },
+                { x: 'e', y: 5 },
               ]}
             />
             <VictoryArea
               data={[
-                {x: "a", y: 3}, {x: "b", y: 2}, {x: "c", y: 6}, {x: "d", y: 2}, {x: "e", y: 6}
+                { x: 'a', y: 3 },
+                { x: 'b', y: 2 },
+                { x: 'c', y: 6 },
+                { x: 'd', y: 2 },
+                { x: 'e', y: 6 },
               ]}
             />
             <VictoryArea
               data={[
-                {x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 3}, {x: "d", y: 4}, {x: "e", y: 7}
+                { x: 'a', y: 2 },
+                { x: 'b', y: 3 },
+                { x: 'c', y: 3 },
+                { x: 'd', y: 4 },
+                { x: 'e', y: 7 },
               ]}
             />
           </VictoryStack>
@@ -51,8 +57,8 @@ export default class SVGScreen extends React.Component {
 
         <Svg width={Dimensions.get('window').width} height={50}>
           <Text
-            fill='#fff'
-            stroke='#000'
+            fill="#fff"
+            stroke="#000"
             fontSize={15}
             fontFamily={Font.style('space-mono').fontFamily}
             x={15}
@@ -67,6 +73,6 @@ export default class SVGScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
 });

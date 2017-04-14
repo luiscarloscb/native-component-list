@@ -114,7 +114,9 @@ export default class HomeScreen extends React.Component {
       LocalNotification: [this._renderLocalNotification],
       LinearGradient: [this._renderLinearGradient],
       Location: [this._renderLocation],
-      'navigator.geolocation Polyfill (using Location)': [this._renderLocationPolyfill],
+      'navigator.geolocation Polyfill (using Location)': [
+        this._renderLocationPolyfill,
+      ],
       Sensors: [this._renderSensors],
       Svg: [this._renderSvg],
       TouchID: [this._renderTouchID],
@@ -186,9 +188,7 @@ export default class HomeScreen extends React.Component {
   };
 
   _renderDocumentPicker = () => {
-    return (
-      <DocumentPickerExample />
-    );
+    return <DocumentPickerExample />;
   };
 
   _renderWebGL = () => {
@@ -400,7 +400,7 @@ class ContactsExample extends React.Component {
     }
   }
 
-  _findContacts = async (page) => {
+  _findContacts = async page => {
     let permission = await Permissions.askAsync(Permissions.CONTACTS);
     if (permission.status !== 'granted') {
       setTimeout(
@@ -410,11 +410,7 @@ class ContactsExample extends React.Component {
       return;
     }
     let result = await Contacts.getContactsAsync({
-      fields: [
-        Contacts.EMAILS,
-        Contacts.PHONE_NUMBERS,
-        Contacts.ADDRESSES,
-      ],
+      fields: [Contacts.EMAILS, Contacts.PHONE_NUMBERS, Contacts.ADDRESSES],
       pageSize: CONTACT_PAGE_SIZE,
       pageOffset: this.state.page * CONTACT_PAGE_SIZE,
     });
@@ -435,14 +431,14 @@ class ContactsExample extends React.Component {
       hasPreviousPage: result.hasPreviousPage,
       hasNextPage: result.hasNextPage,
     });
-  }
+  };
 
   _nextPage = () => {
-    this.setState(state => ({page: state.page + 1}));
+    this.setState(state => ({ page: state.page + 1 }));
   };
 
   _previousPage = () => {
-    this.setState(state => ({page: state.page - 1}));
+    this.setState(state => ({ page: state.page - 1 }));
   };
 
   render() {
@@ -450,14 +446,14 @@ class ContactsExample extends React.Component {
       return (
         <View style={{ padding: 10 }}>
           <Text>{JSON.stringify(this.state.contacts)}</Text>
-          {this.state.hasNextPage ?
-            <Button onPress={this._nextPage} style={{ marginVertical: 10 }}>Next page</Button> :
-            null
-          }
-          {this.state.hasPreviousPage ?
-            <Button onPress={this._previousPage}>Previous page</Button> :
-            null
-          }
+          {this.state.hasNextPage
+            ? <Button onPress={this._nextPage} style={{ marginVertical: 10 }}>
+                Next page
+              </Button>
+            : null}
+          {this.state.hasPreviousPage
+            ? <Button onPress={this._previousPage}>Previous page</Button>
+            : null}
         </View>
       );
     }
@@ -495,15 +491,12 @@ class DocumentPickerExample extends React.Component {
     return (
       <View>
         {this.state.document.uri.match(/\.(png|jpg)$/gi)
-          ? (
-            <Image
+          ? <Image
               source={{ uri: this.state.document.uri }}
               resizeMode="cover"
               style={{ width: 100, height: 100 }}
             />
-          )
-          : null
-        }
+          : null}
         <Text>
           {this.state.document.name} ({this.state.document.size / 1000} KB)
         </Text>
@@ -625,7 +618,12 @@ class LocationExample extends React.Component {
     if (this.state.singleLocation) {
       return (
         <View style={{ padding: 10 }}>
-          <Text>{this.props.polyfill ? "navigator.geolocation.getCurrentPosition" : "Location.getCurrentPositionAsync"}:</Text>
+          <Text>
+            {this.props.polyfill
+              ? 'navigator.geolocation.getCurrentPosition'
+              : 'Location.getCurrentPositionAsync'}
+            :
+          </Text>
           <Text>Latitude: {this.state.singleLocation.coords.latitude}</Text>
           <Text>Longitude: {this.state.singleLocation.coords.longitude}</Text>
         </View>
@@ -634,7 +632,12 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this.props.polyfill ? this._findSingleLocationWithPolyfill : this._findSingleLocation}>
+        <Button
+          onPress={
+            this.props.polyfill
+              ? this._findSingleLocationWithPolyfill
+              : this._findSingleLocation
+          }>
           Find my location once
         </Button>
       </View>
@@ -645,7 +648,12 @@ class LocationExample extends React.Component {
     if (this.state.watchLocation) {
       return (
         <View style={{ padding: 10 }}>
-          <Text>{this.props.polyfill ? "navigator.geolocation.watchPosition" : "Location.watchPositionAsync"}:</Text>
+          <Text>
+            {this.props.polyfill
+              ? 'navigator.geolocation.watchPosition'
+              : 'Location.watchPositionAsync'}
+            :
+          </Text>
           <Text>Latitude: {this.state.watchLocation.coords.latitude}</Text>
           <Text>Longitude: {this.state.watchLocation.coords.longitude}</Text>
           <View style={{ padding: 10 }}>
@@ -665,7 +673,12 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this.props.polyfill ? this._startWatchingLocationWithPolyfill : this._startWatchingLocation}>
+        <Button
+          onPress={
+            this.props.polyfill
+              ? this._startWatchingLocationWithPolyfill
+              : this._startWatchingLocation
+          }>
           Watch my location
         </Button>
       </View>
@@ -889,7 +902,8 @@ class BlurViewExample extends React.Component {
   };
 
   render() {
-    const uri = 'https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png';
+    const uri =
+      'https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png';
 
     return (
       <View
@@ -984,19 +998,16 @@ class GoogleLoginExample extends React.Component {
 
       if (type === 'success') {
         // Avoid race condition with the WebView hiding when using web-based sign in
-        setTimeout(
-          () => {
-            Alert.alert('Logged in!', JSON.stringify(result), [
-              {
-                text: 'OK!',
-                onPress: () => {
-                  console.log({ result });
-                },
+        setTimeout(() => {
+          Alert.alert('Logged in!', JSON.stringify(result), [
+            {
+              text: 'OK!',
+              onPress: () => {
+                console.log({ result });
               },
-            ]);
-          },
-          1000
-        );
+            },
+          ]);
+        }, 1000);
       }
     } catch (e) {
       Alert.alert('Error!', e.message, [{ text: 'OK :(', onPress: () => {} }]);
@@ -1046,16 +1057,13 @@ class LinearGradientExample extends React.Component {
   };
 
   componentDidMount() {
-    this._interval = setInterval(
-      () => {
-        this.setState({
-          count: this.state.count + 1,
-          colorTop: incrementColor(this.state.colorTop, 1),
-          colorBottom: incrementColor(this.state.colorBottom, -1),
-        });
-      },
-      20
-    );
+    this._interval = setInterval(() => {
+      this.setState({
+        count: this.state.count + 1,
+        colorTop: incrementColor(this.state.colorTop, 1),
+        colorBottom: incrementColor(this.state.colorBottom, -1),
+      });
+    }, 20);
   }
 
   componentWillUnmount() {

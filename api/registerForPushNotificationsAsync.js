@@ -1,10 +1,5 @@
-import {
-  Platform,
-} from 'react-native';
-import {
-  Permissions,
-  Notifications,
-} from 'expo';
+import { Platform } from 'react-native';
+import { Permissions, Notifications } from 'expo';
 
 // Example server, implemented in Rails: https://git.io/vKHKv
 const PUSH_ENDPOINT = 'https://exponent-push-server.herokuapp.com/tokens';
@@ -26,13 +21,13 @@ export default async function registerForPushNotificationsAsync() {
   return fetch(PUSH_ENDPOINT, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       token: {
         value: token,
-       },
+      },
     }),
   });
 }

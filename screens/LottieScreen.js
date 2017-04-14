@@ -26,13 +26,11 @@ class ExamplePicker extends React.Component {
             android: 0,
           }),
         }}>
-        {Object.keys(this.props.examples).map(name => this.props.examples[name]).map(ex => (
-          <Picker.Item
-            key={ex.name}
-            label={ex.name}
-            value={ex.name}
-          />
-        ))}
+        {Object.keys(this.props.examples)
+          .map(name => this.props.examples[name])
+          .map(ex => (
+            <Picker.Item key={ex.name} label={ex.name} value={ex.name} />
+          ))}
       </Picker>
     );
   }
@@ -52,12 +50,18 @@ class PlayerControls extends React.Component {
     return (
       <View style={{ paddingBottom: 20, paddingHorizontal: 10 }}>
         <View style={{ paddingBottom: 20 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <Button title="Play" onPress={this.props.onPlayPress} />
             <Button title="Reset" onPress={this.props.onResetPress} />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingBottom: 10,
+          }}>
           <Text>Use Imperative API:</Text>
           <View />
           <Switch
@@ -91,15 +95,31 @@ class PlayerControls extends React.Component {
 
 const makeExample = (name, getJson) => ({ name, getJson });
 const EXAMPLES = [
-  makeExample('Hamburger Arrow', () => require('../assets/animations/HamburgerArrow.json')),
-  makeExample('Line Animation', () => require('../assets/animations/LineAnimation.json')),
-  makeExample('Lottie Logo 1', () => require('../assets/animations/LottieLogo1.json')),
-  makeExample('Lottie Logo 2', () => require('../assets/animations/LottieLogo2.json')),
-  makeExample('Lottie Walkthrough', () => require('../assets/animations/LottieWalkthrough.json')),
+  makeExample('Hamburger Arrow', () =>
+    require('../assets/animations/HamburgerArrow.json')
+  ),
+  makeExample('Line Animation', () =>
+    require('../assets/animations/LineAnimation.json')
+  ),
+  makeExample('Lottie Logo 1', () =>
+    require('../assets/animations/LottieLogo1.json')
+  ),
+  makeExample('Lottie Logo 2', () =>
+    require('../assets/animations/LottieLogo2.json')
+  ),
+  makeExample('Lottie Walkthrough', () =>
+    require('../assets/animations/LottieWalkthrough.json')
+  ),
   makeExample('Pin Jump', () => require('../assets/animations/PinJump.json')),
-  makeExample('Twitter Heart', () => require('../assets/animations/TwitterHeart.json')),
-  makeExample('Watermelon', () => require('../assets/animations/Watermelon.json')),
-  makeExample('Motion Corpse', () => require('../assets/animations/MotionCorpse-Jrcanest.json')),
+  makeExample('Twitter Heart', () =>
+    require('../assets/animations/TwitterHeart.json')
+  ),
+  makeExample('Watermelon', () =>
+    require('../assets/animations/Watermelon.json')
+  ),
+  makeExample('Motion Corpse', () =>
+    require('../assets/animations/MotionCorpse-Jrcanest.json')
+  ),
 ].reduce((acc, e) => {
   // eslint-disable-next-line no-param-reassign
   acc[e.name] = e;
@@ -111,7 +131,7 @@ export default class LottieScreen extends React.Component {
     navigationBar: {
       title: '<Lottie>',
     },
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -175,8 +195,7 @@ export default class LottieScreen extends React.Component {
           borderWidth: 1,
           backgroundColor: '#dedede',
           marginVertical: 10,
-        }}
-      >
+        }}>
         <View key={this.state.example.name}>
           <Animation
             ref={this.setAnim}
@@ -185,7 +204,9 @@ export default class LottieScreen extends React.Component {
               height: 200,
             }}
             source={EXAMPLES[this.state.example].getJson()}
-            progress={this.state.config.imperative ? undefined : this.state.progress}
+            progress={
+              this.state.config.imperative ? undefined : this.state.progress
+            }
           />
         </View>
       </View>
@@ -196,7 +217,7 @@ export default class LottieScreen extends React.Component {
         <ExamplePicker
           example={this.state.example}
           examples={EXAMPLES}
-          onChange={(example) => this.setState({ example })}
+          onChange={example => this.setState({ example })}
         />
         {playerWindow}
         <PlayerControls

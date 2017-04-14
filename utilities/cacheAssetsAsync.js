@@ -1,9 +1,10 @@
-import {
-  Asset,
-  Font,
-} from 'expo';
+import { Asset, Font } from 'expo';
 
-export default function cacheAssetsAsync({images = [], fonts = [], videos = []}) {
+export default function cacheAssetsAsync({
+  images = [],
+  fonts = [],
+  videos = [],
+}) {
   return Promise.all([
     ...cacheImages(images),
     ...cacheFonts(fonts),

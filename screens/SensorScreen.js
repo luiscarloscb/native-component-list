@@ -1,22 +1,14 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import {
-  Accelerometer,
-  Gyroscope,
-} from 'expo';
+import { Accelerometer, Gyroscope } from 'expo';
 
 export default class SensorScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Sensors',
     },
-  }
+  };
 
   render() {
     return (
@@ -31,7 +23,7 @@ export default class SensorScreen extends React.Component {
 class GyroscopeSensor extends React.Component {
   state = {
     gyroscopeData: {},
-  }
+  };
 
   componentDidMount() {
     this._toggle();
@@ -47,26 +39,26 @@ class GyroscopeSensor extends React.Component {
     } else {
       this._subscribe();
     }
-  }
+  };
 
   _slow = () => {
     Gyroscope.setUpdateInterval(1000);
-  }
+  };
 
   _fast = () => {
     Gyroscope.setUpdateInterval(16);
-  }
+  };
 
   _subscribe = () => {
-    this._subscription = Gyroscope.addListener((result) => {
-      this.setState({gyroscopeData: result});
+    this._subscription = Gyroscope.addListener(result => {
+      this.setState({ gyroscopeData: result });
     });
-  }
+  };
 
   _unsubscribe = () => {
     this._subscription && this._subscription.remove();
     this._subscription = null;
-  }
+  };
 
   render() {
     let { x, y, z } = this.state.gyroscopeData;
@@ -80,7 +72,9 @@ class GyroscopeSensor extends React.Component {
           <TouchableOpacity onPress={this._toggle} style={styles.button}>
             <Text>Toggle</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this._slow} style={[styles.button, styles.middleButton]}>
+          <TouchableOpacity
+            onPress={this._slow}
+            style={[styles.button, styles.middleButton]}>
             <Text>Slow</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this._fast} style={styles.button}>
@@ -95,7 +89,7 @@ class GyroscopeSensor extends React.Component {
 class AccelerometerSensor extends React.Component {
   state = {
     accelerometerData: {},
-  }
+  };
 
   componentDidMount() {
     this._toggle();
@@ -111,26 +105,26 @@ class AccelerometerSensor extends React.Component {
     } else {
       this._subscribe();
     }
-  }
+  };
 
   _slow = () => {
     Accelerometer.setUpdateInterval(1000);
-  }
+  };
 
   _fast = () => {
     Accelerometer.setUpdateInterval(16);
-  }
+  };
 
   _subscribe = () => {
-    this._subscription = Accelerometer.addListener((result) => {
-      this.setState({accelerometerData: result});
+    this._subscription = Accelerometer.addListener(result => {
+      this.setState({ accelerometerData: result });
     });
-  }
+  };
 
   _unsubscribe = () => {
     this._subscription && this._subscription.remove();
     this._subscription = null;
-  }
+  };
 
   render() {
     let { x, y, z } = this.state.accelerometerData;
@@ -144,7 +138,9 @@ class AccelerometerSensor extends React.Component {
           <TouchableOpacity onPress={this._toggle} style={styles.button}>
             <Text>Toggle</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this._slow} style={[styles.button, styles.middleButton]}>
+          <TouchableOpacity
+            onPress={this._slow}
+            style={[styles.button, styles.middleButton]}>
             <Text>Slow</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this._fast} style={styles.button}>
@@ -166,7 +162,7 @@ function round(n) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   buttonContainer: {
     flexDirection: 'row',

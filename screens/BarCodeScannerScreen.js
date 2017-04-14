@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import {
-  Components,
-} from 'expo';
+import { Components } from 'expo';
 
 const { BarCodeScanner } = Components;
 
@@ -16,7 +10,7 @@ export default class BarcodeScannerExample extends React.Component {
     navigationBar: {
       visible: false,
     },
-  }
+  };
 
   render() {
     return (
@@ -29,17 +23,17 @@ export default class BarcodeScannerExample extends React.Component {
     );
   }
 
-  _handleBarCodeRead = (data) => {
+  _handleBarCodeRead = data => {
     this.props.navigator.pop();
     requestAnimationFrame(() => {
       alert(JSON.stringify(data));
     });
-  }
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   preview: {
     ...StyleSheet.absoluteFillObject,

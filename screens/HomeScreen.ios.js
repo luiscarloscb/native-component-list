@@ -1,6 +1,4 @@
-import React, {
-  PropTypes,
-} from 'react';
+import React, { PropTypes } from 'react';
 import {
   ActionSheetIOS,
   ActivityIndicator,
@@ -26,39 +24,39 @@ import {
   View,
   WebView,
 } from 'react-native';
-import TouchableBounce from 'react-native/Libraries/Components/Touchable/TouchableBounce';
-import {
-  withNavigation
-} from '@expo/ex-navigation';
+import TouchableBounce
+  from 'react-native/Libraries/Components/Touchable/TouchableBounce';
+import { withNavigation } from '@expo/ex-navigation';
 
-import {
-  ImagePicker,
-} from 'expo';
+import { ImagePicker } from 'expo';
 
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import Router from '../navigation/Router';
 
-@withNavigation
-class ExponentButton extends React.Component {
-
+@withNavigation class ExponentButton extends React.Component {
   _handlePress = () => {
     this.props.navigator.push(Router.getRoute('exponent'));
-  }
+  };
 
   render() {
     return (
       <TouchableOpacity
         onPress={this._handlePress}
-        style={{flex: 1, alignItems: 'center', justifyContent: 'center', marginRight: 10, paddingTop: 1,}}>
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 10,
+          paddingTop: 1,
+        }}>
         <Image
           source={require('../assets/images/exponent-icon.png')}
-          style={{width: 21, height: 17}}
+          style={{ width: 21, height: 17 }}
         />
       </TouchableOpacity>
     );
   }
-
 }
 
 export default class HomeScreen extends React.Component {
@@ -68,7 +66,7 @@ export default class HomeScreen extends React.Component {
       translucent: true,
       renderRight: () => <ExponentButton />,
     },
-  }
+  };
 
   state = {
     isRefreshing: false,
@@ -76,96 +74,102 @@ export default class HomeScreen extends React.Component {
       rowHasChanged: () => false,
       sectionHeaderHasChanged: () => false,
     }),
-  }
+  };
 
   onRefresh = () => {
-    this.setState({isRefreshing: true});
+    this.setState({ isRefreshing: true });
     setTimeout(() => {
-      this.setState({isRefreshing: false});
+      this.setState({ isRefreshing: false });
     }, 3000);
-  }
-
+  };
 
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
       'Vertical ScrollView, RefreshControl': [this._renderRefreshControl],
-      'ActionSheetIOS': [this._renderActionSheet],
-      'ActivityIndicator': [this._renderActivityIndicator],
-      'Alert': [this._renderAlert],
-      'DatePickerIOS': [this._renderDatePicker],
+      ActionSheetIOS: [this._renderActionSheet],
+      ActivityIndicator: [this._renderActivityIndicator],
+      Alert: [this._renderAlert],
+      DatePickerIOS: [this._renderDatePicker],
       'Horizontal ScrollView': [this._renderHorizontalScrollView],
-      'ImagePicker': [this._renderImagePicker],
-      'Picker': [this._renderPicker],
-      'ProgressView': [this._renderProgressView],
-      'SegmentedControl': [this._renderSegmentedControl],
-      'Slider': [this._renderSlider],
-      'StatusBar': [this._renderStatusBar],
-      'Switch': [this._renderSwitch],
-      'Text': [this._renderText],
-      'TextInput': [this._renderTextInput],
-      'Touchables': [this._renderTouchables],
+      ImagePicker: [this._renderImagePicker],
+      Picker: [this._renderPicker],
+      ProgressView: [this._renderProgressView],
+      SegmentedControl: [this._renderSegmentedControl],
+      Slider: [this._renderSlider],
+      StatusBar: [this._renderStatusBar],
+      Switch: [this._renderSwitch],
+      Text: [this._renderText],
+      TextInput: [this._renderTextInput],
+      Touchables: [this._renderTouchables],
       // 'View': [this._renderView],
-      'WebView': [this._renderWebView],
+      WebView: [this._renderWebView],
     });
 
-    this.setState({dataSource});
+    this.setState({ dataSource });
   }
 
   render() {
     return (
-        <ListView
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.isRefreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-          style={this.props.route.getContentInsetsStyle()}
-          contentContainerStyle={{backgroundColor: '#fff'}}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow}
-          renderSectionHeader={this._renderSectionHeader}
-        />
+      <ListView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+        style={this.props.route.getContentInsetsStyle()}
+        contentContainerStyle={{ backgroundColor: '#fff' }}
+        dataSource={this.state.dataSource}
+        renderRow={this._renderRow}
+        renderSectionHeader={this._renderSectionHeader}
+      />
     );
   }
 
   _renderRefreshControl = () => {
     return (
-      <View style={{padding: 10}}>
-        <Text>This screen is a vertical ScrollView, try the pull to refresh gesture to see the RefreshControl.</Text>
+      <View style={{ padding: 10 }}>
+        <Text>
+          This screen is a vertical ScrollView, try the pull to refresh gesture to see the RefreshControl.
+        </Text>
       </View>
     );
-  }
+  };
 
   _renderActionSheet = () => {
     const showActionSheet = () => {
-      ActionSheetIOS.showActionSheetWithOptions({
-          options: [ 'Option 0', 'Option 1', 'Delete', 'Cancel' ],
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Option 0', 'Option 1', 'Delete', 'Cancel'],
           cancelButtonIndex: 3,
           destructiveButtonIndex: 2,
         },
-        (buttonIndex) => { console.log({buttonIndex}) },
+        buttonIndex => {
+          console.log({ buttonIndex });
+        }
       );
-    }
+    };
 
     const showShareSheet = () => {
-     ActionSheetIOS.showShareActionSheetWithOptions({
-        url: 'https://expo.io',
-        message: 'message to go with the shared url',
-        subject: 'a subject to go in the email heading',
-      },
-      (error) => alert(error),
-      (success, method) => {
-        if (success) {
-          alert(`Shared via ${method}`);
+      ActionSheetIOS.showShareActionSheetWithOptions(
+        {
+          url: 'https://expo.io',
+          message: 'message to go with the shared url',
+          subject: 'a subject to go in the email heading',
+        },
+        error => alert(error),
+        (success, method) => {
+          if (success) {
+            alert(`Shared via ${method}`);
+          }
         }
-      });
-    }
+      );
+    };
 
     return (
-      <View style={{flexDirection: 'row', padding: 10}}>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
         <Button onPress={showActionSheet}>
           Action sheet
         </Button>
@@ -175,50 +179,59 @@ export default class HomeScreen extends React.Component {
         </Button>
       </View>
     );
-  }
+  };
 
   _renderActivityIndicator = () => {
-    const Spacer = () => <View style={{marginRight: 10}} />
+    const Spacer = () => <View style={{ marginRight: 10 }} />;
     return (
-      <View style={{flexDirection: 'row', padding: 10}}>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
         <ActivityIndicator size="small" />
         <Spacer />
         <ActivityIndicator size="large" />
         <Spacer />
         <ActivityIndicator size="small" color={Colors.tintColor} />
         <Spacer />
-        <ActivityIndicator size="large" color={Colors.tintColor}/>
+        <ActivityIndicator size="large" color={Colors.tintColor} />
         <Spacer />
-        <ActivityIndicator size="small" animating={false} hidesWhenStopped={false} />
+        <ActivityIndicator
+          size="small"
+          animating={false}
+          hidesWhenStopped={false}
+        />
         <Spacer />
-        <ActivityIndicator size="large" animating={false} hidesWhenStopped={false}  />
+        <ActivityIndicator
+          size="large"
+          animating={false}
+          hidesWhenStopped={false}
+        />
       </View>
     );
-  }
+  };
 
   _renderAlert = () => {
     const showPrompt = () => {
-      AlertIOS.prompt(
-        'Enter a value',
-        null,
-        text => console.log(`You entered ${text}`)
+      AlertIOS.prompt('Enter a value', null, text =>
+        console.log(`You entered ${text}`)
       );
-    }
+    };
 
     const showAlert = () => {
-      Alert.alert(
-        'Alert Title',
-        'My Alert Msg',
-        [
-          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ]
-      )
-    }
+      Alert.alert('Alert Title', 'My Alert Msg', [
+        {
+          text: 'Ask me later',
+          onPress: () => console.log('Ask me later pressed'),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+    };
 
     return (
-      <View style={{flexDirection: 'row', padding: 10}}>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
         <Button onPress={showPrompt}>
           Prompt for a value
         </Button>
@@ -228,39 +241,50 @@ export default class HomeScreen extends React.Component {
         </Button>
       </View>
     );
-  }
+  };
 
   _renderDatePicker = () => {
-    return <DatePickerExample />
-  }
+    return <DatePickerExample />;
+  };
 
   _renderHorizontalScrollView = () => {
-    const imageStyle = {width: Layout.window.width, height: Layout.window.width / 2};
+    const imageStyle = {
+      width: Layout.window.width,
+      height: Layout.window.width / 2,
+    };
 
     return (
-      <ScrollView
-        pagingEnabled
-        directionalLockEnabled
-        horizontal
-      >
-        <Image source={require('../assets/images/example1.jpg')} style={imageStyle} resizeMode="cover" />
-        <Image source={require('../assets/images/example2.jpg')} style={imageStyle} resizeMode="cover" />
-        <Image source={require('../assets/images/example3.jpg')} style={imageStyle} resizeMode="cover" />
+      <ScrollView pagingEnabled directionalLockEnabled horizontal>
+        <Image
+          source={require('../assets/images/example1.jpg')}
+          style={imageStyle}
+          resizeMode="cover"
+        />
+        <Image
+          source={require('../assets/images/example2.jpg')}
+          style={imageStyle}
+          resizeMode="cover"
+        />
+        <Image
+          source={require('../assets/images/example3.jpg')}
+          style={imageStyle}
+          resizeMode="cover"
+        />
       </ScrollView>
     );
-  }
+  };
 
   _renderImagePicker = () => {
     const showCamera = async () => {
       let result = await ImagePicker.launchCameraAsync({});
-    }
+    };
 
     const showPhotos = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({});
-    }
+    };
 
     return (
-      <View style={{flexDirection: 'row', padding: 10}}>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
         <Button onPress={showCamera}>
           Open camera
         </Button>
@@ -270,50 +294,50 @@ export default class HomeScreen extends React.Component {
         </Button>
       </View>
     );
-  }
+  };
 
   _renderPicker = () => {
     return <PickerExample />;
-  }
+  };
 
   _renderProgressView = () => {
     return (
-      <View style={{padding: 10, paddingBottom: 30}}>
+      <View style={{ padding: 10, paddingBottom: 30 }}>
         <ProgressViewExample initialProgress={0} />
         <ProgressViewExample progressTintColor="red" initialProgress={0.4} />
         <ProgressViewExample progressTintColor="orange" initialProgress={0.6} />
         <ProgressViewExample progressTintColor="yellow" initialProgress={0.8} />
       </View>
     );
-  }
+  };
 
   _renderSegmentedControl = () => {
     return <SegmentedControlExample />;
-  }
+  };
 
   _renderSlider = () => {
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <SliderExample />
       </View>
     );
-  }
+  };
 
   _renderStatusBar = () => {
     const randomAnimation = () => {
       return Math.random() > 0.5 ? 'slide' : 'fade';
-    }
+    };
 
     const hide = () => {
       StatusBar.setHidden(true, randomAnimation());
-    }
+    };
 
     const show = () => {
       StatusBar.setHidden(false, randomAnimation());
-    }
+    };
 
     return (
-      <View style={{flexDirection: 'row', padding: 10}}>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
         <Button onPress={hide}>
           Hide
         </Button>
@@ -323,27 +347,33 @@ export default class HomeScreen extends React.Component {
         </Button>
       </View>
     );
-  }
+  };
 
   _renderSwitch = () => {
     return <SwitchExample />;
-  }
+  };
 
   _renderText = () => {
-    const linkStyle = {color: Colors.tintColor, marginVertical: 3};
+    const linkStyle = { color: Colors.tintColor, marginVertical: 3 };
 
     return (
-      <View style={{padding: 10}}>
-        <Text>All text in React Native on iOS uses the native text component and supports a bunch of useful properties.</Text>
-        <Text style={linkStyle} onPress={() => alert('pressed!')}>Press on this!</Text>
-        <Text numberOfLines={1} ellipsizeMode="tail">It's easy to limit the number of lines that some text can span and ellipsize it</Text>
+      <View style={{ padding: 10 }}>
+        <Text>
+          All text in React Native on iOS uses the native text component and supports a bunch of useful properties.
+        </Text>
+        <Text style={linkStyle} onPress={() => alert('pressed!')}>
+          Press on this!
+        </Text>
+        <Text numberOfLines={1} ellipsizeMode="tail">
+          It's easy to limit the number of lines that some text can span and ellipsize it
+        </Text>
       </View>
     );
-  }
+  };
 
   _renderTextInput = () => {
     return <TextInputExample />;
-  }
+  };
 
   _renderTouchables = () => {
     const buttonStyle = {
@@ -359,8 +389,11 @@ export default class HomeScreen extends React.Component {
     };
 
     return (
-      <View style={{padding: 10, flexDirection: 'row', flex: 1}}>
-        <TouchableHighlight underlayColor="rgba(1, 1, 255, 0.9)" style={buttonStyle} onPress={() => {}}>
+      <View style={{ padding: 10, flexDirection: 'row', flex: 1 }}>
+        <TouchableHighlight
+          underlayColor="rgba(1, 1, 255, 0.9)"
+          style={buttonStyle}
+          onPress={() => {}}>
           <Text style={buttonText}>Highlight!</Text>
         </TouchableHighlight>
 
@@ -373,7 +406,7 @@ export default class HomeScreen extends React.Component {
         </TouchableBounce>
       </View>
     );
-  }
+  };
 
   // _renderView = () => {
   //   // Don't know what to put here
@@ -386,8 +419,9 @@ export default class HomeScreen extends React.Component {
   _renderWebView = () => {
     return (
       <WebView
-        style={{width: Layout.window.width, height: 250}}
-        source={{html: `
+        style={{ width: Layout.window.width, height: 250 }}
+        source={{
+          html: `
           <h2>You can always use a WebView if you need to!</h2>
           <p>
             <h4>But don't the other components above seem like better building blocks for most of your UI?</h4>
@@ -397,18 +431,19 @@ export default class HomeScreen extends React.Component {
           <p>
             <a href="https://expo.io">expo.io</a>
           </p>
-        `}}
+        `,
+        }}
       />
     );
-  }
+  };
 
-  _renderRow = (renderRowFn) => {
+  _renderRow = renderRowFn => {
     return (
       <View>
         {renderRowFn && renderRowFn()}
       </View>
     );
-  }
+  };
 
   _renderSectionHeader = (_, sectionTitle) => {
     return (
@@ -416,14 +451,14 @@ export default class HomeScreen extends React.Component {
         <Text>{sectionTitle}</Text>
       </View>
     );
-  }
+  };
 }
 
 class DatePickerExample extends React.Component {
   state = {
     date: new Date(),
-    timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
-  }
+    timeZoneOffsetInHours: -1 * new Date().getTimezoneOffset() / 60,
+  };
 
   render() {
     return (
@@ -436,9 +471,9 @@ class DatePickerExample extends React.Component {
     );
   }
 
-  _onDateChange = (date) => {
-    this.setState({date: date});
-  }
+  _onDateChange = date => {
+    this.setState({ date: date });
+  };
 }
 
 class PickerExample extends React.Component {
@@ -450,7 +485,7 @@ class PickerExample extends React.Component {
     return (
       <Picker
         selectedValue={this.state.language}
-        onValueChange={(lang) => this.setState({language: lang})}>
+        onValueChange={lang => this.setState({ language: lang })}>
         <Picker.Item label="Java" value="java" />
         <Picker.Item label="JavaScript" value="js" />
         <Picker.Item label="Objective C" value="objc" />
@@ -466,17 +501,19 @@ class ProgressViewExample extends React.Component {
 
     this.state = {
       progress: props.initialProgress,
-    }
+    };
   }
 
   componentDidMount() {
-    this.progressLoop()
+    this.progressLoop();
   }
 
   progressLoop() {
     setTimeout(() => {
       this.setState({
-        progress: this.state.progress === 1 ? 0 : Math.min(1, this.state.progress + 0.01)
+        progress: this.state.progress === 1
+          ? 0
+          : Math.min(1, this.state.progress + 0.01),
       });
 
       this.progressLoop();
@@ -484,7 +521,7 @@ class ProgressViewExample extends React.Component {
   }
 
   render() {
-    const progressStyle = {marginTop: 20};
+    const progressStyle = { marginTop: 20 };
 
     return (
       <ProgressViewIOS
@@ -494,7 +531,7 @@ class ProgressViewExample extends React.Component {
       />
     );
   }
-};
+}
 
 class SegmentedControlExample extends React.Component {
   state = {
@@ -503,7 +540,7 @@ class SegmentedControlExample extends React.Component {
 
   render() {
     let tintColor;
-    switch(this.state.selectedIndex) {
+    switch (this.state.selectedIndex) {
       case 0:
         tintColor = 'black';
         break;
@@ -519,13 +556,15 @@ class SegmentedControlExample extends React.Component {
     }
 
     return (
-      <View style={{margin: 10}}>
+      <View style={{ margin: 10 }}>
         <SegmentedControlIOS
           values={['One', 'Two', 'Three', 'Four']}
           tintColor={tintColor}
           selectedIndex={this.state.selectedIndex}
-          onChange={(event) => {
-            this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
+          onChange={event => {
+            this.setState({
+              selectedIndex: event.nativeEvent.selectedSegmentIndex,
+            });
           }}
         />
       </View>
@@ -547,7 +586,10 @@ class SliderExample extends React.Component {
   }
 
   render() {
-    const textStyle = {color: this.state.value === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.9)', marginBottom: -2};
+    const textStyle = {
+      color: this.state.value === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.9)',
+      marginBottom: -2,
+    };
 
     return (
       <View>
@@ -556,7 +598,8 @@ class SliderExample extends React.Component {
         </Text>
         <Slider
           {...this.props}
-          onValueChange={(value) => this.setState({value: value})} />
+          onValueChange={value => this.setState({ value: value })}
+        />
       </View>
     );
   }
@@ -566,18 +609,20 @@ class SwitchExample extends React.Component {
   state = {
     trueSwitchIsOn: true,
     falseSwitchIsOn: false,
-  }
+  };
 
   render() {
     return (
-      <View style={{flexDirection: 'row', padding: 10}}>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
         <Switch
-          onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
-          style={{marginBottom: 10, marginRight: 10}}
-          value={this.state.falseSwitchIsOn} />
+          onValueChange={value => this.setState({ falseSwitchIsOn: value })}
+          style={{ marginBottom: 10, marginRight: 10 }}
+          value={this.state.falseSwitchIsOn}
+        />
         <Switch
-          onValueChange={(value) => this.setState({trueSwitchIsOn: value})}
-          value={this.state.trueSwitchIsOn} />
+          onValueChange={value => this.setState({ trueSwitchIsOn: value })}
+          value={this.state.trueSwitchIsOn}
+        />
       </View>
     );
   }
@@ -600,15 +645,17 @@ class TextInputExample extends React.Component {
       height: 40,
     };
 
-    const updateSingleLineValue = value => this.setState({singleLineValue: value});
-    const updateSecureTextValue = value => this.setState({secureTextValue: value});
+    const updateSingleLineValue = value =>
+      this.setState({ singleLineValue: value });
+    const updateSecureTextValue = value =>
+      this.setState({ secureTextValue: value });
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <TextInput
           placeholder="A single line text input"
           onChangeText={updateSingleLineValue}
-          style={[{marginBottom: 10}, textInputStyle]}
+          style={[{ marginBottom: 10 }, textInputStyle]}
           value={this.state.singleLineValue}
         />
 
