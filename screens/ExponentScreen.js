@@ -123,6 +123,7 @@ export default class HomeScreen extends React.Component {
       TouchID: [this._renderTouchID],
       Util: [this._renderUtil],
       Video: [this._renderVideo],
+      Gif: [this._renderGif],
     });
 
     this.setState({ dataSource });
@@ -344,6 +345,23 @@ export default class HomeScreen extends React.Component {
           resizeMode="cover"
           repeat
           style={{ width: 300, height: 300 }}
+        />
+      </View>
+    );
+  };
+
+  _renderGif = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          padding: 10,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Image
+          source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/cat.gif' }}
+          style={{ height: 140, width: 200 }}
         />
       </View>
     );
