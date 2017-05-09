@@ -25,6 +25,7 @@ import Expo, {
   Font,
   Location,
   Notifications,
+  Pedometer,
   Permissions,
   Video,
 } from 'expo';
@@ -111,6 +112,7 @@ export default class HomeScreen extends React.Component {
       Lottie: [this._renderLottie],
       Map: [this._renderMap],
       NotificationBadge: [this._renderNotificationBadge],
+      Pedometer: [this._renderPedometer],
       PushNotification: [this._renderPushNotification],
       LocalNotification: [this._renderLocalNotification],
       LinearGradient: [this._renderLinearGradient],
@@ -167,6 +169,10 @@ export default class HomeScreen extends React.Component {
         </Button>
       </View>
     );
+  };
+
+  _renderPedometer = () => {
+    return <PedometerExample />;
   };
 
   _renderBarCodeScanner = () => {
@@ -726,6 +732,65 @@ class LocationExample extends React.Component {
   }
 }
 
+class PedometerExample extends React.Component {
+  state = { stepCount: null };
+  _listener: { remove: () => void } = null;
+
+  render() {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={async () => {
+            const result = await Pedometer.isAvailableAsync();
+            Alert.alert(
+              'Pedometer result',
+              `Is available: ${result}`
+            );
+          }}>
+          Is available
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={async () => {
+            const end = new Date();
+            const start = new Date();
+            start.setDate(end.getDate() - 1);
+            const result = await Pedometer.getStepCountAsync(start, end);
+            Alert.alert(
+              'Pedometer result',
+              `Number of steps for the last day: ${result.steps}`
+            );
+          }}>
+          Get steps count
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={async () => {
+            this._listener = Pedometer.watchStepCount(data => {
+              this.setState({ stepCount: data.steps });
+            });
+          }}>
+          Listen for step count updates
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={async () => {
+            if (this._listener) {
+              this._listener.remove();
+              this._listener = null;
+            }
+          }}>
+          Stop listening for step count updates
+        </Button>
+        {this.state.stepCount !== null
+          ? <Text>Total steps {this.state.stepCount}</Text>
+          : null}
+      </View>
+    );
+  }
+}
+
 class TouchIDExample extends React.Component {
   state = {
     waiting: false,
@@ -1082,7 +1147,7 @@ class LinearGradientExample extends React.Component {
         colorTop: incrementColor(this.state.colorTop, 1),
         colorBottom: incrementColor(this.state.colorBottom, -1),
       });
-    }, 20);
+    }, 100);
   }
 
   componentWillUnmount() {
