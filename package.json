@@ -8,7 +8,7 @@
   "dependencies": {
     "@expo/ex-navigation": "^2.11.1",
     "@expo/samples": "^1.0.3",
-    "expo": "^16.0.0",
+    "expo": "17.0.0-rc.1",
     "gl-mat4": "^1.1.4",
     "hsv2rgb": "^1.1.0",
     "react": "16.0.0-alpha.6",
