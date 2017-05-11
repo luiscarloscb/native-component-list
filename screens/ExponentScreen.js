@@ -352,12 +352,10 @@ export default class HomeScreen extends React.Component {
         }}>
         <Video
           source={require('../assets/videos/ace.mp4')}
-          rate={1.0}
-          volume={1.0}
-          muted={false}
           resizeMode="cover"
-          repeat
           style={{ width: 300, height: 300 }}
+          shouldPlay
+          isLooping
         />
       </View>
     );
@@ -751,10 +749,7 @@ class PedometerExample extends React.Component {
           style={{ marginBottom: 10 }}
           onPress={async () => {
             const result = await Pedometer.isAvailableAsync();
-            Alert.alert(
-              'Pedometer result',
-              `Is available: ${result}`
-            );
+            Alert.alert('Pedometer result', `Is available: ${result}`);
           }}>
           Is available
         </Button>
