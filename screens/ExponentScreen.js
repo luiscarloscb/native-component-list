@@ -15,15 +15,16 @@ import {
 } from 'react-native';
 
 import Expo, {
+  BlurView,
   Constants,
   Contacts,
+  DangerZone,
   DocumentPicker,
-  MapView,
-  KeepAwake,
-  BlurView,
-  LinearGradient,
   Font,
+  KeepAwake,
+  LinearGradient,
   Location,
+  MapView,
   Notifications,
   Pedometer,
   Permissions,
@@ -39,6 +40,12 @@ import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
+
+DangerZone.Branch.subscribe(bundle => {
+  if (bundle && bundle.params && !bundle.error) {
+    Alert.alert('Opened Branch link', JSON.stringify(bundle.params, null, 2));
+  }
+});
 
 export default class HomeScreen extends React.Component {
   static route = {
