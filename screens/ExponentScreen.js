@@ -24,7 +24,6 @@ import Expo, {
   KeepAwake,
   LinearGradient,
   Location,
-  MapView,
   Notifications,
   Pedometer,
   Permissions,
@@ -140,15 +139,14 @@ export default class HomeScreen extends React.Component {
 
   _renderMap = () => {
     return (
-      <MapView
-        style={{ width: Layout.window.width, height: 300 }}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      />
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={() => {
+            this.props.navigator.push('maps');
+          }}>
+          Open Maps Example
+        </Button>
+      </View>
     );
   };
 

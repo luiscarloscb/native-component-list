@@ -8,6 +8,7 @@ import FacebookAdsScreen from '../screens/FacebookAdsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SVGScreen from '../screens/SVGScreen';
 import LottieScreen from '../screens/LottieScreen';
+import MapsScreen from '../screens/MapsScreen';
 
 export default createRouter(() => ({
   barCodeScanner: () => BarCodeScannerScreen,
@@ -18,4 +19,5 @@ export default createRouter(() => ({
   sensor: () => SensorScreen,
   svg: () => SVGScreen,
   lottie: () => LottieScreen,
+  maps: () => MapsScreen,
 }));
