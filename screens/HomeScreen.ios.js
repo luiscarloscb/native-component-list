@@ -13,8 +13,8 @@ import {
   SegmentedControlIOS,
   Slider,
   Switch,
+  SectionList,
   StatusBar,
-  ListView,
   ScrollView,
   StyleSheet,
   Text,
@@ -70,10 +70,6 @@ export default class HomeScreen extends React.Component {
 
   state = {
     isRefreshing: false,
-    dataSource: new ListView.DataSource({
-      rowHasChanged: () => false,
-      sectionHeaderHasChanged: () => false,
-    }),
   };
 
   onRefresh = () => {
@@ -83,35 +79,40 @@ export default class HomeScreen extends React.Component {
     }, 3000);
   };
 
-  componentDidMount() {
-    let dataSource = this.state.dataSource.cloneWithRowsAndSections({
-      'Vertical ScrollView, RefreshControl': [this._renderRefreshControl],
-      ActionSheetIOS: [this._renderActionSheet],
-      ActivityIndicator: [this._renderActivityIndicator],
-      Alert: [this._renderAlert],
-      DatePickerIOS: [this._renderDatePicker],
-      'Horizontal ScrollView': [this._renderHorizontalScrollView],
-      ImagePicker: [this._renderImagePicker],
-      Picker: [this._renderPicker],
-      ProgressView: [this._renderProgressView],
-      SegmentedControl: [this._renderSegmentedControl],
-      Slider: [this._renderSlider],
-      StatusBar: [this._renderStatusBar],
-      Switch: [this._renderSwitch],
-      Text: [this._renderText],
-      TextInput: [this._renderTextInput],
-      Touchables: [this._renderTouchables],
-      // 'View': [this._renderView],
-      WebView: [this._renderWebView],
-    });
-
-    this.setState({ dataSource });
+  componentWillMount() {
+    this._sections = [
+      {
+        key: 'Vertical ScrollView, RefreshControl',
+        data: [this._renderRefreshControl],
+      },
+      { key: 'ActionSheetIOS', data: [this._renderActionSheet] },
+      { key: 'ActivityIndicator', data: [this._renderActivityIndicator] },
+      { key: 'Alert', data: [this._renderAlert] },
+      { key: 'DatePickerIOS', data: [this._renderDatePicker] },
+      {
+        key: 'Horizontal ScrollView',
+        data: [this._renderHorizontalScrollView],
+      },
+      { key: 'ImagePicker', data: [this._renderImagePicker] },
+      { key: 'Picker', data: [this._renderPicker] },
+      { key: 'ProgressView', data: [this._renderProgressView] },
+      { key: 'SegmentedControl', data: [this._renderSegmentedControl] },
+      { key: 'Slider', data: [this._renderSlider] },
+      { key: 'StatusBar', data: [this._renderStatusBar] },
+      { key: 'Switch', data: [this._renderSwitch] },
+      { key: 'Text', data: [this._renderText] },
+      { key: 'TextInput', data: [this._renderTextInput] },
+      { key: 'Touchables', data: [this._renderTouchables] },
+      { key: 'WebView', data: [this._renderWebView] },
+    ];
   }
 
   render() {
     return (
-      <ListView
-        initialListSize={1000}
+      <SectionList
+        initialNumToRender={100}
+        keyExtractor={(item, index) => index.toString()}
+        virtualized={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         refreshControl={
@@ -122,8 +123,8 @@ export default class HomeScreen extends React.Component {
         }
         style={this.props.route.getContentInsetsStyle()}
         contentContainerStyle={{ backgroundColor: '#fff' }}
-        dataSource={this.state.dataSource}
-        renderRow={this._renderRow}
+        sections={this._sections}
+        renderItem={this._renderRow}
         renderSectionHeader={this._renderSectionHeader}
       />
     );
@@ -438,18 +439,18 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  _renderRow = renderRowFn => {
+  _renderRow = ({ item }) => {
     return (
       <View>
-        {renderRowFn && renderRowFn()}
+        {item && item()}
       </View>
     );
   };
 
-  _renderSectionHeader = (_, sectionTitle) => {
+  _renderSectionHeader = ({ section }) => {
     return (
       <View style={styles.sectionHeader}>
-        <Text>{sectionTitle}</Text>
+        <Text>{section.key}</Text>
       </View>
     );
   };
@@ -505,12 +506,24 @@ class ProgressViewExample extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   componentDidMount() {
     this.progressLoop();
   }
 
   progressLoop() {
     setTimeout(() => {
+      if (!this._isMounted) {
+        return;
+      }
+
       this.setState({
         progress: this.state.progress === 1
           ? 0
