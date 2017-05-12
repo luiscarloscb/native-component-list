@@ -1,9 +1,9 @@
 {
   "name": "native-component-list-dev",
-  "sdkVersion": "UNVERSIONED",
-  "version": "1000.0",
   "description": "This experience shows a bunch of the native components that are included in React Native and Expo. Hit the Expo button in the top right to navigate to the Expo-specific components!",
   "slug": "native-component-list",
+  "sdkVersion": "UNVERSIONED",
+  "version": "1000.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
@@ -14,6 +14,10 @@
   "loading": {
     "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png"
   },
+  "packagerOpts": {
+    "assetExts": ["ttf"]
+  },
+  "entryPoint": "apps/native-component-list/main.js",
   "nodeModulesPath": "..",
   "rnCliPath": "../../../react-native-lab/react-native/local-cli/cli.js",
   "packagerOpts": {
