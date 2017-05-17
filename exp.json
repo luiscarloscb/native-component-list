@@ -19,6 +19,7 @@
     "assetExts": ["ttf", "mp4"]
   },
   "facebookScheme": "fb1201211719949057",
+  "androidShowExponentNotificationInShellApp": true,
   "android": {
     "package": "host.exp.nativecomponentlist",
     "versionCode": 11,
