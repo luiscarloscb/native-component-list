@@ -8,11 +8,11 @@
   "dependencies": {
     "@expo/ex-navigation": "^2.11.1",
     "@expo/samples": "^1.0.3",
-    "expo": "17.0.0-rc.1",
+    "expo": "17.0.0",
     "gl-mat4": "^1.1.4",
     "hsv2rgb": "^1.1.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "expo/react-native#sdk-17",
+    "react-native": "expo/react-native#exp-latest",
     "regl": "^1.3.0",
     "victory-native": "0.6.0"
   }
