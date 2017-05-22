@@ -12,6 +12,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from 'react-native';
 
 import Expo, {
@@ -24,6 +25,7 @@ import Expo, {
   KeepAwake,
   LinearGradient,
   Location,
+  IntentLauncherAndroid,
   Notifications,
   Pedometer,
   Permissions,
@@ -126,6 +128,12 @@ export default class HomeScreen extends React.Component {
       'navigator.geolocation Polyfill (using Location)': [
         this._renderLocationPolyfill,
       ],
+      ...Platform.select({
+        android: {
+          Settings: [this._renderSettings],
+        },
+        ios: {},
+      }),
       Sensors: [this._renderSensors],
       Svg: [this._renderSvg],
       TouchID: [this._renderTouchID],
@@ -337,6 +345,10 @@ export default class HomeScreen extends React.Component {
 
   _renderLocationPolyfill = () => {
     return <LocationExample polyfill={true} />;
+  };
+
+  _renderSettings = () => {
+    return <SettingsExample />;
   };
 
   _renderVideo = () => {
@@ -774,6 +786,40 @@ class LocationExample extends React.Component {
         {this.props.polyfill ? this.renderProviderStatus() : null}
         {this.renderSingleLocation()}
         {this.renderWatchLocation()}
+      </View>
+    );
+  }
+}
+
+class SettingsExample extends React.Component {
+  renderSettingsLink(title, activity) {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={async () => {
+            try {
+              await IntentLauncherAndroid.startActivityAsync(activity);
+              ToastAndroid.show(`Activity finished`, ToastAndroid.SHORT);
+            } catch (e) {
+              ToastAndroid.show(
+                `An error occurred: ${e.message}`,
+                ToastAndroid.SHORT
+              );
+            }
+          }}>
+          {title}
+        </Button>
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <View>
+        {this.renderSettingsLink(
+          'Location Settings',
+          IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS
+        )}
       </View>
     );
   }
