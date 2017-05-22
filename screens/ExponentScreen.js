@@ -549,7 +549,9 @@ class LocationExample extends React.Component {
     singleLocation: null,
     searching: false,
     watchLocation: null,
+    providerStatus: null,
     subscription: null,
+    checkingProviderStatus: false,
   };
 
   _findSingleLocationWithPolyfill = () => {
@@ -634,6 +636,18 @@ class LocationExample extends React.Component {
     this.setState({ subscription: null, watchLocation: null });
   };
 
+  _checkProviderStatus = async () => {
+    this.setState({
+      checkingProviderStatus: true,
+    });
+    const status = await Location.getProviderStatusAsync();
+    console.log(JSON.stringify(status));
+    this.setState({
+      providerStatus: status,
+      checkingProviderStatus: false,
+    });
+  };
+
   renderSingleLocation() {
     if (this.state.searching) {
       return (
@@ -667,6 +681,47 @@ class LocationExample extends React.Component {
               : this._findSingleLocation
           }>
           Find my location once
+        </Button>
+      </View>
+    );
+  }
+
+  renderProviderStatus() {
+    if (this.state.checkingProviderStatus) {
+      return (
+        <View style={{ padding: 10 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
+    if (this.state.providerStatus) {
+      return (
+        <View style={{ padding: 10 }}>
+          <Text>
+            Enabled: {String(this.state.providerStatus.locationServicesEnabled)}
+          </Text>
+          <Text>
+            GPS Available: {String(this.state.providerStatus.gpsAvailable)}
+          </Text>
+          <Text>
+            Network Available:
+            {' '}
+            {String(this.state.providerStatus.networkAvailable)}
+          </Text>
+          <Text>
+            Passive Available:
+            {' '}
+            {String(this.state.providerStatus.passiveAvailable)}
+          </Text>
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ padding: 10 }}>
+        <Button onPress={this._checkProviderStatus}>
+          Check provider status
         </Button>
       </View>
     );
@@ -716,6 +771,7 @@ class LocationExample extends React.Component {
   render() {
     return (
       <View>
+        {this.props.polyfill ? this.renderProviderStatus() : null}
         {this.renderSingleLocation()}
         {this.renderWatchLocation()}
       </View>
@@ -1027,7 +1083,8 @@ class FacebookLoginExample extends React.Component {
   _testFacebookLogin = async (id, perms, behavior = 'web') => {
     try {
       if (
-        Platform.OS === 'android' || Constants.appOwnership === 'standalone'
+        Platform.OS === 'android' ||
+        Constants.appOwnership === 'standalone'
       ) {
         // iOS supports system too, native jumps over to the app though and people
         // seem to like that effect. I maybe prefer system.
