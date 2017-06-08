@@ -30,6 +30,7 @@ import Expo, {
   Pedometer,
   Permissions,
   Video,
+  WebBrowser,
 } from 'expo';
 
 import { withNavigation } from '@expo/ex-navigation';
@@ -140,6 +141,7 @@ export default class HomeScreen extends React.Component {
       Util: [this._renderUtil],
       Video: [this._renderVideo],
       Gif: [this._renderGif],
+      WebBrowser: [this._renderWebBrowser],
     });
 
     this.setState({ dataSource });
@@ -384,6 +386,25 @@ export default class HomeScreen extends React.Component {
           source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/cat.gif' }}
           style={{ height: 140, width: 200 }}
         />
+      </View>
+    );
+  };
+
+  _renderWebBrowser = () => {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={async () => {
+            const result = await WebBrowser.openBrowserAsync(
+              'https://www.google.com'
+            );
+            setTimeout(
+              () => Alert.alert('Result', JSON.stringify(result, null, 2)),
+              1000
+            );
+          }}>
+          Open web url
+        </Button>
       </View>
     );
   };
