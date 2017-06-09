@@ -29,6 +29,7 @@ import Expo, {
   Notifications,
   Pedometer,
   Permissions,
+  ScreenOrientation,
   Video,
   WebBrowser,
 } from 'expo';
@@ -40,8 +41,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import registerForPushNotificationsAsync
-  from '../api/registerForPushNotificationsAsync';
+import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 DangerZone.Branch.subscribe(bundle => {
   if (bundle && bundle.params && !bundle.error) {
@@ -91,9 +91,13 @@ export default class HomeScreen extends React.Component {
       message = `Notification ${origin} with data: ${JSON.stringify(data)}`;
     } else {
       if (remote) {
-        message = `Push notification ${origin} with data: ${JSON.stringify(data)}`;
+        message = `Push notification ${origin} with data: ${JSON.stringify(
+          data
+        )}`;
       } else {
-        message = `Local notification ${origin} with data: ${JSON.stringify(data)}`;
+        message = `Local notification ${origin} with data: ${JSON.stringify(
+          data
+        )}`;
       }
     }
 
@@ -135,6 +139,7 @@ export default class HomeScreen extends React.Component {
         },
         ios: {},
       }),
+      ScreenOrientation: [this._renderScreenOrientation],
       Sensors: [this._renderSensors],
       Svg: [this._renderSvg],
       TouchID: [this._renderTouchID],
@@ -146,6 +151,23 @@ export default class HomeScreen extends React.Component {
 
     this.setState({ dataSource });
   }
+
+  _renderScreenOrientation = () => {
+    return (
+      <View style={{ padding: 10 }}>
+        {Object.keys(ScreenOrientation.Orientation).map(orientation =>
+          <Button
+            key={orientation}
+            style={{ marginBottom: 10 }}
+            onPress={() => {
+              ScreenOrientation.allow(orientation);
+            }}>
+            {orientation}
+          </Button>
+        )}
+      </View>
+    );
+  };
 
   _renderMap = () => {
     return (
@@ -846,7 +868,8 @@ class SettingsExample extends React.Component {
   }
 }
 
-@withNavigation class SensorsExample extends React.Component {
+@withNavigation
+class SensorsExample extends React.Component {
   render() {
     return (
       <View style={{ padding: 10 }}>
@@ -1195,10 +1218,14 @@ class GoogleLoginExample extends React.Component {
   _testGoogleLogin = async () => {
     try {
       const result = await Expo.Google.logInAsync({
-        androidStandaloneAppClientId: '603386649315-87mbvgc739sec2gjtptl701ha62pi98p.apps.googleusercontent.com',
-        androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
-        iosStandaloneAppClientId: '603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com',
-        iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
+        androidStandaloneAppClientId:
+          '603386649315-87mbvgc739sec2gjtptl701ha62pi98p.apps.googleusercontent.com',
+        androidClientId:
+          '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
+        iosStandaloneAppClientId:
+          '603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4.apps.googleusercontent.com',
+        iosClientId:
+          '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
 
