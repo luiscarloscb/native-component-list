@@ -1283,7 +1283,7 @@ class UtilExample extends React.Component {
   state = {
     locale: null,
     deviceCountry: null,
-    deviceTimeZone: null,
+    timeZone: null,
   };
 
   componentWillMount() {
@@ -1298,8 +1298,8 @@ class UtilExample extends React.Component {
   _update = async () => {
     let locale = await Expo.Util.getCurrentLocaleAsync();
     let deviceCountry = await Expo.Util.getCurrentDeviceCountryAsync();
-    let deviceTimeZone = await Expo.Util.getCurrentDeviceTimeZoneAsync();
-    this.setState({ locale, deviceCountry, deviceTimeZone });
+    let timeZone = await Expo.Util.getCurrentTimeZoneAsync();
+    this.setState({ locale, deviceCountry, timeZone });
   };
 
   render() {
@@ -1307,7 +1307,7 @@ class UtilExample extends React.Component {
       <View style={{ padding: 10 }}>
         <Text>Locale: {this.state.locale}</Text>
         <Text>Device Country: {this.state.deviceCountry}</Text>
-        <Text>Device Time Zone: {this.state.deviceTimeZone}</Text>
+        <Text>Time Zone: {this.state.timeZone}</Text>
       </View>
     );
   }
