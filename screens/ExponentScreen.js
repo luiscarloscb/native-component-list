@@ -261,38 +261,7 @@ export default class HomeScreen extends React.Component {
   };
 
   _renderConstants = () => {
-    const ExponentConstant = ({ name, object }) => {
-      let value = Constants[name];
-
-      if (object) {
-        value = JSON.stringify(value);
-      } else if (typeof value === 'boolean') {
-        value = value ? 'true' : 'false';
-      }
-
-      return (
-        <View style={{ flexDirection: 'row', flex: 1 }}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1 }}>
-            <Text style={{ fontWeight: 'bold' }}>{name}</Text>: {value}
-          </Text>
-        </View>
-      );
-    };
-
-    return (
-      <View style={{ padding: 10 }}>
-        <ExponentConstant name="expoVersion" />
-        <ExponentConstant name="deviceId" />
-        <ExponentConstant name="deviceName" />
-        <ExponentConstant name="deviceYearClass" />
-        <ExponentConstant name="sessionId" />
-        <ExponentConstant name="linkingUri" />
-        <ExponentConstant name="statusBarHeight" />
-        <ExponentConstant name="isDevice" />
-        <ExponentConstant name="appOwnership" />
-        {Platform.OS === 'ios' && <ExponentConstant name="platform" object />}
-      </View>
-    );
+    return <ConstantsExample />;
   };
 
   _renderContacts = () => {
@@ -465,6 +434,60 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   };
+}
+
+const ExponentConstant = ({ name, object }) => {
+  let value = Constants[name];
+
+  if (object) {
+    value = JSON.stringify(value);
+  } else if (typeof value === 'boolean') {
+    value = value ? 'true' : 'false';
+  }
+
+  return (
+    <View style={{ flexDirection: 'row', flex: 1 }}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1 }}>
+        <Text style={{ fontWeight: 'bold' }}>{name}</Text>: {value}
+      </Text>
+    </View>
+  );
+};
+
+class ConstantsExample extends React.Component {
+  state = {
+    webViewUserAgent: null,
+  };
+
+  componentWillMount() {
+    this._update();
+  }
+
+  _update = async () => {
+    let webViewUserAgent = await Constants.getWebViewUserAgentAsync();
+    this.setState({ webViewUserAgent });
+  };
+
+  render() {
+    return (
+      <View style={{ padding: 10 }}>
+        <ExponentConstant name="expoVersion" />
+        <ExponentConstant name="deviceId" />
+        <ExponentConstant name="deviceName" />
+        <ExponentConstant name="deviceYearClass" />
+        <ExponentConstant name="sessionId" />
+        <ExponentConstant name="linkingUri" />
+        <ExponentConstant name="statusBarHeight" />
+        <ExponentConstant name="isDevice" />
+        <ExponentConstant name="appOwnership" />
+        {Platform.OS === 'ios' && <ExponentConstant name="platform" object />}
+        <Text>
+          <Text style={{ fontWeight: 'bold' }}>getWebViewUserAgentAsync</Text>:
+          {' '}{this.state.webViewUserAgent}
+        </Text>
+      </View>
+    );
+  }
 }
 
 const CONTACT_PAGE_SIZE = 4;
@@ -1259,26 +1282,32 @@ function incrementColor(color, step) {
 class UtilExample extends React.Component {
   state = {
     locale: null,
+    deviceCountry: null,
+    deviceTimeZone: null,
   };
 
   componentWillMount() {
-    this._updateLocale();
-    AppState.addEventListener('change', this._updateLocale);
+    this._update();
+    AppState.addEventListener('change', this._update);
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._updateLocale);
+    AppState.removeEventListener('change', this._update);
   }
 
-  _updateLocale = async () => {
+  _update = async () => {
     let locale = await Expo.Util.getCurrentLocaleAsync();
-    this.setState({ locale });
+    let deviceCountry = await Expo.Util.getCurrentDeviceCountryAsync();
+    let deviceTimeZone = await Expo.Util.getCurrentDeviceTimeZoneAsync();
+    this.setState({ locale, deviceCountry, deviceTimeZone });
   };
 
   render() {
     return (
       <View style={{ padding: 10 }}>
         <Text>Locale: {this.state.locale}</Text>
+        <Text>Device Country: {this.state.deviceCountry}</Text>
+        <Text>Device Time Zone: {this.state.deviceTimeZone}</Text>
       </View>
     );
   }
