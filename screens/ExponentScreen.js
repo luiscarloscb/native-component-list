@@ -625,10 +625,13 @@ class DocumentPickerExample extends React.Component {
 class LocationExample extends React.Component {
   state = {
     singleLocation: null,
+    singleHeading: null,
     searching: false,
     watchLocation: null,
+    watchHeading: null,
     providerStatus: null,
     subscription: null,
+    headingSubscription: null,
     checkingProviderStatus: false,
   };
 
@@ -713,6 +716,33 @@ class LocationExample extends React.Component {
     this.state.subscription.remove();
     this.setState({ subscription: null, watchLocation: null });
   };
+
+  _getSingleHeading = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      return;
+    }
+
+    const heading = await Location.getHeadingAsync();
+    this.setState({ singleHeading: heading});
+  }
+
+  _startWatchingHeading = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      return;
+    }
+
+    let subscription = await Location.watchHeadingAsync(heading => {
+      this.setState({watchHeading: heading});
+    });
+    this.setState({headingSubscription: subscription});
+  }
+
+  _stopWatchingHeading = async () => {
+    this.state.headingSubscription.remove();
+    this.setState({headingSubscription: null, watchHeading: null});
+  }
 
   _checkProviderStatus = async () => {
     this.setState({
@@ -819,7 +849,7 @@ class LocationExample extends React.Component {
           <Text>Longitude: {this.state.watchLocation.coords.longitude}</Text>
           <View style={{ padding: 10 }}>
             <Button onPress={this._stopWatchingLocation}>
-              Stop Watching
+              Stop Watching Location
             </Button>
           </View>
         </View>
@@ -832,7 +862,7 @@ class LocationExample extends React.Component {
       );
     }
 
-    return (
+    return(
       <View style={{ padding: 10 }}>
         <Button
           onPress={
@@ -846,12 +876,62 @@ class LocationExample extends React.Component {
     );
   }
 
+  renderWatchCompass() {
+    if (this.state.watchHeading) {
+      return (
+        <View style = {{ padding: 10 }}>
+          <Text>Location.watchHeadingAsync:</Text>
+          <Text>Magnetic North: {this.state.watchHeading.magHeading}</Text>
+          <Text>True North: {this.state.watchHeading.trueHeading}</Text>
+          <Text>Accuracy: {this.state.watchHeading.accuracy}</Text>
+          <View style={{ padding: 10 }}>
+            <Button onPress={this._stopWatchingHeading}>
+              Stop Watching Heading
+            </Button>
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ padding :10 }}>
+        <Button onPress={ this._startWatchingHeading }>
+        Watch my heading (compass)
+        </Button>
+      </View>
+    );
+  }
+
+  renderSingleCompass() {
+    if (this.state.singleHeading) {
+      return (
+        <View style={{ padding: 10 }}>
+          <Text>Location.getHeadingAsync:</Text>
+          <Text>Magnetic North: {this.state.singleHeading.magHeading}</Text>
+          <Text>True North: {this.state.singleHeading.trueHeading}</Text>
+          <Text>Accuracy: {this.state.singleHeading.accuracy}</Text>
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={this._getSingleHeading}>
+          Find my heading (compass) heading
+        </Button>
+      </View>
+    );
+  }
+
   render() {
     return (
       <View>
         {this.props.polyfill ? this.renderProviderStatus() : null}
         {this.renderSingleLocation()}
         {this.renderWatchLocation()}
+        {this.renderSingleCompass()}
+        {this.renderWatchCompass()}
       </View>
     );
   }
