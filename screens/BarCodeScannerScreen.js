@@ -1,9 +1,7 @@
 import React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 
-import { Components } from 'expo';
-
-const { BarCodeScanner } = Components;
+import { BarCodeScanner } from 'expo';
 
 export default class BarcodeScannerExample extends React.Component {
   static route = {
