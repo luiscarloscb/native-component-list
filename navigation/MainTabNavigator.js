@@ -11,6 +11,7 @@ import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
 import ExpoComponentsScreen from '../screens/ExpoComponentsScreen';
 import ExpoApisScreen from '../screens/ExpoApisScreen';
 import SensorScreen from '../screens/SensorScreen';
+import GeocodingScreen from '../screens/GeocodingScreen';
 import GLViewScreen from '../screens/GLViewScreen';
 import FacebookAdsScreen from '../screens/FacebookAdsScreen';
 import ReactNativeCoreScreen from '../screens/ReactNativeCoreScreen';
@@ -64,6 +65,7 @@ const ExpoComponentsStackNavigator = StackNavigator(
 const ExpoApisStackNavigator = StackNavigator(
   {
     ExpoApis: { screen: ExpoApisScreen },
+    Geocoding: { screen: GeocodingScreen },
     Sensor: { screen: SensorScreen },
   },
   StackConfig

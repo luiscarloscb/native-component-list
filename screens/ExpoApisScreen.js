@@ -111,6 +111,7 @@ export default class ExpoApisScreen extends React.Component {
       DocumentPicker: [this._renderDocumentPicker],
       Facebook: [this._renderFacebook],
       Font: [this._renderFont],
+      Geocoding: [this._renderGeocoding],
       Google: [this._renderGoogle],
       ImagePicker: [this._renderImagePicker],
       KeepAwake: [this._renderKeepAwake],
@@ -265,6 +266,16 @@ export default class ExpoApisScreen extends React.Component {
 
   _renderSettings = () => {
     return <SettingsExample />;
+  };
+
+  _renderGeocoding = () => {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button onPress={() => this.props.navigation.navigate('Geocoding')}>
+          Go to Geocoding example
+        </Button>
+      </View>
+    );
   };
 
   _renderWebBrowser = () => {
