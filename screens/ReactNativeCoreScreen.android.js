@@ -117,7 +117,6 @@ export default class ReactNativeCoreScreen extends React.Component {
               onRefresh={this._onRefresh}
             />
           }
-          style={this.props.route.getContentContainerStyle()}
           contentContainerStyle={{ backgroundColor: '#fff' }}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow}
