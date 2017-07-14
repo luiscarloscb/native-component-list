@@ -1225,6 +1225,12 @@ class UtilExample extends React.Component {
         <Text>Locale: {this.state.locale}</Text>
         <Text>Device Country: {this.state.deviceCountry}</Text>
         <Text>Time Zone: {this.state.timeZone}</Text>
+        <Button
+          onPress={async () => {
+            Expo.Util.reload();
+          }}>
+          Util.reload()
+        </Button>
       </View>
     );
   }
