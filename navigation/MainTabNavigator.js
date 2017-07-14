@@ -4,7 +4,7 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import CustomTabBarBottom from './CustomTabBarBottom';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { Colors, Layout } from '../constants';
+import { Colors } from '../constants';
 import NavigationEvents from '../utilities/NavigationEvents';
 
 import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
@@ -17,6 +17,8 @@ import ReactNativeCoreScreen from '../screens/ReactNativeCoreScreen';
 import SVGScreen from '../screens/SVGScreen';
 import LottieScreen from '../screens/LottieScreen';
 import MapsScreen from '../screens/MapsScreen';
+import BasicMaskScreen from '../screens/BasicMaskScreen';
+import MaskGLScreen from '../screens/MaskGLScreen';
 
 const styles = StyleSheet.create({
   tabBar: {
@@ -70,6 +72,8 @@ const ExpoApisStackNavigator = StackNavigator(
 const ReactNativeCoreStackNavigator = StackNavigator(
   {
     ReactNativeCore: { screen: ReactNativeCoreScreen },
+    BasicMaskExample: { screen: BasicMaskScreen },
+    GLMaskExample: { screen: MaskGLScreen },
   },
   StackConfig
 );

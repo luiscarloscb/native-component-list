@@ -59,6 +59,7 @@ export default class ReactNativeCoreScreen extends React.Component {
 
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
+      MaskView: [this._renderMaskView],
       'Vertical ScrollView, RefreshControl': [this._renderRefreshControl],
       ActionSheetIOS: [this._renderActionSheet],
       ActivityIndicator: [this._renderActivityIndicator],
@@ -112,6 +113,20 @@ export default class ReactNativeCoreScreen extends React.Component {
 
   _scrollToTop = () => {
     this._listView.scrollTo({ x: 0, y: 0 });
+  };
+
+  _renderMaskView = () => {
+    return (
+      <View style={{ padding: 10, flexDirection: 'row' }}>
+        <Button
+          onPress={() => this.props.navigation.navigate('BasicMaskExample')}>
+          Basic Mask
+        </Button>
+        <Button onPress={() => this.props.navigation.navigate('GLMaskExample')}>
+          Mask on top of GL
+        </Button>
+      </View>
+    );
   };
 
   _renderRefreshControl = () => {
