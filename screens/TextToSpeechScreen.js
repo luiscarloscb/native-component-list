@@ -7,6 +7,7 @@ const EXAMPLES = [
   { language: 'en', text: 'Hello world' },
   { language: 'es', text: 'Hola mundo' },
   { language: 'en', text: 'Charlie Cheever chased a chortling choosy child' },
+  { language: 'en', text: 'Adam Perry ate a pear in pairs in Paris' },
 ];
 
 export default class TextToSpeechScreen extends React.Component {

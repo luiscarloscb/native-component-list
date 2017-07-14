@@ -19,11 +19,13 @@ import Expo, {
 import Touchable from 'react-native-platform-touchable';
 
 import NavigationEvents from '../utilities/NavigationEvents';
-import Colors from '../constants/Colors';
+import { Colors, Layout } from '../constants';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Expo Components',
+    title: Layout.isSmallDevice
+      ? 'Expo SDK Components'
+      : 'Components in Expo SDK',
   };
 
   state = {
@@ -170,6 +172,7 @@ export default class HomeScreen extends React.Component {
           source={require('../assets/videos/ace.mp4')}
           resizeMode="cover"
           style={{ width: 300, height: 300 }}
+          isMuted={true}
           shouldPlay
           isLooping
         />

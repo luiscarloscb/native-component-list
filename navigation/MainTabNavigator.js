@@ -4,7 +4,7 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import CustomTabBarBottom from './CustomTabBarBottom';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { Colors } from '../constants';
+import { Colors, Layout } from '../constants';
 import NavigationEvents from '../utilities/NavigationEvents';
 
 import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
@@ -108,11 +108,11 @@ const MainTabNavigator = TabNavigator(
       tabBarLabel: () => {
         const { routeName } = navigation.state;
         if (routeName === 'ReactNativeCore') {
-          return 'RN Core';
+          return Layout.isSmallDevice ? 'RN Core' : 'React Native Core';
         } else if (routeName === 'ExpoComponents') {
-          return 'Components';
+          return Layout.isSmallDevice ? 'Components' : 'Expo Components';
         } else if (routeName === 'ExpoApis') {
-          return 'APIs';
+          return Layout.isSmallDevice ? 'APIs' : 'Expo APIs';
         }
       },
       tabBarIcon: ({ focused }) => {
