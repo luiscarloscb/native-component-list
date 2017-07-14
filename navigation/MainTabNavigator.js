@@ -15,6 +15,7 @@ import GeocodingScreen from '../screens/GeocodingScreen';
 import GLViewScreen from '../screens/GLViewScreen';
 import FacebookAdsScreen from '../screens/FacebookAdsScreen';
 import ReactNativeCoreScreen from '../screens/ReactNativeCoreScreen';
+import TextToSpeechScreen from '../screens/TextToSpeechScreen';
 import SVGScreen from '../screens/SVGScreen';
 import LottieScreen from '../screens/LottieScreen';
 import MapsScreen from '../screens/MapsScreen';
@@ -64,6 +65,7 @@ const ExpoComponentsStackNavigator = StackNavigator(
 
 const ExpoApisStackNavigator = StackNavigator(
   {
+    Speech: { screen: TextToSpeechScreen },
     ExpoApis: { screen: ExpoApisScreen },
     Geocoding: { screen: GeocodingScreen },
     Sensor: { screen: SensorScreen },

@@ -18,7 +18,7 @@ const EXAMPLES = [
   { latitude: '0', longitude: '0' },
 ];
 
-export default class BarcodeScannerExample extends React.Component {
+export default class GeocodingScreen extends React.Component {
   static navigationOptions = {
     title: 'Geocoding',
   };
