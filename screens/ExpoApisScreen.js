@@ -115,22 +115,23 @@ export default class ExpoApisScreen extends React.Component {
       Google: [this._renderGoogle],
       ImagePicker: [this._renderImagePicker],
       KeepAwake: [this._renderKeepAwake],
-      NotificationBadge: [this._renderNotificationBadge],
-      Pedometer: [this._renderPedometer],
-      PushNotification: [this._renderPushNotification],
       LocalNotification: [this._renderLocalNotification],
       Location: [this._renderLocation],
       'navigator.geolocation Polyfill (using Location)': [
         this._renderLocationPolyfill,
       ],
+      NotificationBadge: [this._renderNotificationBadge],
+      Pedometer: [this._renderPedometer],
+      PushNotification: [this._renderPushNotification],
+      ScreenOrientation: [this._renderScreenOrientation],
       ...Platform.select({
         android: {
           Settings: [this._renderSettings],
         },
         ios: {},
       }),
-      ScreenOrientation: [this._renderScreenOrientation],
       Sensors: [this._renderSensors],
+      Speech: [this._renderSpeech],
       TouchID: [this._renderTouchID],
       Util: [this._renderUtil],
       WebBrowser: [this._renderWebBrowser],
@@ -273,6 +274,16 @@ export default class ExpoApisScreen extends React.Component {
       <View style={{ padding: 10 }}>
         <Button onPress={() => this.props.navigation.navigate('Geocoding')}>
           Go to Geocoding example
+        </Button>
+      </View>
+    );
+  };
+
+  _renderSpeech = () => {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button onPress={() => this.props.navigation.navigate('Speech')}>
+          Go to Text to Speech example
         </Button>
       </View>
     );

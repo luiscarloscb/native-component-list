@@ -65,10 +65,10 @@ const ExpoComponentsStackNavigator = StackNavigator(
 
 const ExpoApisStackNavigator = StackNavigator(
   {
-    Speech: { screen: TextToSpeechScreen },
     ExpoApis: { screen: ExpoApisScreen },
     Geocoding: { screen: GeocodingScreen },
     Sensor: { screen: SensorScreen },
+    Speech: { screen: TextToSpeechScreen },
   },
   StackConfig
 );

@@ -6,7 +6,7 @@ import { Speech } from 'expo';
 const EXAMPLES = [
   { language: 'en', text: 'Hello world' },
   { language: 'es', text: 'Hola mundo' },
-  { language: 'en', text: 'Charlie Cheever Chased a Chortling Choosy Child' },
+  { language: 'en', text: 'Charlie Cheever chased a chortling choosy child' },
 ];
 
 export default class TextToSpeechScreen extends React.Component {
@@ -18,7 +18,7 @@ export default class TextToSpeechScreen extends React.Component {
     selectedExample: EXAMPLES[0],
     inProgress: false,
     pitch: 1,
-    rate: 1,
+    rate: 0.5,
   };
 
   render() {
@@ -31,6 +31,8 @@ export default class TextToSpeechScreen extends React.Component {
         <View style={styles.examplesContainer}>
           {EXAMPLES.map(this._renderExample)}
         </View>
+
+        <View style={styles.separator} />
 
         <View style={styles.controlRow}>
           <Button
@@ -163,8 +165,8 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: '#eee',
-    marginTop: 10,
-    marginBottom: 5,
+    marginTop: 0,
+    marginBottom: 10,
   },
   headerText: {
     fontSize: 18,
