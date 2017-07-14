@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Native Component List",
+    "description": "This experience shows a bunch of the native components that you can use in React Native core and Expo. Hit the button in the top right for the components in the Expo SDK.",
+    "slug": "native-component-list",
+    "sdkVersion": "19.0.0",
+    "version": "19.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "privacy": "public",
+    "icon": "./assets/icons/icon.png",
+    "notification": {
+      "icon": "./assets/icons/notificationIcon.png",
+      "color": "#000000"
+    },
+    "loading": {
+      "icon": "./assets/icons/loadingIcon.png"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf", "mp4"]
+    },
+    "facebookScheme": "fb1201211719949057",
+    "androidShowExponentNotificationInShellApp": true,
+    "android": {
+      "package": "host.exp.nativecomponentlist",
+      "versionCode": 11,
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyBrUCmrE1soRpQ1S47KYhJkZiqhirusH1o",
+          "certificateHash": "1746BECB2497593B3296903145793BC0BE8C426B"
+        },
+        "googleMaps": {
+          "apiKey":  "AIzaSyBrUCmrE1soRpQ1S47KYhJkZiqhirusH1o"
+        }
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "host.exp.nativecomponentlist",
+      "config": {
+        "usesNonExemptEncryption": false,
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.603386649315-1b2o2gole94qc6h4prj6lvoiueq83se4"
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import Expo, { Icon } from 'expo';
+import Expo from 'expo';
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
@@ -6,7 +6,7 @@ import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
-class AppContainer extends React.Component {
+export default class AppContainer extends React.Component {
   state = {
     appIsReady: false,
   };

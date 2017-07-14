@@ -35,12 +35,10 @@ import Expo, {
 } from 'expo';
 
 import { withNavigation } from '@expo/ex-navigation';
-
 import { MaterialIcons } from '@expo/vector-icons';
 
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
-import Layout from '../constants/Layout';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 DangerZone.Branch.subscribe(bundle => {
@@ -724,8 +722,8 @@ class LocationExample extends React.Component {
     }
 
     const heading = await Location.getHeadingAsync();
-    this.setState({ singleHeading: heading});
-  }
+    this.setState({ singleHeading: heading });
+  };
 
   _startWatchingHeading = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -734,15 +732,15 @@ class LocationExample extends React.Component {
     }
 
     let subscription = await Location.watchHeadingAsync(heading => {
-      this.setState({watchHeading: heading});
+      this.setState({ watchHeading: heading });
     });
-    this.setState({headingSubscription: subscription});
-  }
+    this.setState({ headingSubscription: subscription });
+  };
 
   _stopWatchingHeading = async () => {
     this.state.headingSubscription.remove();
-    this.setState({headingSubscription: null, watchHeading: null});
-  }
+    this.setState({ headingSubscription: null, watchHeading: null });
+  };
 
   _checkProviderStatus = async () => {
     this.setState({
@@ -862,7 +860,7 @@ class LocationExample extends React.Component {
       );
     }
 
-    return(
+    return (
       <View style={{ padding: 10 }}>
         <Button
           onPress={
@@ -879,7 +877,7 @@ class LocationExample extends React.Component {
   renderWatchCompass() {
     if (this.state.watchHeading) {
       return (
-        <View style = {{ padding: 10 }}>
+        <View style={{ padding: 10 }}>
           <Text>Location.watchHeadingAsync:</Text>
           <Text>Magnetic North: {this.state.watchHeading.magHeading}</Text>
           <Text>True North: {this.state.watchHeading.trueHeading}</Text>
@@ -894,9 +892,9 @@ class LocationExample extends React.Component {
     }
 
     return (
-      <View style={{ padding :10 }}>
-        <Button onPress={ this._startWatchingHeading }>
-        Watch my heading (compass)
+      <View style={{ padding: 10 }}>
+        <Button onPress={this._startWatchingHeading}>
+          Watch my heading (compass)
         </Button>
       </View>
     );
@@ -916,8 +914,7 @@ class LocationExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button
-          onPress={this._getSingleHeading}>
+        <Button onPress={this._getSingleHeading}>
           Find my heading (compass) heading
         </Button>
       </View>
