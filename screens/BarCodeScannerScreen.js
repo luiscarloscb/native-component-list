@@ -4,10 +4,8 @@ import { Button, StyleSheet, View } from 'react-native';
 import { BarCodeScanner } from 'expo';
 
 export default class BarcodeScannerExample extends React.Component {
-  static route = {
-    navigationBar: {
-      visible: false,
-    },
+  static navigationOptions = {
+    title: '<BarCodeScanner />',
   };
 
   state = {
@@ -26,8 +24,16 @@ export default class BarcodeScannerExample extends React.Component {
         />
 
         <View style={styles.toolbar}>
-          <Button title="Toggle Flashlight" onPress={this._toggleTorch} />
-          <Button title="Toggle Direction" onPress={this._toggleType} />
+          <Button
+            color="#fff"
+            title="Toggle Flashlight"
+            onPress={this._toggleTorch}
+          />
+          <Button
+            color="#fff"
+            title="Toggle Direction"
+            onPress={this._toggleType}
+          />
         </View>
       </View>
     );
@@ -42,7 +48,7 @@ export default class BarcodeScannerExample extends React.Component {
   };
 
   _handleBarCodeRead = data => {
-    this.props.navigator.pop();
+    this.props.navigation.goBack();
     requestAnimationFrame(() => {
       alert(JSON.stringify(data));
     });
@@ -61,9 +67,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    paddingBottom: 15,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
 });

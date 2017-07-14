@@ -15,11 +15,8 @@ const NUM_POINTS = 1e4;
 const VERT_SIZE = 4 * (4 + 4 + 3);
 
 export default class BasicScene extends React.Component {
-  static route = {
-    navigationBar: {
-      title: 'GLView',
-      translucent: true,
-    },
+  static navigationOptions = {
+    title: '<GLView />',
   };
 
   state = {

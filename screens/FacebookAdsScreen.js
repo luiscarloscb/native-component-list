@@ -23,7 +23,7 @@ AdSettings.addTestDevice(AdSettings.currentDeviceHash);
 
 const adsManager = new NativeAdsManager('1912255062335197_1912257885668248');
 
-const FullNativeAd = withNativeAd(({ nativeAd }) => (
+const FullNativeAd = withNativeAd(({ nativeAd }) =>
   <View style={styles.fullad}>
     {nativeAd.icon &&
       <Image style={styles.icon} source={{ uri: nativeAd.icon }} />}
@@ -38,9 +38,13 @@ const FullNativeAd = withNativeAd(({ nativeAd }) => (
       </View>
     </View>
   </View>
-));
+);
 
 export default class App extends React.Component {
+  static navigationOptions = {
+    title: 'FacebookAds',
+  };
+
   showFullScreenAd = () => {
     InterstitialAdManager.showAd('1912255062335197_1914986612062042')
       .then(didClick => {

@@ -5,10 +5,8 @@ import Svg, { Text } from 'react-native-svg';
 import { Font } from 'expo';
 
 export default class SVGScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: '<Svg>',
-    },
+  static navigationOptions = {
+    title: '<Svg />',
   };
 
   render() {

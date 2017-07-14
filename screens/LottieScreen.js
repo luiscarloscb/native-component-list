@@ -28,9 +28,9 @@ class ExamplePicker extends React.Component {
         }}>
         {Object.keys(this.props.examples)
           .map(name => this.props.examples[name])
-          .map(ex => (
+          .map(ex =>
             <Picker.Item key={ex.name} label={ex.name} value={ex.name} />
-          ))}
+          )}
       </Picker>
     );
   }
@@ -127,10 +127,8 @@ const EXAMPLES = [
 }, {});
 
 export default class LottieScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: '<Lottie>',
-    },
+  static navigationOptions = {
+    title: '<Lottie />',
   };
 
   constructor(props) {

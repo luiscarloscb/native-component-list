@@ -1,15 +1,15 @@
 import React from 'react';
-
 import {
+  ActionSheetIOS,
   ActivityIndicator,
   Alert,
-  DatePickerAndroid,
-  DrawerLayoutAndroid,
+  AlertIOS,
+  DatePickerIOS,
   Image,
   Picker,
-  Platform,
-  ProgressBarAndroid,
+  ProgressViewIOS,
   RefreshControl,
+  SegmentedControlIOS,
   Slider,
   Switch,
   StatusBar,
@@ -18,55 +18,20 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TimePickerAndroid,
   TouchableOpacity,
   TouchableHighlight,
-  TouchableNativeFeedback,
   View,
   WebView,
 } from 'react-native';
+import TouchableBounce from 'react-native/Libraries/Components/Touchable/TouchableBounce';
 
-import TouchableBounce
-  from 'react-native/Libraries/Components/Touchable/TouchableBounce';
-import { withNavigation } from '@expo/ex-navigation';
-
-import { ImagePicker } from 'expo';
-
+import NavigationEvents from '../utilities/NavigationEvents';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
-import Router from '../navigation/Router';
 
-@withNavigation class ExponentButton extends React.Component {
-  _handlePress = () => {
-    this.props.navigator.push(Router.getRoute('exponent'));
-  };
-
-  render() {
-    return (
-      <TouchableOpacity
-        onPress={this._handlePress}
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginRight: 15,
-          paddingTop: 2,
-        }}>
-        <Image
-          source={require('../assets/images/exponent-icon.png')}
-          style={{ width: 21, height: 17 }}
-        />
-      </TouchableOpacity>
-    );
-  }
-}
-
-export default class HomeScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: 'Native components Android',
-      renderRight: () => <ExponentButton />,
-    },
+export default class ReactNativeCoreScreen extends React.Component {
+  static navigationOptions = {
+    title: 'React Native Core',
   };
 
   state = {
@@ -77,31 +42,39 @@ export default class HomeScreen extends React.Component {
     }),
   };
 
-  onRefresh = () => {
-    this.setState({ isRefreshing: true });
-    setTimeout(() => {
-      this.setState({ isRefreshing: false });
-    }, 3000);
-  };
+  componentWillMount() {
+    this._tabPressedListener = NavigationEvents.addListener(
+      'selectedTabPressed',
+      route => {
+        if (route.key === 'ReactNativeCore') {
+          this._scrollToTop();
+        }
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this._tabPressedListener.remove();
+  }
 
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
       'Vertical ScrollView, RefreshControl': [this._renderRefreshControl],
-      DrawerLayoutAndroid: [this._renderDrawerLayout],
+      ActionSheetIOS: [this._renderActionSheet],
       ActivityIndicator: [this._renderActivityIndicator],
       Alert: [this._renderAlert],
-      DatePickerAndroid: [this._renderDatePicker],
-      TimerPickerAndroid: [this._renderTimePicker],
+      DatePickerIOS: [this._renderDatePicker],
       'Horizontal ScrollView': [this._renderHorizontalScrollView],
-      ImagePicker: [this._renderImagePicker],
       Picker: [this._renderPicker],
-      ProgressBar: [this._renderProgressBar],
+      ProgressView: [this._renderProgressView],
+      SegmentedControl: [this._renderSegmentedControl],
       Slider: [this._renderSlider],
       StatusBar: [this._renderStatusBar],
       Switch: [this._renderSwitch],
       Text: [this._renderText],
       TextInput: [this._renderTextInput],
       Touchables: [this._renderTouchables],
+      // 'View': [this._renderView],
       WebView: [this._renderWebView],
     });
 
@@ -109,56 +82,88 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    const renderNavigationView = () => (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text>DrawerLayoutAndroid</Text>
-      </View>
-    );
-
     return (
-      <DrawerLayoutAndroid
-        drawerWidth={300}
-        drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={renderNavigationView}>
-        <ListView
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.isRefreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-          style={this.props.route.getContentContainerStyle()}
-          contentContainerStyle={{ backgroundColor: '#fff' }}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow}
-          renderSectionHeader={this._renderSectionHeader}
-        />
-      </DrawerLayoutAndroid>
+      <ListView
+        ref={view => {
+          this._listView = view;
+        }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+        contentContainerStyle={{ backgroundColor: '#fff' }}
+        dataSource={this.state.dataSource}
+        renderRow={this._renderRow}
+        renderSectionHeader={this._renderSectionHeader}
+      />
     );
   }
+
+  _onRefresh = () => {
+    this.setState({ isRefreshing: true });
+    setTimeout(() => {
+      this.setState({ isRefreshing: false });
+    }, 3000);
+  };
+
+  _scrollToTop = () => {
+    this._listView.scrollTo({ x: 0, y: 0 });
+  };
 
   _renderRefreshControl = () => {
     return (
       <View style={{ padding: 10 }}>
         <Text>
-          This screen is a vertical ScrollView, try the pull to refresh gesture to see the RefreshControl.
+          This screen is a vertical ScrollView, try the pull to refresh gesture
+          to see the RefreshControl.
         </Text>
       </View>
     );
   };
 
-  _renderDrawerLayout = () => {
+  _renderActionSheet = () => {
+    const showActionSheet = () => {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Option 0', 'Option 1', 'Delete', 'Cancel'],
+          cancelButtonIndex: 3,
+          destructiveButtonIndex: 2,
+        },
+        buttonIndex => {
+          console.log({ buttonIndex });
+        }
+      );
+    };
+
+    const showShareSheet = () => {
+      ActionSheetIOS.showShareActionSheetWithOptions(
+        {
+          url: 'https://expo.io',
+          message: 'message to go with the shared url',
+          subject: 'a subject to go in the email heading',
+        },
+        error => alert(error),
+        (success, method) => {
+          if (success) {
+            alert(`Shared via ${method}`);
+          }
+        }
+      );
+    };
+
     return (
-      <View style={{ padding: 10 }}>
-        <Text>Swipe from the left of the screen to see the drawer.</Text>
+      <View style={{ flexDirection: 'row', padding: 10 }}>
+        <Button onPress={showActionSheet}>
+          Action sheet
+        </Button>
+
+        <Button onPress={showShareSheet}>
+          Share sheet
+        </Button>
       </View>
     );
   };
@@ -171,14 +176,32 @@ export default class HomeScreen extends React.Component {
         <Spacer />
         <ActivityIndicator size="large" />
         <Spacer />
-        <ActivityIndicator size="small" color="#888" />
+        <ActivityIndicator size="small" color={Colors.tintColor} />
         <Spacer />
-        <ActivityIndicator size="large" color="#888" />
+        <ActivityIndicator size="large" color={Colors.tintColor} />
+        <Spacer />
+        <ActivityIndicator
+          size="small"
+          animating={false}
+          hidesWhenStopped={false}
+        />
+        <Spacer />
+        <ActivityIndicator
+          size="large"
+          animating={false}
+          hidesWhenStopped={false}
+        />
       </View>
     );
   };
 
   _renderAlert = () => {
+    const showPrompt = () => {
+      AlertIOS.prompt('Enter a value', null, text =>
+        console.log(`You entered ${text}`)
+      );
+    };
+
     const showAlert = () => {
       Alert.alert('Alert Title', 'My Alert Msg', [
         {
@@ -196,6 +219,10 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={{ flexDirection: 'row', padding: 10 }}>
+        <Button onPress={showPrompt}>
+          Prompt for a value
+        </Button>
+
         <Button onPress={showAlert}>
           Give me some options
         </Button>
@@ -204,53 +231,7 @@ export default class HomeScreen extends React.Component {
   };
 
   _renderDatePicker = () => {
-    const showDatePicker = async () => {
-      try {
-        const { action, year, month, day } = await DatePickerAndroid.open({
-          // Use `new Date()` for current date.
-          // May 25 2020. Month 0 is January.
-          date: new Date(2020, 4, 25),
-        });
-        if (action !== DatePickerAndroid.dismissedAction) {
-          // Selected year, month (0-11), day
-        }
-      } catch ({ code, message }) {
-        console.warn('Cannot open date picker', message);
-      }
-    };
-
-    return (
-      <View style={{ flexDirection: 'row', padding: 10 }}>
-        <Button onPress={showDatePicker}>
-          Show date picker
-        </Button>
-      </View>
-    );
-  };
-
-  _renderTimePicker = () => {
-    const showTimePicker = async () => {
-      try {
-        const { action, hour, minute } = await TimePickerAndroid.open({
-          hour: 14,
-          minute: 0,
-          is24Hour: false, // Will display '2 PM'
-        });
-        if (action !== TimePickerAndroid.dismissedAction) {
-          // Selected hour (0-23), minute (0-59)
-        }
-      } catch ({ code, message }) {
-        console.warn('Cannot open time picker', message);
-      }
-    };
-
-    return (
-      <View style={{ flexDirection: 'row', padding: 10 }}>
-        <Button onPress={showTimePicker}>
-          Show time picker
-        </Button>
-      </View>
-    );
+    return <DatePickerExample />;
   };
 
   _renderHorizontalScrollView = () => {
@@ -280,39 +261,17 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  _renderImagePicker = () => {
-    const showCamera = async () => {
-      let result = await ImagePicker.launchCameraAsync({});
-    };
-
-    const showPhotos = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({});
-    };
-
-    return (
-      <View style={{ flexDirection: 'row', padding: 10 }}>
-        <Button onPress={showCamera}>
-          Open camera
-        </Button>
-
-        <Button onPress={showPhotos}>
-          Open photos
-        </Button>
-      </View>
-    );
-  };
-
   _renderPicker = () => {
     return <PickerExample />;
   };
 
-  _renderProgressBar = () => {
+  _renderProgressView = () => {
     return (
       <View style={{ padding: 10, paddingBottom: 30 }}>
-        <ProgressBarExample initialProgress={0} />
-        <ProgressBarExample progressTintColor="red" initialProgress={0.4} />
-        <ProgressBarExample progressTintColor="orange" initialProgress={0.6} />
-        <ProgressBarExample progressTintColor="yellow" initialProgress={0.8} />
+        <ProgressViewExample initialProgress={0} />
+        <ProgressViewExample progressTintColor="red" initialProgress={0.4} />
+        <ProgressViewExample progressTintColor="orange" initialProgress={0.6} />
+        <ProgressViewExample progressTintColor="yellow" initialProgress={0.8} />
       </View>
     );
   };
@@ -322,7 +281,11 @@ export default class HomeScreen extends React.Component {
   };
 
   _renderSlider = () => {
-    return <SliderExample />;
+    return (
+      <View style={{ padding: 10 }}>
+        <SliderExample />
+      </View>
+    );
   };
 
   _renderStatusBar = () => {
@@ -361,13 +324,15 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={{ padding: 10 }}>
         <Text>
-          All text in React Native on iOS uses the native text component and supports a bunch of useful properties.
+          All text in React Native on iOS uses the native text component and
+          supports a bunch of useful properties.
         </Text>
         <Text style={linkStyle} onPress={() => alert('pressed!')}>
           Press on this!
         </Text>
         <Text numberOfLines={1} ellipsizeMode="tail">
-          It's easy to limit the number of lines that some text can span and ellipsize it
+          It's easy to limit the number of lines that some text can span and
+          ellipsize it
         </Text>
       </View>
     );
@@ -379,8 +344,8 @@ export default class HomeScreen extends React.Component {
 
   _renderTouchables = () => {
     const buttonStyle = {
-      paddingHorizontal: 20,
-      paddingVertical: 15,
+      paddingHorizontal: 25,
+      paddingVertical: 20,
       marginRight: 10,
       backgroundColor: Colors.tintColor,
       borderRadius: 5,
@@ -391,37 +356,32 @@ export default class HomeScreen extends React.Component {
     };
 
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ padding: 10, flexDirection: 'row', flex: 1 }}>
-          <TouchableHighlight
-            underlayColor="rgba(1, 1, 255, 0.9)"
-            style={buttonStyle}
-            onPress={() => {}}>
-            <Text style={buttonText}>Highlight!</Text>
-          </TouchableHighlight>
+      <View style={{ padding: 10, flexDirection: 'row', flex: 1 }}>
+        <TouchableHighlight
+          underlayColor="rgba(1, 1, 255, 0.9)"
+          style={buttonStyle}
+          onPress={() => {}}>
+          <Text style={buttonText}>Highlight!</Text>
+        </TouchableHighlight>
 
-          <TouchableOpacity style={buttonStyle} onPress={() => {}}>
-            <Text style={buttonText}>Opacity!</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={buttonStyle} onPress={() => {}}>
+          <Text style={buttonText}>Opacity!</Text>
+        </TouchableOpacity>
 
-        <View style={{ padding: 10, flexDirection: 'row', flex: 1 }}>
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple('#fff', false)}
-            onPress={() => {}}
-            delayPressIn={0}>
-            <View style={buttonStyle}>
-              <Text style={buttonText}>Native feedback!</Text>
-            </View>
-          </TouchableNativeFeedback>
-
-          <TouchableBounce style={buttonStyle} onPress={() => {}}>
-            <Text style={buttonText}>Bounce!</Text>
-          </TouchableBounce>
-        </View>
+        <TouchableBounce style={buttonStyle} onPress={() => {}}>
+          <Text style={buttonText}>Bounce!</Text>
+        </TouchableBounce>
       </View>
     );
   };
+
+  // _renderView = () => {
+  //   // Don't know what to put here
+  //   return (
+  //     <View>
+  //     </View>
+  //   );
+  // }
 
   _renderWebView = () => {
     return (
@@ -469,7 +429,7 @@ class DatePickerExample extends React.Component {
 
   render() {
     return (
-      <DatePickerAndroid
+      <DatePickerIOS
         date={this.state.date}
         mode="datetime"
         timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
@@ -502,7 +462,7 @@ class PickerExample extends React.Component {
   }
 }
 
-class ProgressBarExample extends React.Component {
+class ProgressViewExample extends React.Component {
   constructor(props) {
     super(props);
 
@@ -516,27 +476,64 @@ class ProgressBarExample extends React.Component {
   }
 
   progressLoop() {
-    setTimeout(() => {
-      this.setState({
-        progress: this.state.progress === 1
-          ? 0
-          : Math.min(1, this.state.progress + 0.01),
-      });
-
-      this.progressLoop();
-    }, 17 * 2);
+    // setTimeout(() => {
+    //   this.setState({
+    //     progress: this.state.progress === 1
+    //       ? 0
+    //       : Math.min(1, this.state.progress + 0.01),
+    //   });
+    //   this.progressLoop();
+    // }, 17 * 2);
   }
 
   render() {
     const progressStyle = { marginTop: 20 };
 
     return (
-      <ProgressBarAndroid
-        styleAttr="Horizontal"
+      <ProgressViewIOS
         style={progressStyle}
-        color={this.props.progressTintColor}
+        progressTintColor={this.props.progressTintColor}
         progress={this.state.progress}
       />
+    );
+  }
+}
+
+class SegmentedControlExample extends React.Component {
+  state = {
+    selectedIndex: 0,
+  };
+
+  render() {
+    let tintColor;
+    switch (this.state.selectedIndex) {
+      case 0:
+        tintColor = 'black';
+        break;
+      case 1:
+        tintColor = Colors.tintColor;
+        break;
+      case 2:
+        tintColor = 'green';
+        break;
+      case 3:
+        tintColor = 'purple';
+        break;
+    }
+
+    return (
+      <View style={{ margin: 10 }}>
+        <SegmentedControlIOS
+          values={['One', 'Two', 'Three', 'Four']}
+          tintColor={tintColor}
+          selectedIndex={this.state.selectedIndex}
+          onChange={event => {
+            this.setState({
+              selectedIndex: event.nativeEvent.selectedSegmentIndex,
+            });
+          }}
+        />
+      </View>
     );
   }
 }
@@ -562,18 +559,13 @@ class SliderExample extends React.Component {
 
     return (
       <View>
-        <View style={{ padding: 10 }}>
-          <Text style={textStyle}>
-            Value: {this.state.value && +this.state.value.toFixed(3)}
-          </Text>
-        </View>
-
+        <Text style={textStyle}>
+          Value: {this.state.value && +this.state.value.toFixed(3)}
+        </Text>
         <Slider
           {...this.props}
           onValueChange={value => this.setState({ value: value })}
         />
-
-        <View style={{ marginBottom: 10 }} />
       </View>
     );
   }
@@ -590,7 +582,7 @@ class SwitchExample extends React.Component {
       <View style={{ flexDirection: 'row', padding: 10 }}>
         <Switch
           onValueChange={value => this.setState({ falseSwitchIsOn: value })}
-          style={{ marginRight: 10 }}
+          style={{ marginBottom: 10, marginRight: 10 }}
           value={this.state.falseSwitchIsOn}
         />
         <Switch

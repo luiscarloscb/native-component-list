@@ -19,18 +19,13 @@ const REGION = {
 };
 
 export default class MapsScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: 'Maps',
-    },
+  static navigationOptions = {
+    title: '<MapView />',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isGoogleMap: false,
-    };
-  }
+  state = {
+    isGoogleMap: false,
+  };
 
   render() {
     let providerProps = this.state.isGoogleMap ? { provider: 'google' } : {};
@@ -81,10 +76,11 @@ export default class MapsScreen extends React.Component {
   _animateToRandomCoord = () => {
     if (this._mapView) {
       this._mapView.animateToCoordinate({
-        latitude: REGION.latitude +
-          (Math.random() - 0.5) * (REGION.latitudeDelta / 2),
-        longitude: REGION.longitude +
-          (Math.random() - 0.5) * (REGION.longitudeDelta / 2),
+        latitude:
+          REGION.latitude + (Math.random() - 0.5) * (REGION.latitudeDelta / 2),
+        longitude:
+          REGION.longitude +
+            (Math.random() - 0.5) * (REGION.longitudeDelta / 2),
       });
     }
   };

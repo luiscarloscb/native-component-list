@@ -1,7 +1,7 @@
 import { createRouter } from '@expo/ex-navigation';
 
 import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
-import ExponentScreen from '../screens/ExponentScreen';
+import ExpoScreen from '../screens/ExpoScreen';
 import SensorScreen from '../screens/SensorScreen';
 import GLViewScreen from '../screens/GLViewScreen';
 import FacebookAdsScreen from '../screens/FacebookAdsScreen';
@@ -12,7 +12,7 @@ import MapsScreen from '../screens/MapsScreen';
 
 export default createRouter(() => ({
   barCodeScanner: () => BarCodeScannerScreen,
-  exponent: () => ExponentScreen,
+  expo: () => ExpoScreen,
   glView: () => GLViewScreen,
   facebookAds: () => FacebookAdsScreen,
   home: () => HomeScreen,

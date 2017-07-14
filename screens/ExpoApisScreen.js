@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Animated,
   AppState,
   Image,
   ListView,
@@ -10,34 +9,29 @@ import {
   Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   ToastAndroid,
 } from 'react-native';
-
 import Expo, {
-  BlurView,
   Constants,
   Contacts,
   DangerZone,
   DocumentPicker,
   Font,
   KeepAwake,
-  LinearGradient,
   Location,
   IntentLauncherAndroid,
   Notifications,
   Pedometer,
   Permissions,
   ScreenOrientation,
-  Video,
   WebBrowser,
 } from 'expo';
-
-import { withNavigation } from '@expo/ex-navigation';
+import Touchable from 'react-native-platform-touchable';
+import { withNavigation } from 'react-navigation';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import Alerts from '../constants/Alerts';
+import NavigationEvents from '../utilities/NavigationEvents';
 import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
@@ -47,12 +41,9 @@ DangerZone.Branch.subscribe(bundle => {
   }
 });
 
-export default class HomeScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: 'Built into Expo',
-      translucent: true,
-    },
+export default class ExpoApisScreen extends React.Component {
+  static navigationOptions = {
+    title: 'APIs in Expo SDK',
   };
 
   state = {
@@ -66,10 +57,20 @@ export default class HomeScreen extends React.Component {
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );
+
+    this._tabPressedListener = NavigationEvents.addListener(
+      'selectedTabPressed',
+      route => {
+        if (route.key === 'ExpoApis') {
+          this._scrollToTop();
+        }
+      }
+    );
   }
 
   componentWillUnmount() {
     this._notificationSubscription && this._notificationSubscription.remove();
+    this._tabPressedListener.remove();
   }
 
   _handleNotification = notification => {
@@ -99,34 +100,23 @@ export default class HomeScreen extends React.Component {
       }
     }
 
-    this.props.navigator.showLocalAlert(message, Alerts.notice);
+    alert(message);
   };
 
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
-      ...Platform.select({
-        ios: {
-          BlurView: [this._renderBlurView],
-        },
-        android: {},
-      }),
-      BarCodeScanner: [this._renderBarCodeScanner],
       Constants: [this._renderConstants],
       Contacts: [this._renderContacts],
       DocumentPicker: [this._renderDocumentPicker],
-      WebGL: [this._renderWebGL],
-      FacebookAds: [this._renderFacebookAds],
       Facebook: [this._renderFacebook],
-      Google: [this._renderGoogle],
       Font: [this._renderFont],
+      Google: [this._renderGoogle],
+      ImagePicker: [this._renderImagePicker],
       KeepAwake: [this._renderKeepAwake],
-      Lottie: [this._renderLottie],
-      Map: [this._renderMap],
       NotificationBadge: [this._renderNotificationBadge],
       Pedometer: [this._renderPedometer],
       PushNotification: [this._renderPushNotification],
       LocalNotification: [this._renderLocalNotification],
-      LinearGradient: [this._renderLinearGradient],
       Location: [this._renderLocation],
       'navigator.geolocation Polyfill (using Location)': [
         this._renderLocationPolyfill,
@@ -139,16 +129,37 @@ export default class HomeScreen extends React.Component {
       }),
       ScreenOrientation: [this._renderScreenOrientation],
       Sensors: [this._renderSensors],
-      Svg: [this._renderSvg],
       TouchID: [this._renderTouchID],
       Util: [this._renderUtil],
-      Video: [this._renderVideo],
-      Gif: [this._renderGif],
       WebBrowser: [this._renderWebBrowser],
     });
 
     this.setState({ dataSource });
   }
+
+  _renderImagePicker = () => {
+    const showCamera = async () => {
+      let result = await ImagePicker.launchCameraAsync({});
+      alert(JSON.stringify(result));
+    };
+
+    const showPhotos = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({});
+      alert(JSON.stringify(result));
+    };
+
+    return (
+      <View style={{ flexDirection: 'row', padding: 10 }}>
+        <Button onPress={showCamera}>
+          Open camera
+        </Button>
+
+        <Button onPress={showPhotos}>
+          Open photos
+        </Button>
+      </View>
+    );
+  };
 
   _renderScreenOrientation = () => {
     return (
@@ -167,95 +178,12 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  _renderMap = () => {
-    return (
-      <View style={{ padding: 10 }}>
-        <Button
-          onPress={() => {
-            this.props.navigator.push('maps');
-          }}>
-          Open Maps Example
-        </Button>
-      </View>
-    );
-  };
-
-  _renderSvg = () => {
-    return (
-      <View style={{ padding: 10 }}>
-        <Button
-          onPress={() => {
-            this.props.navigator.push('svg');
-          }}>
-          Open Svg example
-        </Button>
-      </View>
-    );
-  };
-
-  _renderLottie = () => {
-    return (
-      <View style={{ padding: 10 }}>
-        <Button
-          onPress={() => {
-            this.props.navigator.push('lottie');
-          }}>
-          Open Lottie example
-        </Button>
-      </View>
-    );
-  };
-
   _renderPedometer = () => {
     return <PedometerExample />;
   };
 
-  _renderBarCodeScanner = () => {
-    let _maybeNavigateToBarCodeScanner = async () => {
-      let { status } = await Permissions.askAsync(Permissions.CAMERA);
-
-      if (status === 'granted') {
-        this.props.navigator.push('barCodeScanner');
-      } else {
-        alert('Denied access to camera!');
-      }
-    };
-
-    return (
-      <View style={{ padding: 10 }}>
-        <Button onPress={_maybeNavigateToBarCodeScanner}>
-          Open bar code scanner
-        </Button>
-      </View>
-    );
-  };
-
   _renderDocumentPicker = () => {
     return <DocumentPickerExample />;
-  };
-
-  _renderWebGL = () => {
-    return (
-      <View style={{ padding: 10 }}>
-        <Button onPress={() => this.props.navigator.push('glView')}>
-          Open WebGL Example
-        </Button>
-      </View>
-    );
-  };
-
-  _renderFacebookAds = () => {
-    return (
-      <View style={{ padding: 10 }}>
-        <Button onPress={() => this.props.navigator.push('facebookAds')}>
-          Open Facebook Ads Example
-        </Button>
-      </View>
-    );
-  };
-
-  _renderBlurView = () => {
-    return <BlurViewExample />;
   };
 
   _renderConstants = () => {
@@ -306,10 +234,6 @@ export default class HomeScreen extends React.Component {
     return <KeepAwakeExample />;
   };
 
-  _renderLinearGradient = () => {
-    return <LinearGradientExample />;
-  };
-
   _renderNotificationBadge = () => {
     return <NotificationBadgeExample />;
   };
@@ -342,43 +266,6 @@ export default class HomeScreen extends React.Component {
     return <SettingsExample />;
   };
 
-  _renderVideo = () => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          padding: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Video
-          source={require('../assets/videos/ace.mp4')}
-          resizeMode="cover"
-          style={{ width: 300, height: 300 }}
-          shouldPlay
-          isLooping
-        />
-      </View>
-    );
-  };
-
-  _renderGif = () => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          padding: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/cat.gif' }}
-          style={{ height: 140, width: 200 }}
-        />
-      </View>
-    );
-  };
-
   _renderWebBrowser = () => {
     return (
       <View style={{ padding: 10 }}>
@@ -405,10 +292,12 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <ListView
+        ref={view => {
+          this._listView = view;
+        }}
         removeClippedSubviews={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
-        style={this.props.route.getContentContainerStyle()}
         contentContainerStyle={{ backgroundColor: '#fff' }}
         dataSource={this.state.dataSource}
         renderRow={this._renderRow}
@@ -416,6 +305,10 @@ export default class HomeScreen extends React.Component {
       />
     );
   }
+
+  _scrollToTop = () => {
+    this._listView.scrollTo({ x: 0, y: 0 });
+  };
 
   _renderRow = renderRowFn => {
     return (
@@ -973,7 +866,7 @@ class SensorsExample extends React.Component {
   render() {
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={() => this.props.navigator.push('sensor')}>
+        <Button onPress={() => this.props.navigation.navigate('Sensor')}>
           Try out sensors (Gyroscope, Accelerometer)
         </Button>
       </View>
@@ -1207,54 +1100,6 @@ class LocalNotificationExample extends React.Component {
   };
 }
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-class BlurViewExample extends React.Component {
-  state = {
-    intensity: new Animated.Value(0),
-  };
-
-  componentDidMount() {
-    this._animate();
-  }
-
-  _animate = () => {
-    let { intensity } = this.state;
-    let animateInConfig = {
-      duration: 2500,
-      toValue: 100,
-      isInteraction: false,
-    };
-    let animateOutconfig = { duration: 2500, toValue: 0, isInteraction: false };
-
-    Animated.timing(intensity, animateInConfig).start(value => {
-      Animated.timing(intensity, animateOutconfig).start(this._animate);
-    });
-  };
-
-  render() {
-    const uri =
-      'https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png';
-
-    return (
-      <View
-        style={{
-          flex: 1,
-          padding: 50,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image style={{ width: 180, height: 180 }} source={{ uri }} />
-
-        <AnimatedBlurView
-          tint="default"
-          intensity={this.state.intensity}
-          style={StyleSheet.absoluteFill}
-        />
-      </View>
-    );
-  }
-}
-
 class FacebookLoginExample extends React.Component {
   render() {
     let permissions = ['public_profile', 'email', 'user_friends'];
@@ -1350,12 +1195,6 @@ class GoogleLoginExample extends React.Component {
   };
 }
 
-function incrementColor(color, step) {
-  const intColor = parseInt(color.substr(1), 16);
-  const newIntColor = (intColor + step).toString(16);
-  return `#${'0'.repeat(6 - newIntColor.length)}${newIntColor}`;
-}
-
 class UtilExample extends React.Component {
   state = {
     locale: null,
@@ -1390,58 +1229,11 @@ class UtilExample extends React.Component {
   }
 }
 
-class LinearGradientExample extends React.Component {
-  state = {
-    count: 0,
-    colorTop: '#000000',
-    colorBottom: '#cccccc',
-  };
-
-  componentDidMount() {
-    this._interval = setInterval(() => {
-      this.setState({
-        count: this.state.count + 1,
-        colorTop: incrementColor(this.state.colorTop, 1),
-        colorBottom: incrementColor(this.state.colorBottom, -1),
-      });
-    }, 100);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this._interval);
-  }
-
-  render() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingVertical: 10,
-        }}>
-        <LinearGradient
-          colors={[this.state.colorTop, this.state.colorBottom]}
-          style={{ width: 200, height: 200 }}
-        />
-        <Text style={{ color: this.state.colorTop }}>
-          {this.state.colorTop}
-        </Text>
-        <Text style={{ color: this.state.colorBottom }}>
-          {this.state.colorBottom}
-        </Text>
-      </View>
-    );
-  }
-}
-
 function Button(props) {
   return (
-    <TouchableOpacity
-      onPress={props.onPress}
-      style={[styles.button, props.style]}>
+    <Touchable onPress={props.onPress} style={[styles.button, props.style]}>
       <Text style={styles.buttonText}>{props.children}</Text>
-    </TouchableOpacity>
+    </Touchable>
   );
 }
 

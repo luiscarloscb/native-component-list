@@ -4,10 +4,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer, Gyroscope } from 'expo';
 
 export default class SensorScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      title: 'Sensors',
-    },
+  static navigationOptions = {
+    title: 'Sensors',
   };
 
   render() {
