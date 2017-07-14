@@ -23,7 +23,7 @@ import Colors from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Components in Expo SDK',
+    title: 'Expo Components',
   };
 
   state = {

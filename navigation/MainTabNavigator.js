@@ -100,11 +100,11 @@ const MainTabNavigator = TabNavigator(
       tabBarLabel: () => {
         const { routeName } = navigation.state;
         if (routeName === 'ReactNativeCore') {
-          return 'React Native Core';
+          return 'RN Core';
         } else if (routeName === 'ExpoComponents') {
-          return 'Expo Components';
+          return 'Components';
         } else if (routeName === 'ExpoApis') {
-          return 'Expo APIs';
+          return 'APIs';
         }
       },
       tabBarIcon: ({ focused }) => {
