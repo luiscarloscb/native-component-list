@@ -20,6 +20,7 @@ import Expo, {
   Font,
   KeepAwake,
   Location,
+  ImagePicker,
   IntentLauncherAndroid,
   Notifications,
   Pedometer,
