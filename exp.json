@@ -7,13 +7,13 @@
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "privacy": "public",
-  "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
+  "icon": "./assets/icons/icon.png",
   "notification": {
-    "icon": "https://s3.amazonaws.com/exp-us-standard/placeholder-push-icon-blue-circle.png",
+    "icon": "./assets/icons/notificationIcon.png",
     "color": "#000000"
   },
   "loading": {
-    "icon": "https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png"
+    "icon": "./assets/icons/loadingIcon.png"
   },
   "packagerOpts": {
     "assetExts": ["ttf", "mp4"]
