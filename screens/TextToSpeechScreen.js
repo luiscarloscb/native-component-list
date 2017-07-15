@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text, Button, Platform, StyleSheet, View } from 'react-native';
-
 import { Speech } from 'expo';
+import Touchable from 'react-native-platform-touchable';
+
+import { Colors } from '../constants';
 
 const EXAMPLES = [
   { language: 'en', text: 'Hello world' },
@@ -9,6 +11,26 @@ const EXAMPLES = [
   { language: 'en', text: 'Charlie Cheever chased a chortling choosy child' },
   { language: 'en', text: 'Adam Perry ate a pear in pairs in Paris' },
 ];
+
+class AmountControlButton extends React.Component {
+  render() {
+    return (
+      <Touchable
+        onPress={this.props.disabled ? null : this.props.onPress}
+        hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}>
+        <Text
+          style={{
+            color: this.props.disabled ? '#ccc' : Colors.tintColor,
+            fontWeight: 'bold',
+            paddingHorizontal: 5,
+            fontSize: 18,
+          }}>
+          {this.props.title}
+        </Text>
+      </Touchable>
+    );
+  }
+}
 
 export default class TextToSpeechScreen extends React.Component {
   static navigationOptions = {
@@ -19,7 +41,7 @@ export default class TextToSpeechScreen extends React.Component {
     selectedExample: EXAMPLES[0],
     inProgress: false,
     pitch: 1,
-    rate: 0.5,
+    rate: 0.75,
   };
 
   render() {
@@ -49,39 +71,39 @@ export default class TextToSpeechScreen extends React.Component {
           />
         </View>
 
+        <Text style={styles.controlText}>
+          Pitch: {this.state.pitch.toFixed(2)}
+        </Text>
         <View style={styles.controlRow}>
-          <Text style={styles.controlText}>
-            Pitch: {this.state.pitch.toFixed(2)}
-          </Text>
-          <Button
+          <AmountControlButton
             onPress={this._increasePitch}
-            title="+"
+            title="Increase"
             disabled={this.state.inProgress}
           />
 
           <Text>/</Text>
 
-          <Button
+          <AmountControlButton
             onPress={this._decreasePitch}
-            title="-"
+            title="Decrease"
             disabled={this.state.inProgress}
           />
         </View>
 
+        <Text style={styles.controlText}>
+          Rate: {this.state.rate.toFixed(2)}
+        </Text>
         <View style={styles.controlRow}>
-          <Text style={styles.controlText}>
-            Rate: {this.state.rate.toFixed(2)}
-          </Text>
-          <Button
+          <AmountControlButton
             onPress={this._increaseRate}
-            title="+"
+            title="Increase"
             disabled={this.state.inProgress}
           />
 
           <Text>/</Text>
-          <Button
+          <AmountControlButton
             onPress={this._decreaseRate}
-            title="-"
+            title="Decrease"
             disabled={this.state.inProgress}
           />
         </View>
@@ -145,12 +167,18 @@ export default class TextToSpeechScreen extends React.Component {
     let isSelected = selectedExample === example;
 
     return (
-      <Text
+      <Touchable
         key={i}
-        onPress={() => this._selectExample(example)}
-        style={[styles.exampleText, isSelected && styles.selectedExampleText]}>
-        {example.text} ({example.language})
-      </Text>
+        hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
+        onPress={() => this._selectExample(example)}>
+        <Text
+          style={[
+            styles.exampleText,
+            isSelected && styles.selectedExampleText,
+          ]}>
+          {example.text} ({example.language})
+        </Text>
+      </Touchable>
     );
   };
 
@@ -167,7 +195,7 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#eee',
     marginTop: 0,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   headerText: {
     fontSize: 18,
@@ -184,10 +212,12 @@ const styles = StyleSheet.create({
   exampleText: {
     fontSize: 15,
     color: '#ccc',
-    marginBottom: 10,
+    marginVertical: 10,
   },
   examplesContainer: {
-    padding: 20,
+    paddingTop: 15,
+    paddingBottom: 10,
+    paddingHorizontal: 20,
   },
   selectedExampleText: {
     color: 'black',
@@ -205,6 +235,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
       },
     }),
+  },
+  controlText: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginTop: 5,
+    textAlign: 'center',
   },
   controlRow: {
     flexDirection: 'row',

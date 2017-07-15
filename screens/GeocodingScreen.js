@@ -7,15 +7,16 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import Touchable from 'react-native-platform-touchable';
 
-import { Location } from 'expo';
+import { Permissions, Location } from 'expo';
 
 const EXAMPLES = [
   '1 Hacker Way',
-  { latitude: '49.28', longitude: '-123.12' },
+  { latitude: 49.28, longitude: -123.12 },
   'Palo Alto Caltrain Station (this one will error)',
   'Rogers Arena, Vancouver',
-  { latitude: '0', longitude: '0' },
+  { latitude: 0, longitude: 0 },
 ];
 
 export default class GeocodingScreen extends React.Component {
@@ -28,6 +29,10 @@ export default class GeocodingScreen extends React.Component {
     result: '',
     inProgress: false,
   };
+
+  componentDidMount() {
+    Permissions.askAsync(Permissions.LOCATION);
+  }
 
   render() {
     let { selectedExample } = this.state;
@@ -42,18 +47,22 @@ export default class GeocodingScreen extends React.Component {
           {EXAMPLES.map(this._renderExample)}
         </View>
 
-        <Button
-          onPress={this._attemptGeocodeAsync}
-          title="Geocode"
-          disabled={typeof selectedExample !== 'string'}
-          style={styles.button}
-        />
-        <Button
-          onPress={this._attemptReverseGeocodeAsync}
-          title="Reverse Geocode"
-          disabled={typeof selectedExample !== 'object'}
-          style={styles.button}
-        />
+        <View style={styles.separator} />
+
+        <View style={styles.actionContainer}>
+          <Button
+            onPress={this._attemptGeocodeAsync}
+            title="Geocode"
+            disabled={typeof selectedExample !== 'string'}
+            style={styles.button}
+          />
+          <Button
+            onPress={this._attemptReverseGeocodeAsync}
+            title="Reverse Geocode"
+            disabled={typeof selectedExample !== 'object'}
+            style={styles.button}
+          />
+        </View>
 
         <View style={styles.separator} />
 
@@ -82,7 +91,7 @@ export default class GeocodingScreen extends React.Component {
       let result = await Location.geocodeAsync(this.state.selectedExample);
       this.setState({ result });
     } catch (e) {
-      this.setState({ error: e.code });
+      this.setState({ error: e.message });
     } finally {
       this.setState({ inProgress: false });
     }
@@ -117,12 +126,18 @@ export default class GeocodingScreen extends React.Component {
     let text = typeof example === 'string' ? example : JSON.stringify(example);
 
     return (
-      <Text
+      <Touchable
         key={i}
-        onPress={() => this._selectExample(example)}
-        style={[styles.exampleText, isSelected && styles.selectedExampleText]}>
-        {text}
-      </Text>
+        hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
+        onPress={() => this._selectExample(example)}>
+        <Text
+          style={[
+            styles.exampleText,
+            isSelected && styles.selectedExampleText,
+          ]}>
+          {text}
+        </Text>
+      </Touchable>
     );
   };
 
@@ -160,16 +175,24 @@ const styles = StyleSheet.create({
   exampleText: {
     fontSize: 15,
     color: '#ccc',
-    marginBottom: 10,
+    marginVertical: 10,
   },
   examplesContainer: {
-    padding: 20,
+    paddingTop: 15,
+    paddingBottom: 5,
+    paddingHorizontal: 20,
   },
   selectedExampleText: {
     color: 'black',
   },
   resultText: {
     padding: 20,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
   },
   errorResultText: {
     padding: 20,

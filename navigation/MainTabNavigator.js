@@ -47,6 +47,7 @@ const StackConfig = {
   cardStyle: styles.card,
   navigationOptions: () => ({
     headerStyle: styles.header,
+    headerPressColorAndroid: Colors.tintColor,
   }),
 };
 
@@ -66,9 +67,9 @@ const ExpoComponentsStackNavigator = StackNavigator(
 const ExpoApisStackNavigator = StackNavigator(
   {
     ExpoApis: { screen: ExpoApisScreen },
-    Geocoding: { screen: GeocodingScreen },
-    Sensor: { screen: SensorScreen },
     Speech: { screen: TextToSpeechScreen },
+    Sensor: { screen: SensorScreen },
+    Geocoding: { screen: GeocodingScreen },
   },
   StackConfig
 );
