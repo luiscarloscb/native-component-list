@@ -318,6 +318,7 @@ export default class ExpoApisScreen extends React.Component {
         ref={view => {
           this._listView = view;
         }}
+        stickySectionHeadersEnabled={true}
         removeClippedSubviews={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
@@ -840,7 +841,7 @@ class LocationExample extends React.Component {
   render() {
     return (
       <View>
-        {this.props.polyfill ? this.renderProviderStatus() : null}
+        {this.props.polyfill ? null : this.renderProviderStatus()}
         {this.renderSingleLocation()}
         {this.renderWatchLocation()}
         {this.renderSingleCompass()}

@@ -109,6 +109,7 @@ export default class ReactNativeCoreScreen extends React.Component {
           ref={view => {
             this._listView = view;
           }}
+          stickySectionHeadersEnabled={true}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           refreshControl={

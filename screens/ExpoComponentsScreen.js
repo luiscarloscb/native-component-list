@@ -203,6 +203,7 @@ export default class HomeScreen extends React.Component {
         ref={view => {
           this._listView = view;
         }}
+        stickySectionHeadersEnabled={true}
         removeClippedSubviews={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
