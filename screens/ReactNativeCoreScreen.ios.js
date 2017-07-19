@@ -28,6 +28,7 @@ import TouchableBounce from 'react-native/Libraries/Components/Touchable/Touchab
 import NavigationEvents from '../utilities/NavigationEvents';
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
+import ModalExample from './ModalExample';
 
 export default class ReactNativeCoreScreen extends React.Component {
   static navigationOptions = {
@@ -59,13 +60,14 @@ export default class ReactNativeCoreScreen extends React.Component {
 
   componentDidMount() {
     let dataSource = this.state.dataSource.cloneWithRowsAndSections({
-      MaskView: [this._renderMaskView],
       'Vertical ScrollView, RefreshControl': [this._renderRefreshControl],
       ActionSheetIOS: [this._renderActionSheet],
       ActivityIndicator: [this._renderActivityIndicator],
       Alert: [this._renderAlert],
       DatePickerIOS: [this._renderDatePicker],
       'Horizontal ScrollView': [this._renderHorizontalScrollView],
+      MaskView: [this._renderMaskView],
+      Modal: [this._renderModal],
       Picker: [this._renderPicker],
       ProgressView: [this._renderProgressView],
       SegmentedControl: [this._renderSegmentedControl],
@@ -96,6 +98,7 @@ export default class ReactNativeCoreScreen extends React.Component {
             onRefresh={this._onRefresh}
           />
         }
+        removeClippedSubviews={false}
         contentContainerStyle={{ backgroundColor: '#fff' }}
         dataSource={this.state.dataSource}
         renderRow={this._renderRow}
@@ -127,6 +130,10 @@ export default class ReactNativeCoreScreen extends React.Component {
         </Button>
       </View>
     );
+  };
+
+  _renderModal = () => {
+    return <ModalExample />;
   };
 
   _renderRefreshControl = () => {
@@ -233,10 +240,16 @@ export default class ReactNativeCoreScreen extends React.Component {
     };
 
     return (
-      <View style={{ flexDirection: 'row', padding: 10 }}>
+      <View
+        style={{
+          flexDirection: Layout.isSmallDevice ? 'column' : 'row',
+          padding: 10,
+        }}>
         <Button onPress={showPrompt}>
           Prompt for a value
         </Button>
+
+        {Layout.isSmallDevice && <View style={{ marginBottom: 10 }} />}
 
         <Button onPress={showAlert}>
           Give me some options
@@ -466,6 +479,7 @@ class PickerExample extends React.Component {
   render() {
     return (
       <Picker
+        st
         selectedValue={this.state.language}
         onValueChange={lang => this.setState({ language: lang })}>
         <Picker.Item label="Java" value="java" />

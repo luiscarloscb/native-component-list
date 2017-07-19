@@ -29,6 +29,7 @@ import NavigationEvents from '../utilities/NavigationEvents';
 import TouchableBounce from 'react-native/Libraries/Components/Touchable/TouchableBounce';
 
 import { Colors, Layout } from '../constants';
+import ModalExample from './ModalExample';
 
 export default class ReactNativeCoreScreen extends React.Component {
   static navigationOptions = {
@@ -74,6 +75,7 @@ export default class ReactNativeCoreScreen extends React.Component {
       DatePickerAndroid: [this._renderDatePicker],
       TimerPickerAndroid: [this._renderTimePicker],
       'Horizontal ScrollView': [this._renderHorizontalScrollView],
+      Modal: [this._renderModal],
       Picker: [this._renderPicker],
       ProgressBar: [this._renderProgressBar],
       Slider: [this._renderSlider],
@@ -129,6 +131,10 @@ export default class ReactNativeCoreScreen extends React.Component {
 
   _scrollToTop = () => {
     this._listView.scrollTo({ x: 0, y: 0 });
+  };
+
+  _renderModal = () => {
+    return <ModalExample />;
   };
 
   _renderRefreshControl = () => {
