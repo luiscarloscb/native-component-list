@@ -7,7 +7,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "@expo/ex-navigation": "~3.0.0",
-    "expo": "19.0.0-rc.7",
+    "expo": "^19.0.0",
     "gl-mat4": "^1.1.4",
     "hsv2rgb": "^1.1.0",
     "react": "16.0.0-alpha.12",
