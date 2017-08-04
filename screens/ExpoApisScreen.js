@@ -9,6 +9,7 @@ import {
   Platform,
   StyleSheet,
   Text,
+  TextInput,
   View,
   ToastAndroid,
 } from 'react-native';
@@ -26,6 +27,7 @@ import Expo, {
   Pedometer,
   Permissions,
   ScreenOrientation,
+  SecureStore,
   WebBrowser,
 } from 'expo';
 import Touchable from 'react-native-platform-touchable';
@@ -131,6 +133,7 @@ export default class ExpoApisScreen extends React.Component {
         ios: {},
       }),
       Sensors: [this._renderSensors],
+      SecureStore: [this._renderSecureStore],
       Speech: [this._renderSpeech],
       TouchID: [this._renderTouchID],
       Util: [this._renderUtil],
@@ -287,6 +290,10 @@ export default class ExpoApisScreen extends React.Component {
         </Button>
       </View>
     );
+  };
+
+  _renderSecureStore = () => {
+    return <SecureStoreExample />;
   };
 
   _renderWebBrowser = () => {
@@ -1253,6 +1260,113 @@ class UtilExample extends React.Component {
             Expo.Util.reload();
           }}>
           Util.reload()
+        </Button>
+      </View>
+    );
+  }
+}
+
+class SecureStoreExample extends React.Component {
+  state = {
+    key: null,
+    value: null,
+  };
+
+  _setValue = async (value, key) => {
+    try {
+      console.log('securestore: ' + SecureStore);
+      await SecureStore.setValueWithKeyAsync(value, key, {});
+      Alert.alert(
+        'Success!',
+        'Value: ' + value + ', stored successfully for key: ' + key,
+        [{ text: 'OK', onPress: () => {} }]
+      );
+    } catch (e) {
+      Alert.alert('Error!', e.message, [{ text: 'OK', onPress: () => {} }]);
+    }
+  };
+
+  _getValue = async key => {
+    try {
+      const fetchedValue = await SecureStore.getValueWithKeyAsync(key, {});
+      Alert.alert('Success!', 'Fetched value: ' + fetchedValue, [
+        { text: 'OK', onPress: () => {} },
+      ]);
+    } catch (e) {
+      Alert.alert('Error!', e.message, [{ text: 'OK', onPress: () => {} }]);
+    }
+  };
+
+  _deleteValue = async key => {
+    try {
+      await SecureStore.deleteValueWithKeyAsync(key, {});
+      Alert.alert('Success!', 'Value deleted', [
+        { text: 'OK', onPress: () => {} },
+      ]);
+    } catch (e) {
+      Alert.alert('Error!', e.message, [{ text: 'OK', onPress: () => {} }]);
+    }
+  };
+
+  render() {
+    return (
+      <View
+        style={{
+          padding: 10,
+        }}>
+        <TextInput
+          style={{
+            marginBottom: 10,
+            padding: 10,
+            height: 40,
+            borderColor: '#000000',
+            borderWidth: 1,
+          }}
+          placeholder="Enter a value to store (ex. pw123!)"
+          value={this.state.value}
+          onChangeText={text =>
+            this.setState({
+              value: text,
+            })}
+        />
+        <TextInput
+          style={{
+            marginBottom: 10,
+            padding: 10,
+            height: 40,
+            borderColor: '#000000',
+            borderWidth: 1,
+          }}
+          placeholder="Enter a key for the value (ex. password)"
+          value={this.state.key}
+          onChangeText={text =>
+            this.setState({
+              key: text,
+            })}
+        />
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={() => {
+            this._setValue(this.state.value, this.state.key);
+          }}
+          title="Store value with key">
+          Store value with key
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={() => {
+            this._getValue(this.state.key);
+          }}
+          title="Get value with key">
+          Get value with key
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={() => {
+            this._deleteValue(this.state.key);
+          }}
+          title="Delete value with key">
+          Delete value with key
         </Button>
       </View>
     );
