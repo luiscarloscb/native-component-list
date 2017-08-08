@@ -7,6 +7,8 @@ import {
   ListView,
   NativeModules,
   Platform,
+  ProgressBarAndroid,
+  ProgressViewIOS,
   StyleSheet,
   Text,
   TextInput,
@@ -18,6 +20,7 @@ import Expo, {
   Contacts,
   DangerZone,
   DocumentPicker,
+  FileSystem,
   Font,
   KeepAwake,
   Location,
@@ -112,6 +115,7 @@ export default class ExpoApisScreen extends React.Component {
       Contacts: [this._renderContacts],
       DocumentPicker: [this._renderDocumentPicker],
       Facebook: [this._renderFacebook],
+      FileSystem: [this._renderFileSystem],
       Font: [this._renderFont],
       Geocoding: [this._renderGeocoding],
       Google: [this._renderGoogle],
@@ -156,13 +160,9 @@ export default class ExpoApisScreen extends React.Component {
 
     return (
       <View style={{ flexDirection: 'row', padding: 10 }}>
-        <Button onPress={showCamera}>
-          Open camera
-        </Button>
+        <Button onPress={showCamera}>Open camera</Button>
 
-        <Button onPress={showPhotos}>
-          Open photos
-        </Button>
+        <Button onPress={showPhotos}>Open photos</Button>
       </View>
     );
   };
@@ -206,6 +206,10 @@ export default class ExpoApisScreen extends React.Component {
 
   _renderGoogle = () => {
     return <GoogleLoginExample />;
+  };
+
+  _renderFileSystem = () => {
+    return <FileSystemExample />;
   };
 
   _renderFont = () => {
@@ -352,7 +356,9 @@ export default class ExpoApisScreen extends React.Component {
   _renderSectionHeader = (_, sectionTitle) => {
     return (
       <View style={styles.sectionHeader}>
-        <Text>{sectionTitle}</Text>
+        <Text>
+          {sectionTitle}
+        </Text>
       </View>
     );
   };
@@ -404,8 +410,8 @@ class ConstantsExample extends React.Component {
         <ExponentConstant name="appOwnership" />
         {Platform.OS === 'ios' && <ExponentConstant name="platform" object />}
         <Text>
-          <Text style={{ fontWeight: 'bold' }}>getWebViewUserAgentAsync</Text>:
-          {' '}{this.state.webViewUserAgent}
+          <Text style={{ fontWeight: 'bold' }}>getWebViewUserAgentAsync</Text>:{' '}
+          {this.state.webViewUserAgent}
         </Text>
       </View>
     );
@@ -473,7 +479,9 @@ class ContactsExample extends React.Component {
     if (this.state.contacts) {
       return (
         <View style={{ padding: 10 }}>
-          <Text>{JSON.stringify(this.state.contacts)}</Text>
+          <Text>
+            {JSON.stringify(this.state.contacts)}
+          </Text>
           {this.state.hasNextPage
             ? <Button onPress={this._nextPage} style={{ marginVertical: 10 }}>
                 Next page
@@ -488,9 +496,7 @@ class ContactsExample extends React.Component {
 
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this._findContacts}>
-          Find my contacts
-        </Button>
+        <Button onPress={this._findContacts}>Find my contacts</Button>
       </View>
     );
   }
@@ -535,9 +541,7 @@ class DocumentPickerExample extends React.Component {
   render() {
     return (
       <View style={{ padding: 10 }}>
-        <Button onPress={this._openPicker}>
-          Open document picker
-        </Button>
+        <Button onPress={this._openPicker}>Open document picker</Button>
         {this._renderDocument()}
       </View>
     );
@@ -696,8 +700,12 @@ class LocationExample extends React.Component {
               : 'Location.getCurrentPositionAsync'}
             :
           </Text>
-          <Text>Latitude: {this.state.singleLocation.coords.latitude}</Text>
-          <Text>Longitude: {this.state.singleLocation.coords.longitude}</Text>
+          <Text>
+            Latitude: {this.state.singleLocation.coords.latitude}
+          </Text>
+          <Text>
+            Longitude: {this.state.singleLocation.coords.longitude}
+          </Text>
         </View>
       );
     }
@@ -735,13 +743,11 @@ class LocationExample extends React.Component {
             GPS Available: {String(this.state.providerStatus.gpsAvailable)}
           </Text>
           <Text>
-            Network Available:
-            {' '}
+            Network Available:{' '}
             {String(this.state.providerStatus.networkAvailable)}
           </Text>
           <Text>
-            Passive Available:
-            {' '}
+            Passive Available:{' '}
             {String(this.state.providerStatus.passiveAvailable)}
           </Text>
         </View>
@@ -767,8 +773,12 @@ class LocationExample extends React.Component {
               : 'Location.watchPositionAsync'}
             :
           </Text>
-          <Text>Latitude: {this.state.watchLocation.coords.latitude}</Text>
-          <Text>Longitude: {this.state.watchLocation.coords.longitude}</Text>
+          <Text>
+            Latitude: {this.state.watchLocation.coords.latitude}
+          </Text>
+          <Text>
+            Longitude: {this.state.watchLocation.coords.longitude}
+          </Text>
           <View style={{ padding: 10 }}>
             <Button onPress={this._stopWatchingLocation}>
               Stop Watching Location
@@ -803,9 +813,15 @@ class LocationExample extends React.Component {
       return (
         <View style={{ padding: 10 }}>
           <Text>Location.watchHeadingAsync:</Text>
-          <Text>Magnetic North: {this.state.watchHeading.magHeading}</Text>
-          <Text>True North: {this.state.watchHeading.trueHeading}</Text>
-          <Text>Accuracy: {this.state.watchHeading.accuracy}</Text>
+          <Text>
+            Magnetic North: {this.state.watchHeading.magHeading}
+          </Text>
+          <Text>
+            True North: {this.state.watchHeading.trueHeading}
+          </Text>
+          <Text>
+            Accuracy: {this.state.watchHeading.accuracy}
+          </Text>
           <View style={{ padding: 10 }}>
             <Button onPress={this._stopWatchingHeading}>
               Stop Watching Heading
@@ -829,9 +845,15 @@ class LocationExample extends React.Component {
       return (
         <View style={{ padding: 10 }}>
           <Text>Location.getHeadingAsync:</Text>
-          <Text>Magnetic North: {this.state.singleHeading.magHeading}</Text>
-          <Text>True North: {this.state.singleHeading.trueHeading}</Text>
-          <Text>Accuracy: {this.state.singleHeading.accuracy}</Text>
+          <Text>
+            Magnetic North: {this.state.singleHeading.magHeading}
+          </Text>
+          <Text>
+            True North: {this.state.singleHeading.trueHeading}
+          </Text>
+          <Text>
+            Accuracy: {this.state.singleHeading.accuracy}
+          </Text>
         </View>
       );
     }
@@ -954,8 +976,187 @@ class PedometerExample extends React.Component {
           Stop listening for step count updates
         </Button>
         {this.state.stepCount !== null
-          ? <Text>Total steps {this.state.stepCount}</Text>
+          ? <Text>
+              Total steps {this.state.stepCount}
+            </Text>
           : null}
+      </View>
+    );
+  }
+}
+
+class FileSystemExample extends React.Component {
+  state = {
+    downloadProgress: 0,
+  };
+
+  _download = async () => {
+    const url = 'http://ipv4.download.thinkbroadband.com/5MB.zip';
+    const fileUri = FileSystem.documentDirectory + '5MB.zip';
+    const callback = downloadProgress => {
+      const progress =
+        downloadProgress.totalBytesWritten /
+        downloadProgress.totalBytesExpectedToWrite;
+      this.setState({
+        downloadProgress: progress,
+      });
+    };
+    const options = { md5: true };
+    this.download = new FileSystem.downloadResumable(
+      url,
+      fileUri,
+      options,
+      callback
+    );
+
+    try {
+      const info = await FileSystem.getInfoAsync(fileUri);
+      if (info) {
+        await FileSystem.deleteAsync(fileUri);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      await this.download.downloadAsync();
+      if (this.state.downloadProgress === 1) {
+        alert('Download complete!');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  _pause = async () => {
+    try {
+      await this.download.pauseAsync();
+      await this._saveDownload();
+      alert('Download paused...');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  _saveDownload = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'pausedDownload',
+        JSON.stringify(this.download.savable())
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  _resume = async () => {
+    try {
+      if (this.download) {
+        await this.download.resumeAsync();
+        if (this.state.downloadProgress === 1) {
+          alert('Download complete!');
+        }
+      } else {
+        this._fetchDownload();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  _fetchDownload = async () => {
+    try {
+      const downloadJson = await AsyncStorage.getItem('pausedDownload');
+      const downloadFromStore = JSON.parse(downloadJson);
+      if (downloadFromStore !== null) {
+        const callback = downloadProgress => {
+          const progress =
+            downloadProgress.totalBytesWritten /
+            downloadProgress.totalBytesExpectedToWrite;
+          this.setState({
+            downloadProgress: progress,
+          });
+        };
+        this.download = new FileSystem.downloadResumable(
+          downloadFromStore.url,
+          downloadFromStore.fileUri,
+          downloadFromStore.options,
+          callback,
+          downloadFromStore.resumeData
+        );
+        await this.download.resumeAsync();
+        if (this.state.downloadProgress === 1) {
+          alert('Download complete!');
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  _getInfo = async () => {
+    try {
+      let info = await FileSystem.getInfoAsync(this.download._fileUri);
+      Alert.alert('File Info:', JSON.stringify(info), [
+        { text: 'OK', onPress: () => {} },
+      ]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  render() {
+    let progress = null;
+    if (Platform.OS === 'ios') {
+      progress = (
+        <ProgressViewIOS
+          style={{
+            marginBottom: 10,
+            marginRight: 10,
+          }}
+          progress={this.state.downloadProgress}
+        />
+      );
+    } else {
+      progress = (
+        <ProgressBarAndroid
+          style={{
+            marginBottom: 10,
+            marginRight: 10,
+          }}
+          styleAttr="Horizontal"
+          indeterminate={false}
+          progress={this.state.downloadProgress}
+        />
+      );
+    }
+    return (
+      <View style={{ padding: 10 }}>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={this._download}
+          title="Start">
+          Start Downloading file (5mb)
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={this._pause}
+          title="Pause">
+          Pause Download
+        </Button>
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={this._resume}
+          title="Resume">
+          Resume Download
+        </Button>
+        {progress}
+        <Button
+          style={{ marginBottom: 10 }}
+          onPress={this._getInfo}
+          title="Info">
+          Get Info
+        </Button>
       </View>
     );
   }
@@ -1252,9 +1453,15 @@ class UtilExample extends React.Component {
   render() {
     return (
       <View style={{ padding: 10 }}>
-        <Text>Locale: {this.state.locale}</Text>
-        <Text>Device Country: {this.state.deviceCountry}</Text>
-        <Text>Time Zone: {this.state.timeZone}</Text>
+        <Text>
+          Locale: {this.state.locale}
+        </Text>
+        <Text>
+          Device Country: {this.state.deviceCountry}
+        </Text>
+        <Text>
+          Time Zone: {this.state.timeZone}
+        </Text>
         <Button
           onPress={async () => {
             Expo.Util.reload();
@@ -1376,7 +1583,9 @@ class SecureStoreExample extends React.Component {
 function Button(props) {
   return (
     <Touchable onPress={props.onPress} style={[styles.button, props.style]}>
-      <Text style={styles.buttonText}>{props.children}</Text>
+      <Text style={styles.buttonText}>
+        {props.children}
+      </Text>
     </Touchable>
   );
 }
