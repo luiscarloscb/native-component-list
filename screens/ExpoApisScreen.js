@@ -1002,7 +1002,7 @@ class FileSystemExample extends React.Component {
       });
     };
     const options = { md5: true };
-    this.download = new FileSystem.downloadResumable(
+    this.download = FileSystem.createDownloadResumable(
       url,
       fileUri,
       options,
@@ -1029,6 +1029,10 @@ class FileSystemExample extends React.Component {
   };
 
   _pause = async () => {
+    if (this.download == null) {
+      alert('Initiate a download first!');
+      return;
+    }
     try {
       await this.download.pauseAsync();
       await this._saveDownload();
@@ -1050,6 +1054,10 @@ class FileSystemExample extends React.Component {
   };
 
   _resume = async () => {
+    if (this.download == null) {
+      alert('Initiate a download first!');
+      return;
+    }
     try {
       if (this.download) {
         await this.download.resumeAsync();
@@ -1095,6 +1103,10 @@ class FileSystemExample extends React.Component {
   };
 
   _getInfo = async () => {
+    if (this.download == null) {
+      alert('Initiate a download first!');
+      return;
+    }
     try {
       let info = await FileSystem.getInfoAsync(this.download._fileUri);
       Alert.alert('File Info:', JSON.stringify(info), [
