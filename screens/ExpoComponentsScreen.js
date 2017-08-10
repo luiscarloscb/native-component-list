@@ -59,6 +59,7 @@ export default class HomeScreen extends React.Component {
         android: {},
       }),
       BarCodeScanner: [this._renderBarCodeScanner],
+      GestureHandler: [this._renderGestureHandler],
       WebGL: [this._renderWebGL],
       FacebookAds: [this._renderFacebookAds],
       Lottie: [this._renderLottie],
@@ -126,6 +127,20 @@ export default class HomeScreen extends React.Component {
       <View style={{ padding: 10 }}>
         <Button onPress={_maybeNavigateToBarCodeScanner}>
           Open bar code scanner
+        </Button>
+      </View>
+    );
+  };
+
+  _renderGestureHandler = () => {
+    let _maybeNavigateToGestureHandler = async () => {
+      this.props.navigation.navigate('GestureHandler');
+    };
+
+    return (
+      <View style={{ padding: 10 }}>
+        <Button onPress={_maybeNavigateToGestureHandler}>
+          Open GestureHandler example
         </Button>
       </View>
     );

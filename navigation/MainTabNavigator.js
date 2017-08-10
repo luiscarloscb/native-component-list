@@ -10,6 +10,7 @@ import NavigationEvents from '../utilities/NavigationEvents';
 import BarCodeScannerScreen from '../screens/BarCodeScannerScreen';
 import ExpoComponentsScreen from '../screens/ExpoComponentsScreen';
 import ExpoApisScreen from '../screens/ExpoApisScreen';
+import GestureHandlerScreen from '../screens/GestureHandlerScreen';
 import SensorScreen from '../screens/SensorScreen';
 import GeocodingScreen from '../screens/GeocodingScreen';
 import GLViewScreen from '../screens/GLViewScreen';
@@ -56,6 +57,7 @@ const ExpoComponentsStackNavigator = StackNavigator(
     ExpoComponents: { screen: ExpoComponentsScreen },
     BarCodeScanner: { screen: BarCodeScannerScreen },
     GLView: { screen: GLViewScreen },
+    GestureHandler: { screen: GestureHandlerScreen },
     FacebookAds: { screen: FacebookAdsScreen },
     SVG: { screen: SVGScreen },
     Lottie: { screen: LottieScreen },
