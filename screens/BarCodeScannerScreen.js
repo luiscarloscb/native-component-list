@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, Platform, StyleSheet, View } from 'react-native';
 
 import { BarCodeScanner } from 'expo';
+
+const BUTTON_COLOR = Platform.OS === 'ios' ? '#fff' : '#666';
 
 export default class BarcodeScannerExample extends React.Component {
   static navigationOptions = {
@@ -25,12 +27,12 @@ export default class BarcodeScannerExample extends React.Component {
 
         <View style={styles.toolbar}>
           <Button
-            color="#fff"
+            color={BUTTON_COLOR}
             title="Toggle Flashlight"
             onPress={this._toggleTorch}
           />
           <Button
-            color="#fff"
+            color={BUTTON_COLOR}
             title="Toggle Direction"
             onPress={this._toggleType}
           />
