@@ -107,7 +107,10 @@ export default class ExpoApisScreen extends React.Component {
       }
     }
 
-    alert(message);
+    // Calling alert(message) immediately fails to show the alert on Android
+    // if after backgrounding the app and then clicking on a notification
+    // to foreground the app
+    setTimeout(() => alert(message), 1000);
   };
 
   componentDidMount() {
