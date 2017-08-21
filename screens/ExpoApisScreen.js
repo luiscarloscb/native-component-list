@@ -6,7 +6,6 @@ import {
   AsyncStorage,
   Image,
   ListView,
-  NativeModules,
   Platform,
   ProgressBarAndroid,
   ProgressViewIOS,
@@ -23,6 +22,7 @@ import Expo, {
   DocumentPicker,
   FileSystem,
   Font,
+  Fingerprint,
   KeepAwake,
   Location,
   ImagePicker,
@@ -1184,34 +1184,21 @@ class TouchIDExample extends React.Component {
   };
 
   render() {
-    let authFunction;
-
-    if (Platform.OS === 'android') {
-      authFunction = async () => {
-        this.setState({ waiting: true });
-        try {
-          let result = await NativeModules.ExponentFingerprint.authenticateAsync();
-          if (result.success) {
-            alert('Authenticated!');
-          } else {
-            alert('Failed to authenticate');
-          }
-        } finally {
-          this.setState({ waiting: false });
-        }
-      };
-    } else if (Platform.OS === 'ios') {
-      authFunction = async () => {
-        let result = await NativeModules.ExponentFingerprint.authenticateAsync(
-          'Show me your finger!'
+    let authFunction = async () => {
+      this.setState({ waiting: true });
+      try {
+        let result = await Fingerprint.authenticateAsync(
+          'This message only shows up on iOS'
         );
         if (result.success) {
-          alert('Success!');
+          alert('Authenticated!');
         } else {
-          alert('Cancel!');
+          alert('Failed to authenticate');
         }
-      };
-    }
+      } finally {
+        this.setState({ waiting: false });
+      }
+    };
 
     return (
       <View style={{ padding: 10 }}>
